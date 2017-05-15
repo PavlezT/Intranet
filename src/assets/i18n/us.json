@@ -11,6 +11,17 @@
         "Empty":"Is empty",
         "OperationError":"Operation failed. Error has occurred"
     },
+    "modules":{
+        "News":"News",
+        "IdeaBox":"Idea Box",
+        "OrgStructure":"Organisational Structure",
+        "Birthdays":"Birthdays",
+        "LSEvents":"Events",
+        "About":"About",
+        "Newcomers":"Newcomers",
+        "Survey":"Survey",
+        "Policies":"Policies"
+    },
     "MStep1":"User Directory",
     "MStep2":"Lists",
     "MStep3":"Reports",

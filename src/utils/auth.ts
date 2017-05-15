@@ -129,7 +129,7 @@ export class Auth {
 
                   let headers = new Headers({'Content-Type': 'application/soap+xml; charset=utf-8'});
                   let options = new RequestOptions({ headers: headers });
-
+                  
                   return self.http.post(url,samlBody,options).timeout(consts.timeoutDelay).retry(consts.retryCount)
                      .toPromise()
                })
@@ -143,7 +143,7 @@ export class Auth {
 
    public readFile(path,filename):Promise <any>{
       if(this.device.uuid)//this is device
-         return this.file.readAsText(cordova.file.applicationDirectory + path,filename);
+         return this.file.readAsText(cordova.file.applicationDirectory + path,filename).catch(error=>{throw new Error('Read SAML file error!');})
       else if(filename.includes('online_saml.tmpl')){
          console.log('In browser reading file');
          return Promise.resolve(`<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://www.w3.org/2005/08/addressing" xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -185,7 +185,7 @@ export class Auth {
        let expires = new Date(tokenResponse.expires).getTime();
        let diff = (expires - now) / 1000;
        let diffSeconds = parseInt(diff.toString(), 10);
-
+       
        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
        let options = new RequestOptions({ headers: headers });
 

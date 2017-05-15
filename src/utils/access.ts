@@ -1,7 +1,7 @@
 import { Http, Headers, RequestOptions  } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Injectable, Inject } from '@angular/core';
-import * as consts from './Consts';
+import * as consts from './consts';
 
 @Injectable()
 export class Access{

@@ -1,6 +1,8 @@
-import { Transfer, NativeStorage, File } from 'ionic-native';
+import { Transfer, TransferObject } from '@ionic-native/transfer';
+import { NativeStorage } from '@ionic-native/native-storage';
+import { File } from '@ionic-native/file';
 import { Injectable } from '@angular/core';
-import * as consts from './Consts';
+import * as consts from './consts';
 
 declare var cordova:any;
 
@@ -8,21 +10,23 @@ declare var cordova:any;
 export class Images {
 
    images : any;
-   fileTransfer :any;
+   fileTransfer : TransferObject;
+   
 
-   constructor() {
+   constructor(public file : File, public nativeStorage : NativeStorage, private transfer: Transfer) {
      this.images = {};
    }
 
    public _init() : void {
      try{
-      this.fileTransfer = new Transfer();
+      // this.fileTransfer = new Transfer();
+      this.fileTransfer = this.transfer.create();
      }catch(e){console.log('<Iamges> FileTransfer _initing error',e)};
 
       this.imagesLoad().then(res => {
         let first = res[Object.keys(res)[0]];
         if(first){
-          File.checkFile(first.substring(0,first.lastIndexOf(`/`)+1),first.substring(first.lastIndexOf(`/`)+1,first.length)).then(
+          this.file.checkFile(first.substring(0,first.lastIndexOf(`/`)+1),first.substring(first.lastIndexOf(`/`)+1,first.length)).then(
             data => {this.images = res;},
             error => {this.images = {};}
           )
@@ -33,11 +37,11 @@ export class Images {
    }
 
    private imagesLoad() : Promise<any> {
-      return NativeStorage.getItem('images').catch(err=>{console.log('<Images> imagesLoad error',err);return {};});
+      return this.nativeStorage.getItem('images').catch(err=>{console.log('<Images> imagesLoad error',err);return {};});
    }
 
    private saveImage() : Promise<any> {
-      return NativeStorage.setItem('images',this.images).catch(err=>{console.log('<Images> error saving images',err)})
+      return this.nativeStorage.setItem('images',this.images).catch(err=>{console.log('<Images> error saving images',err)})
    }
 
    private loadImage(key : string) :  string {

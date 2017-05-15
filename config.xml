@@ -86,4 +86,5 @@
     <plugin name="cordova-plugin-file" spec="~4.3.3" />
     <plugin name="cordova-plugin-nativestorage" spec="~2.2.2" />
     <plugin name="cordova-plugin-device" spec="~1.1.4" />
+    <plugin name="cordova-plugin-file-transfer" spec="~1.6.3" />
 </widget>
