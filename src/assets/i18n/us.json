@@ -9,7 +9,10 @@
         "Wait":"Wait...",
         "Downloading":"Downloading...",
         "Empty":"Is empty",
-        "OperationError":"Operation failed. Error has occurred"
+        "OperationError":"Operation failed. Error has occurred",
+        "NotLike":"Don`t like",
+        "Like":"Like",
+        "Comment":"Comment"
     },
     "modules":{
         "News":"News",

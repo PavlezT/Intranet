@@ -96,15 +96,14 @@ export class MyApp {
     this.loaderctrl.presentLoading();
     return Promise.all([this.getLists(),this.user.init()])
       .then( res => {
-            this.events.publish('user:loaded');
+            this.events.publish('user:loaded',res[0]['Pages']);
             this.access._init();
             this.images._init();
-            this.pages[1].component
+            
             this.pages=this.pages.filter((page,i,pages)=>{
               page.title=this.loc.dic.modules[page.component.name];
               return (res[0][page.lsiName]) ? (page.guid = res[0][page.lsiName]) : null;              
             })
-            
             this.loaderctrl.stopLoading();
       })
       .catch( error => {

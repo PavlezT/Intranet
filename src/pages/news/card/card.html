@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{card.FieldValuesAsText.Title}}
+      <span class="date">{{card.MyDate}}</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+      <img src="{{card.Image}}">
+      <!--{{images.getImage(item.Image)}}-->
+
+      <div padding>
+        <h4>{{card.FieldValuesAsText.LSiNewsShortDescription}}</h4>
+        <p class="bodytext">{{card.FieldValuesAsText.LSiNewsBody}}</p>
+        <ion-row>
+          <ion-col>
+            <button [ngClass]="card.liked ? 'liked' : ''" ion-button icon-left clear small (click)="newsLiked(card)">
+              {{card.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
+              <ion-icon name="thumbs-up"></ion-icon>
+              <div>{{card.LikesCount || 0}}</div>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-left clear small>
+              {{loc.dic.mobile.Comment}}
+              <ion-icon name="text"></ion-icon>
+              <div>4</div>
+            </button>
+          </ion-col>
+        </ion-row>
+        <div>
+          <ion-col *ngFor="let tag of card.LSiNewsTags.results">
+            <ion-note >
+              #{{tag.Label}}
+            </ion-note>
+          </ion-col>
+        </div>
+    </div>
+</ion-content>

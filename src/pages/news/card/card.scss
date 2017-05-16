@@ -1,0 +1,41 @@
+page-card {
+	ion-title{
+		.date{
+			font-size:1.4rem;
+			display:block;
+		}
+	}
+
+	ion-content{
+		.bodytext{
+			white-space: pre-line;
+		}
+	}
+	.row{
+		.col{
+			button{
+				font-size: 1.5rem;
+				text-transform: none;
+				.icon{
+					margin-left:10px;
+				}
+			}
+		}
+	}
+
+	div{
+		.note{
+			color: #666;
+			font-size: 1.5rem;
+			background-color: #eee;
+			padding: 6px;
+			margin: 3px;
+			border-radius: 9px;
+			display: inline-block;
+		}
+	}
+
+	.liked{
+		color:red;
+	}
+}

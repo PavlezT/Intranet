@@ -1,3 +1,22 @@
 page-news {
 
+	.content{
+		background-color: #eeeeee;
+	}
+
+	.card{
+		margin-bottom: 20px;
+	}
+
+	.row{
+		.col{
+			button{
+				font-size:2rem;
+			}
+		}
+	}
+
+	.liked{
+		color:red;
+	}
 }

@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
 import { News } from '../pages/news/news';
+import { Card } from '../pages/news/card/card';
 import { IdeaBox } from '../pages/idea/idea';
 import { OrgStructure } from '../pages/org-structure/org-structure';
 import { Birthdays } from '../pages/birthdays/birthdays';
@@ -32,7 +33,8 @@ import { Transfer } from '@ionic-native/transfer';
 @NgModule({
   declarations: [
     MyApp,
-    News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies
+    News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies,
+    Card
   ],
   imports: [
     BrowserModule,HttpModule,
@@ -41,7 +43,8 @@ import { Transfer } from '@ionic-native/transfer';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies
+    News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies,
+    Card
   ],
   providers: [
     StatusBar,
