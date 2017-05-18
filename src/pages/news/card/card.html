@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-      <img src="{{card.Image}}">
+      <img src="{{images.getImage(card.Image)}}">
       <!--{{images.getImage(item.Image)}}-->
 
       <div padding>
@@ -23,10 +23,10 @@
             </button>
           </ion-col>
           <ion-col>
-            <button ion-button icon-left clear small>
+            <button ion-button icon-left clear small (click)="focuse('textcomment')">
               {{loc.dic.mobile.Comment}}
               <ion-icon name="text"></ion-icon>
-              <div>4</div>
+              <div>{{card.MyComments.length}}</div>
             </button>
           </ion-col>
         </ion-row>
@@ -36,6 +36,32 @@
               #{{tag.Label}}
             </ion-note>
           </ion-col>
+        </div>
+        <div #comments>
+          <ion-item *ngFor="let comment of card.MyComments">
+            <ion-avatar item-left>
+              <img src="{{images.getImage((comment.user ?comment.user.Email : 'e@e'),'_layouts/15/userphoto.aspx?size=S&accountname='+(comment.user ?comment.user.Email : 'e@e')+'&mobile=0')}}">
+            </ion-avatar>
+            <label>
+              <h2 *ngIf="comment.user && comment.user.Title" >{{comment.user.Title}}</h2>
+              <div>
+                <p>{{comment.FieldValuesAsText.LSiCommentText}}</p>
+              </div>
+            </label>
+          </ion-item>
+          <ion-row>
+            <ion-col class="leftcol">
+              <ion-item item-left>
+                <ion-label floating>{{loc.dic.Alert14}}</ion-label>
+                <ion-textarea #textcomment (focus)="focuse('textcomment2')" rows="4"></ion-textarea>
+              </ion-item>
+            </ion-col>
+            <ion-col class="rightcol">
+              <button ion-button full icon-only (click)="sendComment()" >
+                  <ion-icon name="send"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
         </div>
     </div>
 </ion-content>

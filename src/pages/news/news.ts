@@ -41,28 +41,32 @@ export class News {
 
     return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then(response=>{
-        console.log('News:',response.json())
         return response.json().d.results;
       })
       .then((news : Array<any>)=>{
+        let commentsListGuid = JSON.parse(window.localStorage.getItem('lsi'))['LSiNewsCommentsList'];
         news.map((item) =>{
           !item.LSiNewsTags && (item.LSiNewsTags.results = []);
           item.liked = item.LikedByStringId && item.LikedByStringId.results && item.LikedByStringId.results.lastIndexOf(this.user.getId().toString()) != -1? true : false;
           item.MyDate = (new Date(item.LSiNewsDate)).toLocaleString();
           item.MyBody = item.FieldValuesAsText.LSiNewsShortDescription.length > 230 ? item.FieldValuesAsText.LSiNewsShortDescription.substring(0,(item.FieldValuesAsText.LSiNewsShortDescription.substring(0,230).lastIndexOf(' ') != -1?item.FieldValuesAsText.LSiNewsShortDescription.substring(0,230).lastIndexOf(' ') : 230))+ "..."  : item.FieldValuesAsText.LSiNewsShortDescription;
-          
+          item.MyComments = [];
+
           let imageUrl = `${consts.siteUrl}/_api/web/lists('${this.guid}')/Items(${item.Id})/FieldValuesAsHtml?$select=LSiNewsImage`;
+          let commentsUrl = `${consts.siteUrl}/_api/web/lists('${commentsListGuid}')/Items?$select=LSiCommentPageID,ID,LSiCommentText,AuthorId,Created&$filter=LSiCommentPageID+eq+${item.Id}&$expand=FieldValuesAsText`
           let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
           let options = new RequestOptions({ headers: headers ,withCredentials: true});
 
-          this.http.get(imageUrl,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+          Promise.all([this.http.get(imageUrl,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise(),this.http.get(commentsUrl,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()])
             .then(res=>{
-              let str = res.json().d.LSiNewsImage;
+              item.MyComments = res[1].json().d.results;
+              
+              let str = res[0].json().d.LSiNewsImage;
               //////////////////Warning
-              item.Image = consts.siteUrl + str.substring(str.indexOf('src="/sites/lsintranet365')+'src=\"sites/lsintranet365'.length+1,str.lastIndexOf('.')+4);///  -4
+              item.Image = str.substring(str.indexOf('src="/sites/lsintranet365')+'src=\"sites/lsintranet365'.length+1,str.lastIndexOf('.')+4);///  -4
             })
             .catch(error=>{
-              console.error('<News> Load images error:',error)
+              console.error('<News> Load images or Comments error:',error)
             })
             loadNew && this.News.push(item);
         })
@@ -80,8 +84,12 @@ export class News {
     item.liked?item.LikesCount++ : item.LikesCount--;
   }
 
-  public openCard(item) : void {
-    this.navCtrl.push(Card,item);
+  public newsComment(item) : void {
+    this.openCard(item,true);
+  }
+
+  public openCard(item, comments?:boolean) : void {
+    this.navCtrl.push(Card,{item:item,comments:comments});
   }
 
   public doInfinite(infiniteScroll) : void {

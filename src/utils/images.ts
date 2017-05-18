@@ -44,18 +44,18 @@ export class Images {
       return this.nativeStorage.setItem('images',this.images).catch(err=>{console.log('<Images> error saving images',err)})
    }
 
-   private loadImage(key : string) :  string {
-      let listGet = `${consts.siteUrl}/_layouts/15/userphoto.aspx?size=S&accountname=${key}&mobile=0`;
+   private loadImage(key : string, path? : string) :  string {
+      let listGet = `${consts.siteUrl}/${path ? path : key }`;//_layouts/15/userphoto.aspx?size=S&accountname=${key}&mobile=0
       let endpointURI = cordova && cordova.file && cordova.file.dataDirectory ? cordova.file.dataDirectory : 'file:///android_asset/';
-      
+
       try{
-          this.images[key] = !consts.OnPremise ? (cordova.file.applicationDirectory + 'www/assets/icon/favicon.ico') : listGet;
+          this.images[key] = !consts.OnPremise ? (cordova.file.applicationDirectory + 'www/assets/templates/loading.gif') : listGet;
       }catch(e){
           console.error('<Images> loadImage: this.image[key]= ',e);
           this.images[key] = listGet;
       }
 
-      this.fileTransfer && this.fileTransfer.download(listGet,endpointURI+key+'.png',true,{headers:{'Content-Type':`image/png`,'Accept':`image/webp`,'Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`}})
+      this.fileTransfer && this.fileTransfer.download(encodeURI(listGet),endpointURI+key+'.png',true,{headers:{'Content-Type':`image/png`,'Accept':`image/webp`,'Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`}})
          .then(data=>{
             console.log('<Image> file transfer success',data);
             this.images[key] = data.nativeURL;
@@ -68,8 +68,8 @@ export class Images {
       return this.images[key];
    }
 
-   public getImage(key : string) : string {
-       return this.images[key] || this.loadImage(key);
+   public getImage(key : string,path?:string) : string {
+       return this.images[key] || this.loadImage(key,path);
    }
 
 }

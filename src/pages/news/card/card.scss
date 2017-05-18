@@ -13,12 +13,26 @@ page-card {
 	}
 	.row{
 		.col{
+			max-width: 50% !important;
 			button{
 				font-size: 1.5rem;
 				text-transform: none;
 				.icon{
 					margin-left:10px;
 				}
+			}
+		}
+
+		.leftcol{
+			max-width: 80% !important;
+			width:100%;
+		}
+		.rightcol{
+			max-width: 20% !important;
+			width: 20%;
+			button{
+				height:60px;
+				border-radius: 6px;
 			}
 		}
 	}

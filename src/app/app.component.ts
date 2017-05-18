@@ -48,7 +48,7 @@ export class MyApp {
       { lsiName: 'SitePages',title: loc.dic.modules.About , component: About , guid : '1'},
       { lsiName: 'LSiUsers',title: loc.dic.modules.Newcomers , component: Newcomers , guid : '1'},
       { lsiName: 'LSiUserKPIs',title: loc.dic.modules.Survey , component: Survey , guid : '1'},
-      { lsiName: 'LSiPolicie',title: loc.dic.modules.Policies , component: Policies , guid : '1'},
+      { lsiName: 'LSiPolicies',title: loc.dic.modules.Policies , component: Policies , guid : '1'},
     ];
 
   }
@@ -89,7 +89,7 @@ export class MyApp {
     if(this.network.type != 'none'){
       return Promise.resolve();
     }
-    return Promise.reject('<App> There is no internet connection');
+    return Promise.reject('There is no internet connection');
   }
 
   private startApp() : Promise<any> {
@@ -238,7 +238,7 @@ export class MyApp {
 
   private showToast(message: any){
       let toast = this.toastCtrl.create({
-        message: (typeof message == 'string' )? message.substring(0,( message.indexOf('&#x') || message.length)) : message.toString().substring(0,( message.toString().indexOf('&#x') || message.toString().length)) ,
+        message: (typeof message == 'string' )? message.substring(0,( message.indexOf('&#x') != -1? message.indexOf('&#x') : message.length)) : message.toString().substring(0,( message.toString().indexOf('&#x') != -1 ?message.toString().indexOf('&#x') : message.toString().length)) ,
         position: 'bottom',
         showCloseButton : true,
         duration: 9000
