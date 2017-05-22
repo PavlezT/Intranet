@@ -51,6 +51,7 @@ export class News {
           item.MyDate = (new Date(item.LSiNewsDate)).toLocaleString();
           item.MyBody = item.FieldValuesAsText.LSiNewsShortDescription.length > 230 ? item.FieldValuesAsText.LSiNewsShortDescription.substring(0,(item.FieldValuesAsText.LSiNewsShortDescription.substring(0,230).lastIndexOf(' ') != -1?item.FieldValuesAsText.LSiNewsShortDescription.substring(0,230).lastIndexOf(' ') : 230))+ "..."  : item.FieldValuesAsText.LSiNewsShortDescription;
           item.MyComments = [];
+          item.commentsListGuid = commentsListGuid;
 
           let imageUrl = `${consts.siteUrl}/_api/web/lists('${this.guid}')/Items(${item.Id})/FieldValuesAsHtml?$select=LSiNewsImage`;
           let commentsUrl = `${consts.siteUrl}/_api/web/lists('${commentsListGuid}')/Items?$select=LSiCommentPageID,ID,LSiCommentText,AuthorId,Created&$filter=LSiCommentPageID+eq+${item.Id}&$expand=FieldValuesAsText`
@@ -85,11 +86,11 @@ export class News {
   }
 
   public newsComment(item) : void {
-    this.openCard(item,true);
+    this.openCard(item,this.guid,true);
   }
 
-  public openCard(item, comments?:boolean) : void {
-    this.navCtrl.push(Card,{item:item,comments:comments});
+  public openCard(item,guid?:string, comments?:boolean,) : void {
+    this.navCtrl.push(Card,{item:item,guid:guid,comments:comments});
   }
 
   public doInfinite(infiniteScroll) : void {

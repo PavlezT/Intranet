@@ -49,6 +49,16 @@ page-card {
 		}
 	}
 
+	.commentTitle{
+		h2{
+			display: inline;
+		}
+		span {
+			display: inline;
+			font-size: 1.2rem;
+		}
+	}
+
 	.liked{
 		color:red;
 	}

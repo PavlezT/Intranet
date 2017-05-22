@@ -21,3 +21,5 @@ export const OnPremise = false;
 // export const OnlineUserRealmEndpoint = 'https://login.microsoftonline.com/GetUserRealm.srf';
 
 //isserId lsdocs 26bab6fd-6d83-4f7b-8a9c-54195697d012
+//authorize request = https://login.microsoftonline.com/efd1ecec-87f9-49d0-a7cc-04c7e6bc0c64/oauth2/authorize?response_type=code&response_mode=form_post&resource=https://lizardsoftdev.sharepoint.com&client_id=042a3cb4-c140-4455-ab2f-e46f149311dc
+

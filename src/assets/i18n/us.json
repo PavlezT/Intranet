@@ -12,7 +12,8 @@
         "OperationError":"Operation failed. Error has occurred",
         "NotLike":"Don`t like",
         "Like":"Like",
-        "Comment":"Comment"
+        "Comment":"Comment",
+        "unsaved":"unsaved"
     },
     "modules":{
         "News":"News",

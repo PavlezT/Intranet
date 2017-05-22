@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-card *ngFor="let item of News" >
-    <div (click)="openCard(item)">
+    <div (click)="openCard(item,guid)">
       <ion-item>
         <h2>{{item.FieldValuesAsText.Title}}</h2>
         <p>{{item.MyDate}}</p>
