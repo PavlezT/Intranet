@@ -24,7 +24,7 @@
     </div>
     <ion-row>
       <ion-col>
-        <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (click)="newsLiked(item)">
+        <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (click)="newsLiked($event,item)">
           <ion-icon name="thumbs-up"></ion-icon>
           <div>{{item.LikesCount || 0}}</div>
         </button>

@@ -16,7 +16,7 @@
         <p class="bodytext">{{card.FieldValuesAsText.LSiNewsBody}}</p>
         <ion-row>
           <ion-col>
-            <button [ngClass]="card.liked ? 'liked' : ''" ion-button icon-left clear small (click)="newsLiked(card)">
+            <button [ngClass]="card.liked ? 'liked' : ''" ion-button icon-left clear small (click)="newsLiked($event,card)">
               {{card.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
               <ion-icon name="thumbs-up"></ion-icon>
               <div>{{card.LikesCount || 0}}</div>
