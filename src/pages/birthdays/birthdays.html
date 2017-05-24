@@ -8,5 +8,37 @@
 </ion-header>
 
 <ion-content padding>
-
+  <div [ngSwitch]="birth">
+    <div *ngSwitchCase="'today'">
+      today
+    </div>
+    <div *ngSwitchCase="'tommorow'">
+      tommorow
+    </div>
+    <div *ngSwitchCase="'week'">
+      week
+    </div>
+    <div *ngSwitchCase="'month'">
+      month
+    </div>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="birth" color="new">
+      <ion-segment-button value="today">
+        today
+      </ion-segment-button>
+      <ion-segment-button value="tommorow">
+        tommorow
+      </ion-segment-button>
+      <ion-segment-button value="week">
+        week
+      </ion-segment-button>
+      <ion-segment-button value="month">
+        month
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

@@ -29,6 +29,7 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import { File } from '@ionic-native/file';
 import { Device } from '@ionic-native/device';
 import { Transfer } from '@ionic-native/transfer';
+import { FileOpener } from '@ionic-native/file-opener';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { Transfer } from '@ionic-native/transfer';
     Card
   ],
   providers: [
-    StatusBar,
+    StatusBar,FileOpener,
     SplashScreen,Network,NativeStorage,File,Device,Transfer,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: Localization, useClass: Localization},

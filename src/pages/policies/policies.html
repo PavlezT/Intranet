@@ -8,5 +8,25 @@
 </ion-header>
 
 <ion-content padding>
-
+  <ion-list  no-lines style="z-index: -1">
+    <ion-item (click)="docClicked(document)" *ngFor="let document of Docs" >
+      <div item-left>
+      <div margin-right class="file-icon file-icon-lg " [attr.data-type]="document.icon"></div>
+      </div>
+      <h2>{{document.Title || document.FileLeafRef}}</h2>
+      <p>{{loc.dic.Created}}: {{document.Created}}</p>
+    </ion-item>
+    <ion-item *ngIf="Docs && Docs.length == 0">
+      <h2>{{loc.dic.mobile.Empty}}</h2>
+    </ion-item>
+    <ion-item *ngIf="!Docs">
+      <h2>{{loc.dic.mobile.Downloading}}</h2>
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content
+      loadingText="{{loc.dic.mobile.Downloading}}">
+      <!--loadingSpinner="bubbles"-->
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

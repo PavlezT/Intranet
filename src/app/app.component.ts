@@ -43,11 +43,11 @@ export class MyApp {
       { lsiName: 'Pages',title: loc.dic.modules.News, component: News, guid:'1' },
       { lsiName: 'LSiIdeaBank',title: loc.dic.modules.IdeaBox, component: IdeaBox, guid : '1'},
       { lsiName: 'LSiDepartments',title: loc.dic.modules.OrgStructure , component: OrgStructure , guid : '1'}, 
-      { lsiName: 'LSiBirthdayGreetingsList',title: loc.dic.modules.Birthdays , component: Birthdays , guid : '1'},
+      { lsiName: 'LSiUsers',title: loc.dic.modules.Birthdays , component: Birthdays , guid : '1'},
       { lsiName: 'LSiCalendar',title: loc.dic.modules.Events , component: LSEvents , guid : '1'},
       { lsiName: 'SitePages',title: loc.dic.modules.About , component: About , guid : '1'},
       { lsiName: 'LSiUsers',title: loc.dic.modules.Newcomers , component: Newcomers , guid : '1'},
-      { lsiName: 'LSiUserKPIs',title: loc.dic.modules.Survey , component: Survey , guid : '1'},
+      { lsiName: 'LSiUserKPIs',title: loc.dic.modules.Survey , component: Survey , guid : '1'},//No
       { lsiName: 'LSiPolicies',title: loc.dic.modules.Policies , component: Policies , guid : '1'},
     ];
 
