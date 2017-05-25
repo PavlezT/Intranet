@@ -9,6 +9,7 @@ import { Card } from '../pages/news/card/card';
 import { IdeaBox } from '../pages/idea/idea';
 import { OrgStructure } from '../pages/org-structure/org-structure';
 import { Birthdays } from '../pages/birthdays/birthdays';
+import { GreetingCard } from '../pages/birthdays/greeting_card/greeting_card';
 import { LSEvents } from '../pages/events/events';
 import { About } from '../pages/about/about';
 import { Newcomers } from '../pages/newcomers/newcomers';
@@ -35,7 +36,7 @@ import { FileOpener } from '@ionic-native/file-opener';
   declarations: [
     MyApp,
     News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies,
-    Card
+    Card,GreetingCard
   ],
   imports: [
     BrowserModule,HttpModule,
@@ -45,7 +46,7 @@ import { FileOpener } from '@ionic-native/file-opener';
   entryComponents: [
     MyApp,
     News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies,
-    Card
+    Card,GreetingCard
   ],
   providers: [
     StatusBar,FileOpener,

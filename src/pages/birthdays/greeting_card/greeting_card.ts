@@ -3,18 +3,17 @@ import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as moment from 'moment';
-import * as consts from '../../utils/consts';
-import { Localization } from '../../utils/localization';
-import { Access } from '../../utils/access';
-import { Images } from '../../utils/images';
-
-import { GreetingCard } from './greeting_card/greeting_card';
+import * as consts from '../../../utils/consts';
+import { Localization } from '../../../utils/localization';
+import { Access } from '../../../utils/access';
+import { Images } from '../../../utils/images';
+import { User } from '../../../utils/user';
 
 @Component({
-  selector: 'page-birthdays',
-  templateUrl: 'birthdays.html',
+  selector: 'greeting_card',
+  templateUrl: 'greeting_card.html',
 })
-export class Birthdays {
+export class GreetingCard {
 
   title: string;
   guid:string;
@@ -27,7 +26,7 @@ export class Birthdays {
   weekArr : any;
   monthArr : any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController,@Inject(Access) public access : Access,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController,@Inject(Access) public access : Access,@Inject(User) public user : User,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http) {
     this.title = navParams.data.title || loc.dic.modules.News;
     this.guid = navParams.data.guid;
     this.birth = 'today';
@@ -170,10 +169,10 @@ export class Birthdays {
     }
   }
   
-  public openGreetingCard(user) : void {
-    this.modalCtrl.create(GreetingCard,{
-        greeting_user : user
-      }).present()
+  public openGreetindCard(user) : void {
+    // this.modalCtrl.create(GreetindCard,{
+    //     greeting_user : user
+    //   }).present()
   }
 
 }
