@@ -88,4 +88,5 @@
     <plugin name="cordova-plugin-device" spec="~1.1.4" />
     <plugin name="cordova-plugin-file-transfer" spec="~1.6.3" />
     <plugin name="cordova-plugin-file-opener2" spec="~2.0.16" />
+    <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
 </widget>

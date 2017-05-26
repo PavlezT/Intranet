@@ -62,7 +62,7 @@ export class News {
           item.commentsListGuid = commentsListGuid;
 
           let imageUrl = `${consts.siteUrl}/_api/web/lists('${this.guid}')/Items(${item.Id})/FieldValuesAsHtml?$select=LSiNewsImage`;
-          let commentsUrl = `${consts.siteUrl}/_api/web/lists('${commentsListGuid}')/Items?$select=LSiCommentPageID,ID,LSiCommentText,AuthorId,Created&$filter=LSiCommentPageID+eq+${item.Id}&$expand=FieldValuesAsText`
+          let commentsUrl = `${consts.siteUrl}/_api/web/lists('${commentsListGuid}')/Items?$select=LSiCommentPageID,ID,LSiCommentText,Author/Id,Author/Title,Author/EMail,Created,FieldValuesAsText/LSiCommentText&$filter=LSiCommentPageID+eq+${item.Id}&$expand=FieldValuesAsText/Id,Author/Id`
           let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
           let options = new RequestOptions({ headers: headers ,withCredentials: true});
 

@@ -8,6 +8,7 @@ import { News } from '../pages/news/news';
 import { Card } from '../pages/news/card/card';
 import { IdeaBox } from '../pages/idea/idea';
 import { OrgStructure } from '../pages/org-structure/org-structure';
+import { DepartmentUsers } from '../pages/org-structure/department_users/department_users';
 import { Birthdays } from '../pages/birthdays/birthdays';
 import { GreetingCard } from '../pages/birthdays/greeting_card/greeting_card';
 import { LSEvents } from '../pages/events/events';
@@ -31,12 +32,13 @@ import { File } from '@ionic-native/file';
 import { Device } from '@ionic-native/device';
 import { Transfer } from '@ionic-native/transfer';
 import { FileOpener } from '@ionic-native/file-opener';
+import { CallNumber } from '@ionic-native/call-number';
 
 @NgModule({
   declarations: [
     MyApp,
     News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies,
-    Card,GreetingCard
+    Card,GreetingCard,DepartmentUsers
   ],
   imports: [
     BrowserModule,HttpModule,
@@ -46,10 +48,10 @@ import { FileOpener } from '@ionic-native/file-opener';
   entryComponents: [
     MyApp,
     News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies,
-    Card,GreetingCard
+    Card,GreetingCard,DepartmentUsers
   ],
   providers: [
-    StatusBar,FileOpener,
+    StatusBar,FileOpener,CallNumber,
     SplashScreen,Network,NativeStorage,File,Device,Transfer,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: Localization, useClass: Localization},

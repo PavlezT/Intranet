@@ -3,7 +3,7 @@
     <ion-toolbar>
       <ion-item (click)="userTapped()" class="userAvatart">
           <ion-avatar item-left>
-            <img  #Myimg src="{{images.getImage(user.getEmail(),'_layouts/15/userphoto.aspx?size=S&accountname='+user.getEmail()+'&mobile=0')}}">
+            <img  #Myimg src="{{images.getImage(user.getEmail(),'_layouts/15/userphoto.aspx?size=L&accountname='+user.getEmail()+'&mobile=0')}}">
           </ion-avatar >
           <ion-title>{{user.getUserName()}}</ion-title>
       </ion-item>

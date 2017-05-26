@@ -8,6 +8,25 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content>
+  <ion-card *ngFor="let item of Depts" >
+    <div (click)="openDept(item)">
+      <ion-card-content>
+        <ion-item>
+          <h2>{{item.Title}}</h2>
+          <p>{{item.DepManager.Title}}</p>
+          <ion-avatar item-right>
+            <img src="{{images.getImage(item.DepManager.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+item.DepManager.EMail+'&mobile=0')}}">
+          </ion-avatar>
+          <ion-icon item-right name="ios-arrow-forward"></ion-icon>
+        </ion-item>
+      </ion-card-content>
+    </div>
+  </ion-card>
+  <ion-item *ngIf="Depts && Depts.length == 0">
+    <h2>{{loc.dic.mobile.Empty}}</h2>
+  </ion-item>
+  <ion-item *ngIf="!Depts">
+    <h2>{{loc.dic.mobile.Downloading}}</h2>
+  </ion-item>
 </ion-content>

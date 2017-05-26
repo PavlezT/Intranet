@@ -53,7 +53,7 @@ export class Card {
         "AuthorId" : this.user.getId()
     }
     let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'POST','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
-    let options = new RequestOptions({ headers: headers });
+    let options = new RequestOptions({ headers: headers,withCredentials: true });
 
     return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then((data)=>{
@@ -87,18 +87,18 @@ export class Card {
   private getCommentsUsers() : void {
     this.card.MyComments.map(item=>{
       item.MyCreated = moment(item.Created).fromNow();
-      let url = `${consts.siteUrl}/_api/Web/GetUserByid(${item.AuthorId})?$select=Title,Email`;
+      // let url = `${consts.siteUrl}/_api/Web/GetUserByid(${item.AuthorId})?$select=Title,Email`;
 
-      let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
-      let options = new RequestOptions({ headers: headers ,withCredentials: true});
+      // let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
+      // let options = new RequestOptions({ headers: headers ,withCredentials: true});
 
-      this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
-        .then(res=>{
-          item.user = res.json().d;
-        })
-        .catch(error=>{
-          console.error('<Card> Get Comments Users error:',error);
-        })
+      // this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+      //   .then(res=>{
+      //     item.user = res.json().d;
+      //   })
+      //   .catch(error=>{
+      //     console.error('<Card> Get Comments Users error:',error);
+      //   })
     })
   }
 

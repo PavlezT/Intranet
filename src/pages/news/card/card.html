@@ -40,11 +40,11 @@
         <div #comments>
           <ion-item *ngFor="let comment of card.MyComments">
             <ion-avatar item-left>
-              <img src="{{images.getImage((comment.user ?comment.user.Email : 'e@e'),'_layouts/15/userphoto.aspx?size=S&accountname='+(comment.user ?comment.user.Email : 'e@e')+'&mobile=0')}}">
+              <img src="{{images.getImage((comment.Author ?comment.Author.EMail : 'e@e'),'_layouts/15/userphoto.aspx?size=L&accountname='+(comment.Author ?comment.Author.EMail : 'e@e')+'&mobile=0')}}">
             </ion-avatar>
             <label>
               <div class="commentTitle" >
-                <h2 *ngIf="comment.user && comment.user.Title" >{{comment.user.Title}}</h2>
+                <h2 *ngIf="comment.Author && comment.Author.Title" >{{comment.Author.Title}}</h2>
                 <span>{{comment.MyCreated}}</span>
               </div>
               <div>

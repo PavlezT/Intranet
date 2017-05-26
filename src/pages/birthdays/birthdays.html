@@ -24,7 +24,7 @@
         </ion-item>
         <div >
           <div class="smallUsers" *ngFor="let BirthUser of todayArr" (tap)="checkNewUser(BirthUser,'today')" >
-              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=S&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
+              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
               <p>{{BirthUser.Title}}</p>
           </div>
         </div>
@@ -45,7 +45,7 @@
         </ion-item>
         <div >
           <div class="smallUsers" *ngFor="let BirthUser of tomorrowArr" (tap)="checkNewUser(BirthUser,'tomorrow')" >
-              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=S&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
+              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
               <p>{{BirthUser.Title}}</p>
           </div>
         </div>
@@ -66,7 +66,7 @@
         </ion-item>
         <div >
           <div class="smallUsers" *ngFor="let BirthUser of weekArr" (tap)="checkNewUser(BirthUser,'week')" >
-              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=S&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
+              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
               <p>{{BirthUser.Title}}</p>
           </div>
         </div>
@@ -87,7 +87,7 @@
         </ion-item>
         <div>
           <div class="smallUsers" *ngFor="let BirthUser of monthArr" (tap)="checkNewUser(BirthUser,'month')" >
-              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=S&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
+              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
               <p>{{BirthUser.Title}}</p>
           </div>
         </div>

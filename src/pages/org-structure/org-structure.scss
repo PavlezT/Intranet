@@ -1,3 +1,11 @@
 page-org-structure {
-
+	ion-content {
+		background-color: #eee !important;
+		ion-card {
+			margin-top: 15px !important;
+			ion-icon {
+				margin-left: 10px !important;
+			}
+		}
+	}
 }

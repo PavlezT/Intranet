@@ -45,7 +45,7 @@ export class Images {
    }
 
    private loadImage(key : string, path? : string) :  string {
-      let listGet = `${consts.siteUrl}/${path ? path : key }`;//_layouts/15/userphoto.aspx?size=S&accountname=${key}&mobile=0
+      let listGet = `${consts.siteUrl}/${path ? path : key }`;//_layouts/15/userphoto.aspx?size=L&accountname=${key}&mobile=0
       let endpointURI = cordova && cordova.file && cordova.file.dataDirectory ? cordova.file.dataDirectory : 'file:///android_asset/';
 
       try{
@@ -54,7 +54,7 @@ export class Images {
           console.error('<Images> loadImage: this.image[key]= ',e);
           this.images[key] = listGet;
       }
-
+    
       this.fileTransfer && this.fileTransfer.download(encodeURI(listGet),endpointURI+key+'.png',true,{headers:{'Content-Type':`image/png`,'Accept':`image/webp`,'Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`}})
          .then(data=>{
             console.log('<Image> file transfer success',data);
