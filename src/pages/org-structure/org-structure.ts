@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { NavController,ModalController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as consts from '../../utils/consts';
@@ -20,8 +20,8 @@ export class OrgStructure {
   Depts : any;
   Users : any;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization, public http : Http) {
-    this.title = navParams.data.title || loc.dic.modules.News;
+  constructor(public navCtrl: NavController, public navParams: NavParams,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization, public http : Http) {
+    this.title = navParams.data.title;
     this.guid = navParams.data.guid;
 
     this.usersListId = JSON.parse(window.localStorage.getItem('lsi'))['LSiUsers'];
@@ -54,10 +54,6 @@ export class OrgStructure {
     return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then(res=>{
         this.Users = res.json().d.results;
-        // this.Users.length != 0 && this.Depts.filter(item=>{
-        //     item.user = this.Users.find(user=>{if(user.User1Id == item.DepManagerId ) return user;}) || {Title:'',UserEmail:"e@e"};
-        //     return item;
-        // });
       })
       .catch(error=>{
         console.log('<OrgStructure> get users error:',error);
@@ -66,11 +62,11 @@ export class OrgStructure {
   }
 
   public openDept(item) : void {
-    this.modalCtrl.create(DepartmentUsers,{
+    this.navCtrl.push(DepartmentUsers,{
         users : this.Users,
         guid : item.Id,
         Title : item.Title
-      }).present();
+    })
   }
 
 }

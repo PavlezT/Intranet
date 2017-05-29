@@ -1,3 +1,24 @@
 page-survey {
+	.question{
+		background-color:#4672aa;	
+		padding: 10px 20px 10px 20px;
+		color: white;
+	}
 
+	.answer{
+		padding: 20px;
+		font-size: 1.8rem;
+	}
+
+	ion-item{
+		outline: none !important;
+		border: none !important;
+		border-top: none !important;
+		.item-inner{
+			outline: none !important;
+			border: none !important;
+			border-top: none !important;
+			border-bottom: none !important;
+		}
+	}
 }

@@ -47,7 +47,7 @@ export class MyApp {
       { lsiName: 'LSiCalendar',title: loc.dic.modules.Events , component: LSEvents , guid : '1'},
       { lsiName: 'SitePages',title: loc.dic.modules.About , component: About , guid : '1'},
       { lsiName: 'LSiUsers',title: loc.dic.modules.Newcomers , component: Newcomers , guid : '1'},
-      { lsiName: 'LSiUserKPIs',title: loc.dic.modules.Survey , component: Survey , guid : '1'},//No
+      { lsiName: 'LSiUsers',title: loc.dic.modules.Survey , component: Survey , guid : '1'},//No
       { lsiName: 'LSiPolicies',title: loc.dic.modules.Policies , component: Policies , guid : '1'},
     ];
 

@@ -1,0 +1,55 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{Title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let item of Users" >
+    <div>
+      <ion-card-content>
+        <ion-item>
+          <h2>{{item.Title}}</h2>
+          <h3>{{item.ol_Department}}</h3>
+          <p>{{item.JobTitle}}</p>
+          <ion-avatar item-right>
+            <img src="{{images.getImage(item.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+item.UserEmail+'&mobile=0')}}">
+          </ion-avatar>
+          <br>
+          <ion-row>
+            <ion-col *ngIf="item.LSiWorkEmail">
+              <ion-icon name="ios-mail-outline"></ion-icon>
+              {{item.LSiWorkEmail}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col *ngIf="item.LSiWorkPhone" >
+              <div (click)="makeCall(item.LSiWorkPhone)" >
+                <ion-icon name="ios-call-outline"></ion-icon>
+                {{item.LSiWorkPhone}}
+              </div>
+            </ion-col>
+            <ion-col *ngIf="item.LSiHomePhone"> 
+              <div (click)="makeCall(item.LSiHomePhone)">
+                <ion-icon name="ios-home-outline"></ion-icon>
+                {{item.LSiHomePhone}}
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-card-content>
+    </div>
+  </ion-card>
+  <ion-item *ngIf="Users && Users.length == 0">
+    <h2>{{loc.dic.mobile.Empty}}</h2>
+  </ion-item>
+  <ion-item *ngIf="!Users">
+    <h2>{{loc.dic.mobile.Downloading}}</h2>
+  </ion-item>
+</ion-content>

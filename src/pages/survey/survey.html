@@ -7,6 +7,20 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content>
+  <ion-item *ngIf="question" class="question">
+    <h2>{{question}}</h2>
+  </ion-item>
+  <ion-list radio-group>
+    <ion-item *ngFor="let answer of Answers" class="answer">
+      <ion-label>{{answer}}</ion-label>
+      <ion-radio value="{{answer}}">{{answer}}</ion-radio>
+    </ion-item>
+  </ion-list>
+  <ion-item *ngIf="Answers &&  Answers.length == 0" class="question">
+    <h2>{{loc.dic.mobile.Empty}}</h2>
+  </ion-item>
+  <ion-item *ngIf="!Answers" class="question">
+    <h2>{{loc.dic.mobile.Downloading}}</h2>
+  </ion-item>
 </ion-content>
