@@ -11,12 +11,23 @@
   <ion-item *ngIf="question" class="question">
     <h2>{{question}}</h2>
   </ion-item>
-  <ion-list radio-group>
+  <ion-list radio-group [(ngModel)]="survey_answer">
     <ion-item *ngFor="let answer of Answers" class="answer">
       <ion-label>{{answer}}</ion-label>
       <ion-radio value="{{answer}}">{{answer}}</ion-radio>
     </ion-item>
   </ion-list>
+  <div class="buttons">
+    <button ion-button  *ngIf="question" (click)="acceptAnswer()">
+      {{loc.dic.Send}}
+    </button>
+    <button ion-button  *ngIf="!question && Answers && Answers.length != 0" (click)="previousAnswer()">
+      {{loc.dic.Send}}
+    </button>
+    <button ion-button  *ngIf="!question && Answers && Answers.length != 0" (click)="nextAnswer()">
+      {{loc.dic.Send}}
+    </button>
+  </div>
   <ion-item *ngIf="Answers &&  Answers.length == 0" class="question">
     <h2>{{loc.dic.mobile.Empty}}</h2>
   </ion-item>

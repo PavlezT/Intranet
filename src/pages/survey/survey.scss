@@ -21,4 +21,18 @@ page-survey {
 			border-bottom: none !important;
 		}
 	}
+
+	ion-list{
+		margin : 0 !important;
+	}
+
+	.buttons{
+		margin : auto;
+		width: 90%;
+		text-align: center;
+		button {
+			background-color:#4672aa;
+			width:45%;
+		}
+	}
 }

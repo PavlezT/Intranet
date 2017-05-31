@@ -13,7 +13,9 @@
         "NotLike":"Don`t like",
         "Like":"Like",
         "Comment":"Comment",
-        "unsaved":"unsaved"
+        "unsaved":"unsaved",
+        "Make":"Make",
+        "choice":"choice"
     },
     "modules":{
         "News":"News",

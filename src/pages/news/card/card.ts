@@ -63,7 +63,11 @@ export class Card {
         let comment = data.json().d;
         comment.FieldValuesAsText.LSiCommentText = comment.LSiCommentText,
         comment.MyCreated = moment(comment.Created).fromNow();
-        comment.user = this.user.user;
+        comment.Author = {
+          Title : this.user.getUserName(),
+          EMail : this.user.getEmail()
+        }
+        console.log('this.user:',this.user.user)
         this.card.MyComments.push(comment);
       })
       .catch(error=>{
