@@ -11,21 +11,30 @@
   <ion-item *ngIf="question" class="question">
     <h2>{{question}}</h2>
   </ion-item>
-  <ion-list radio-group [(ngModel)]="survey_answer">
+  <ion-list no-lines radio-group *ngIf="question" [(ngModel)]="survey_answer">
     <ion-item *ngFor="let answer of Answers" class="answer">
       <ion-label>{{answer}}</ion-label>
       <ion-radio value="{{answer}}">{{answer}}</ion-radio>
+    </ion-item>
+  </ion-list>
+  <ion-list no-lines *ngIf="!question && Answers && Surveys.length !=0" >
+    <ion-item  class="question">
+      <h2>{{Surveys[current_question].Title}}</h2>
+    </ion-item>
+    <ion-item *ngFor="let survey of Surveys[current_question].Choices.results; let i = index;" class="answer">
+      <h2>{{survey}} : {{Surveys[current_question].Choices.counts[i] ? Surveys[current_question].Choices.counts[i] : 0}} ({{getProcents(i)}}%)</h2>
+      <span class="procents" ><div [style.width]="getProcents(i)+'%'"></div></span>
     </ion-item>
   </ion-list>
   <div class="buttons">
     <button ion-button  *ngIf="question" (click)="acceptAnswer()">
       {{loc.dic.Send}}
     </button>
-    <button ion-button  *ngIf="!question && Answers && Answers.length != 0" (click)="previousAnswer()">
-      {{loc.dic.Send}}
+    <button ion-button icon-only *ngIf="!question && Answers && Answers.length != 0" (click)="previousAnswer()">
+      <ion-icon name="arrow-back"></ion-icon>
     </button>
-    <button ion-button  *ngIf="!question && Answers && Answers.length != 0" (click)="nextAnswer()">
-      {{loc.dic.Send}}
+    <button ion-button icon-only *ngIf="!question && Answers && Answers.length != 0" (click)="nextAnswer()">
+      <ion-icon name="arrow-forward"></ion-icon>
     </button>
   </div>
   <ion-item *ngIf="Answers &&  Answers.length == 0" class="question">

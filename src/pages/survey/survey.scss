@@ -20,6 +20,17 @@ page-survey {
 			border-top: none !important;
 			border-bottom: none !important;
 		}
+		.procents{
+			display: block;
+			background-color: #CCCCCC;
+			div {
+				background-color: #3966bf;
+				height:100%;
+				// min-width: 1%;
+			}
+			height:20px;
+			width: 100%;
+		}
 	}
 
 	ion-list{

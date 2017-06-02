@@ -52,6 +52,7 @@ export class Policies {
       })
       .catch(error=>{
         console.error('<Policies> getDocuments error:',error);
+        this.Docs = [];
       })
 
   }

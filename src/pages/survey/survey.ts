@@ -17,12 +17,13 @@ export class Survey {
   title: string;
   guid:string;
   config : any;
-  question : string;
-  Answers : any;
   Surveys : any;
+  question : string;
   current_question : number;
+  Answers : any;
+
   survey_answer : any;
-  survey_answers : Array<string>;
+  survey_answers : Array<{EntityPropertyName:string,value:string}>;
 
   access_token : string;
   digest : string;
@@ -37,15 +38,22 @@ export class Survey {
         return this.getConfig();
       })
       .then(()=>{
-          let temp = JSON.parse(this.config.PollListId);
-          this.guid = temp[Object.keys(temp)[0]];
-          return this.getUserAnswers();
+        let temp = JSON.parse(this.config.PollListId);
+        this.guid = temp[Object.keys(temp)[0]];
+        return this.getSurvey();
       })
-      .then((state)=>{
-        state ? this.getAllAnswers() : this.getSurvey();
+      .then(()=>{
+        return this.getUserAnswers();
+      })
+      .then((state : boolean)=>{
+        state ? this.getAllAnswers()
+                  .then(()=>{this.refreshSurvey(this.current_question,state);})
+                  .catch(error=>{ error.message && this.showToast(error.message);}) : this.refreshSurvey(this.current_question,state);
       })
       .catch(custom_error=>{
-        console.log('<Survey> custom error:',custom_error);
+        console.log('<Survey> constructor error:',custom_error);
+        this.Answers = [];
+        this.question = null;
       })
   }
 
@@ -68,8 +76,8 @@ export class Survey {
       })
   }
 
-  private getSurvey(guid? : string) : Promise<any>{
-    let url= `${consts.siteUrl}/_api/web/lists('${guid? guid : this.guid}')/Fields?$select=Title,Id,Choices,EntityPropertyName&$filter=(CanBeDeleted eq true) and (TypeAsString eq 'Choice')`;
+  private getSurvey() : Promise<any>{
+    let url= `${consts.siteUrl}/_api/web/lists('${this.guid}')/Fields?$select=Title,Id,Choices,EntityPropertyName&$filter=(CanBeDeleted eq true) and (TypeAsString eq 'Choice')`;
 
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
@@ -77,16 +85,16 @@ export class Survey {
     return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then(res=>{
         this.Surveys = res.json().d.results;
-        this.refreshSurvey(this.current_question);
       })
       .catch(error=>{
         console.log('<Survey> get Survey error:',error);
+        this.Surveys = [{Choices:{results:[]}}];
         this.question = '';
         this.Answers = [];
       })
   }
 
-  private getUserAnswers() : Promise<any> {
+  private getUserAnswers() : Promise<boolean> {
     let CamlC = `<View><Query><Where><Eq><FieldRef Name='Author' LookupId='TRUE' /><Value Type='Integer'>${this.user.getId()}</Value></Eq></Where></Query></View>`;
     let url = `${consts.siteUrl}/_api/web/lists(guid'${this.guid}')/getitems`
     let body = {
@@ -101,15 +109,13 @@ export class Survey {
     let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+    return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay+2500).retry(consts.retryCount).toPromise()
       .then(res=>{
-        console.log('user ansers',res.json());
-
         return res.json().d.results.length != 0;//? true : false;
       })
       .catch(error=>{
         console.log('<Survey> get User Answers error:',error);
-        return false;
+        return true;
       })
   }
 
@@ -119,37 +125,75 @@ export class Survey {
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
 
-    return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+    return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount+20).toPromise()
       .then(res=>{
-        this.Answers = res.json().d.results.map(answer=>{
-          this.Surveys.map(item=>{
-            !item.Choices.counts && (item.Choices.counts = []);
-            item.Choices.counts[item.Choices.results.indexOf(answer[item.EntityPropertyName])]++;
+        res.json().d.results.map((answer,i,mass)=>{
+          this.Surveys.total = mass.length;//this.Surveys.total?this.Surveys.total+1 : 1;
+          this.Surveys.map(survey_item=>{
+            survey_item.Choices.counts ? "" : (survey_item.Choices.counts=[]);
+            survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])!= -1 && (survey_item.Choices.counts[survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])] ? survey_item.Choices.counts[survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])]++ : (survey_item.Choices.counts[survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])] = 1)) ;
           })
         })
       })
       .catch(error=>{
         console.log('<Survey> get All Answers error:',error);
+        throw new Object({message:'Error occur while getting all answers. Try open tab again'});
       })
   }
-//ngIf = "!question && Answers.length != 0"
 
   public acceptAnswer() : void {
-    this.survey_answer ? this.survey_answers.push(this.survey_answer) : this.showToast(this.loc.dic.mobile.Make+' '+this.loc.dic.mobile.choice);
+    this.survey_answer ? this.survey_answers.push({EntityPropertyName:this.Surveys[this.current_question].EntityPropertyName,value:this.survey_answer}) : this.showToast(this.loc.dic.mobile.Make+' '+this.loc.dic.mobile.choice);
     this.survey_answer && (this.Surveys[this.current_question+1] ? this.refreshSurvey(++this.current_question) : this.sendResults());
     this.survey_answer =  null;
   }
 
-  private refreshSurvey(index) : void {
-    this.question = this.Surveys[index].Title;
-    this.Answers = this.Surveys[index].Choices.results;
+  private refreshSurvey(index,user_answers?:boolean) : void {
+    !user_answers && (this.question = this.Surveys[index].Title);
+    this.Answers =  this.Surveys[index].Choices.results;// : this.Surveys[index].Choices.counts;
   }
 
   private sendResults() : Promise<any> {
     this.loaderctrl.presentLoading();
-    this.question = null;
-    this.getAllAnswers();
-    return Promise.resolve(this.loaderctrl.stopLoading());
+    
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/Items`;
+    let body = {
+        "__metadata": {
+          type : "SP.Data.1ListItem"
+        }
+    }
+    this.survey_answers.map(item=>{
+      body[item.EntityPropertyName] = item.value;
+    })
+
+    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'POST','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
+    let options = new RequestOptions({ headers: headers,withCredentials: true });
+
+    return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+            .then(res=>{
+              return this.getAllAnswers();
+            })
+            .then(()=>{
+              this.question = null;
+              this.current_question = 0;
+              this.loaderctrl.stopLoading();
+            })
+            .catch(error=>{
+              console.log('<Survay> sendResults error:',error);
+              this.loaderctrl.stopLoading();
+              error.message && this.showToast(error.message);
+            })
+  }
+
+  public previousAnswer() : void {
+    this.current_question  = (this.current_question == 0) ? this.Surveys.length -1 : this.current_question-1;
+  }
+
+  public nextAnswer() : void {
+    this.current_question = this.Surveys[this.current_question+1]? this.current_question+1 : 0; 
+  }
+
+  public getProcents(index) : number {
+    return Math.round((this.Surveys[this.current_question].Choices.counts[index] ? this.Surveys[this.current_question].Choices.counts[index] : 0)/(this.Surveys.total && this.Surveys.total!=0?this.Surveys.total : 1)*100);
   }
 
   private showToast(message: any){
