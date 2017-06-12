@@ -7,6 +7,110 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content>
+  <div [ngSwitch]="newcomers">
+    <div *ngSwitchCase="'today'">
+        <ion-list>
+          <ion-item *ngFor="let newUser of todayArr">
+            <ion-avatar item-left *ngIf="newUser.UserEmail">
+                <img src="{{images.getImage(newUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+newUser.UserEmail+'&mobile=0')}}">
+            </ion-avatar >
+            <h2>{{newUser.Title}}</h2> 
+            <p>{{newUser.JobTitle}}</p>
+            <div item-right class="hiredate" >
+              <p>{{newUser.MyHireMonth || ' '}}</p>
+              <h2>{{newUser.MyHireDay || ' '}}</h2>
+            </div>         
+          </ion-item>
+        </ion-list>
+        <ion-item *ngIf="todayArr && todayArr.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item *ngIf="!todayArr">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
+    </div>
+    <div *ngSwitchCase="'yesterday'">
+        <ion-list>
+          <ion-item *ngFor="let newUser of yesterdayArr">
+            <ion-avatar item-left *ngIf="newUser.UserEmail">
+                <img src="{{images.getImage(newUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+newUser.UserEmail+'&mobile=0')}}">
+            </ion-avatar >
+            <h2>{{newUser.Title}}</h2> 
+            <p>{{newUser.JobTitle}}</p>
+            <div item-right class="hiredate" >
+              <p>{{newUser.MyHireMonth || ' '}}</p>
+              <h2>{{newUser.MyHireDay || ' '}}</h2>
+            </div>         
+          </ion-item>
+        </ion-list>
+        <ion-item *ngIf="yesterdayArr && yesterdayArr.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item *ngIf="!yesterdayArr">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
+    </div>
+    <div *ngSwitchCase="'week'">
+        <ion-list>
+          <ion-item *ngFor="let newUser of weekArr">
+            <ion-avatar item-left *ngIf="newUser.UserEmail">
+                <img src="{{images.getImage(newUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+newUser.UserEmail+'&mobile=0')}}">
+            </ion-avatar >
+            <h2>{{newUser.Title}}</h2> 
+            <p>{{newUser.JobTitle}}</p>
+            <div item-right class="hiredate" >
+              <p>{{newUser.MyHireMonth || ' '}}</p>
+              <h2>{{newUser.MyHireDay || ' '}}</h2>
+            </div>         
+          </ion-item>
+        </ion-list>
+        <ion-item *ngIf="weekArr && weekArr.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item *ngIf="!weekArr">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
+    </div>
+    <div *ngSwitchCase="'month'">
+       <ion-list>
+          <ion-item *ngFor="let newUser of monthArr">
+            <ion-avatar item-left *ngIf="newUser.UserEmail">
+                <img src="{{images.getImage(newUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+newUser.UserEmail+'&mobile=0')}}">
+            </ion-avatar >
+            <h2>{{newUser.Title}}</h2> 
+            <p>{{newUser.JobTitle}}</p>
+            <div item-right class="hiredate" >
+              <p>{{newUser.MyHireMonth || ' '}}</p>
+              <h2>{{newUser.MyHireDay || ' '}}</h2>
+            </div>         
+          </ion-item>
+        </ion-list>
+        <ion-item *ngIf="monthArr && monthArr.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item *ngIf="!monthArr">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
+    </div>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="newcomers" color="new">
+      <ion-segment-button value="today"(click)="getToday()">
+        {{loc.dic.days.today}}
+      </ion-segment-button>
+      <ion-segment-button value="yesterday" (click)="getYesterday()">
+        {{loc.dic.days.yesterday}}
+      </ion-segment-button>
+      <ion-segment-button value="week" (click)="getWeek()">
+        {{loc.dic.days.week}}
+      </ion-segment-button>
+      <ion-segment-button value="month" (click)="getMonth()">
+        {{loc.dic.days.month}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

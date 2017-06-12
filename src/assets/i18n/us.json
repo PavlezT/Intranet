@@ -24,7 +24,7 @@
         "Birthdays":"Birthdays",
         "LSEvents":"Events",
         "About":"About",
-        "Newcomers":"Newcomers",
+        "Newcomers":"New Employees",
         "Survey":"Survey",
         "Policies":"Policies"
     },
@@ -32,7 +32,8 @@
         "today":"today",
         "tomorrow":"tomorrow",
         "week":"week",
-        "month":"month"
+        "month":"month",
+        "yesterday":"yesterday"
     },
     "MStep1":"User Directory",
     "MStep2":"Lists",
