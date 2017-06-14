@@ -7,6 +7,113 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content>
+  <div [ngSwitch]="calendar">
+    <div *ngSwitchCase="'today'">
+      <ion-item class="picker">
+        <button item-left ion-button icon-only large outline (click)="clickLeft()">
+          <ion-icon name="ios-arrow-back"></ion-icon>
+        </button>
+        <ion-label>
+          <span class="date">
+            {{dayDate.format('dddd, DD.MM.YYYY')}}
+          </span>
+        </ion-label>
+        <button item-right ion-button icon-only large outline (click)="clickRight()">
+          <ion-icon name="ios-arrow-forward"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-list padding>
+        <ion-item class="eventitem" *ngFor="let event of DayEvents">
+          <div item-left class="itemdate" >
+              <h2>{{event.month}}</h2>
+              <h1>{{event.date}}</h1>
+          </div>
+          {{event.Title}}   
+        </ion-item>
+        <ion-item class="eventitem" *ngIf="DayEvents && DayEvents.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item class="eventitem" *ngIf="!DayEvents">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div *ngSwitchCase="'week'">
+      <ion-item class="picker">
+        <button item-left ion-button icon-only large outline (click)="clickLeft()">
+          <ion-icon name="ios-arrow-back"></ion-icon>
+        </button>
+        <ion-label>
+          <span class="date">
+            {{weekDate.format('DD.MM.YYYY')}} - {{weekDate.clone().endOf('week').format('DD.MM.YYYY')}}
+          </span>
+        </ion-label>
+        <button item-right ion-button icon-only large outline (click)="clickRight()">
+          <ion-icon name="ios-arrow-forward"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-list padding>
+        <ion-item class="eventitem" *ngFor="let event of WeekEvents">
+          <div item-left class="itemdate" >
+              <h2>{{event.month}}</h2>
+              <h1>{{event.date}}</h1>
+          </div>
+          {{event.Title}}   
+        </ion-item>
+        <ion-item class="eventitem" *ngIf="WeekEvents && WeekEvents.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item class="eventitem" *ngIf="!WeekEvents">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div *ngSwitchCase="'month'">
+      <ion-item class="picker">
+        <button item-left ion-button icon-only large outline (click)="clickLeft()">
+          <ion-icon name="ios-arrow-back"></ion-icon>
+        </button>
+        <ion-label>
+          <span class="date">
+            {{monthDate.format('MMMM, YYYY')}}
+          </span>
+        </ion-label>
+        <button item-right ion-button icon-only large outline (click)="clickRight()">
+          <ion-icon name="ios-arrow-forward"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-list padding>
+        <ion-item class="eventitem" *ngFor="let event of MonthEvents">
+          <div item-left class="itemdate" >
+              <h2>{{event.month}}</h2>
+              <h1>{{event.date}}</h1>
+          </div>
+          {{event.Title}}   
+        </ion-item>
+        <ion-item class="eventitem" *ngIf="MonthEvents && MonthEvents.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item class="eventitem" *ngIf="!MonthEvents">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="calendar" color="new">
+      <ion-segment-button value="today"(click)="getToday()">
+        {{loc.dic.days.today}}
+      </ion-segment-button>
+      <ion-segment-button value="week" (click)="getWeek()">
+        {{loc.dic.days.week}}
+      </ion-segment-button>
+      <ion-segment-button value="month" (click)="getMonth()">
+        {{loc.dic.days.month}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>
