@@ -6,6 +6,8 @@ import * as moment from 'moment';
 import * as consts from '../../utils/consts';
 import { Localization } from '../../utils/localization';
 
+import { spEventsParser } from './sp-events-parser';
+
 @Component({
   selector: 'page-events',
   templateUrl: 'events.html',
@@ -14,6 +16,7 @@ export class LSEvents {
   
   guid:string;
   calendar : any;
+  parser : spEventsParser;
   MonthEvents : any;
   WeekEvents : any;
   DayEvents : any;
@@ -24,6 +27,7 @@ export class LSEvents {
   constructor(public navCtrl: NavController, public navParams: NavParams, @Inject(Localization) public loc : Localization,public http : Http) {
     this.guid = navParams.data.guid;
     this.calendar = 'today';
+    this.parser = new spEventsParser();
 
     moment.locale(this.loc.localization);
     
@@ -79,8 +83,8 @@ export class LSEvents {
   }
 
   public getToday() : void {
-    let periodStart = this.dayDate.toJSON();
-    let periodEnd = moment(this.dayDate.toJSON()).add(1,'d').toJSON();
+    let periodStart = this.dayDate.toISOString();
+    let periodEnd = moment(this.dayDate.toJSON()).add(1,'d').toISOString();
       
     this.getEvents(periodStart,periodEnd).then(data=>{
       this.DayEvents = data;
@@ -106,26 +110,18 @@ export class LSEvents {
   }
 
   private getEvents(periodStart : string,periodEnd : string) : Promise<any> {
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?$select=EventDate,EndDate,Title,Location,Description,Id&$filter=(EventDate+gt+datetime'${periodStart}') and (EndDate+lt+datetime'${moment(periodStart).endOf('month').toJSON()}')`;
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?$select=EventDate,EndDate,Duration,fAllDayEvent,Title,Location,fRecurrence,Description,Id,RecurrenceID,RecurrenceData&$expand=FieldValuesAsText/RecurrenceID,FieldValuesAsText/RecurrenceData&$filter=((EventDate+gt+datetime'${periodStart}') and (EndDate+lt+datetime'${periodEnd}')) or ((fAllDayEvent+eq+1) and (EventDate+ge+'${moment(periodStart).minutes(moment(periodStart).utcOffset()).toJSON()}') and (EndDate+le+'${moment(periodStart).minutes(moment(periodStart).utcOffset()).add(1,'d').toJSON()}')) or (fRecurrence+eq+1)`;
 
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
 
     return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then(res=>{
-        //fRecurrence
-        let date = [];
-        res.json().d.results.map(item=>{
+        return this.parser.parseEvents(res.json().d.results,new Date(periodStart), new Date(periodEnd)).map(item=>{
           item.month = moment(item.EventDate).format('MMM');
           item.date= moment(item.EventDate).date();
-          
-          if(item.fRecurrence){
-            let days = moment.duration(moment(item.EndDate).diff(moment(item.EventDate))).days();//0,1,2 days or more
-          } else if(){
-            date.push(item);
-          }
-        })
-        return date;
+          return item;
+        }).sort((a,b)=>{ return (a.date > b.date ? 1 : -1) });
       })
       .catch(error=>{
         console.log('<Events> getEvents error:',error);
