@@ -73,17 +73,25 @@
       </div>
     </div>
     <div *ngSwitchCase="'month'">
-      <ion-list>
-        <ion-item *ngFor="let BirthUser of monthArr" >
-          <ion-avatar item-left>
-            <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
-          </ion-avatar>
-          <div class="container">
-            <h1>{{BirthUser.Title}}</h1>
-            <h2>{{BirthUser.BDate}}</h2>
-          </div>
+      <div class="birthmain" >
+        <ion-item>
+          <ion-avatar  *ngIf="monthArr && monthArr.length != 0 && monthArr[0].UserEmail" (click)="openGreetingCard(monthArr[0])">
+              <img src="{{images.getImage(monthArr[0].UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+monthArr[0].UserEmail+'&mobile=0')}}">
+          </ion-avatar >
+          <ion-item class="mainTextItem" >
+            <ion-icon *ngIf="monthArr && monthArr.length != 0 && monthArr[0].Title" name="ribbon"></ion-icon>
+            <span *ngIf="monthArr && monthArr.length != 0 && monthArr[0].Title">{{monthArr[0].Title}}</span>
+            <span *ngIf="monthArr && monthArr.length == 0">{{loc.dic.mobile.Empty}}</span>
+            <span *ngIf="!monthArr">{{loc.dic.mobile.Downloading}}</span>
+          </ion-item>
         </ion-item>
-      </ion-list>
+        <div>
+          <div class="smallUsers" *ngFor="let BirthUser of monthArr" (tap)="checkNewUser(BirthUser,'month')" >
+              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
+              <p>{{BirthUser.Title}}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </ion-content>

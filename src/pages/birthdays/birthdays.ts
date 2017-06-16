@@ -32,6 +32,8 @@ export class Birthdays {
     this.guid = navParams.data.guid;
     this.birth = 'today';
 
+    moment.locale(this.loc.localization);
+
     Promise.all([access.getToken().then(token => this.access_token = token),access.getDigestValue().then(digest => this.digest = digest)])
       .then(()=>{
         this.getToday();
@@ -39,14 +41,17 @@ export class Birthdays {
   }
 
   private getBirthUsers(target : string) : Promise<any> {
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/GetItems(Query=@target)?$select=UserEmail,Title,Id,JobTitle&$top=50&@target={"ViewXml":"${target}"}`;
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/GetItems(Query=@target)?$select=UserEmail,LSiBirthdayD,LSiBirthdayM,Title,Id,JobTitle&$top=50&@target={"ViewXml":"${target}"}`;
 
     let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose'});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
 
     return this.http.post(url,{},options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then(response=>{
-        return response.json().d.results;
+        return response.json().d.results.map(item=>{
+          item.BDate = moment({M:item.LSiBirthdayM-1,d:item.LSiBirthdayD}).format('D MMMM');
+          return item;
+        });
       })
       .catch(error=>{
         console.log('<BirthDays> getBirthUsers error:',error);
@@ -143,31 +148,31 @@ export class Birthdays {
   }
 
   public checkNewUser(user,segment) : void {
-    let temp;
-    switch(segment){
-      case 'today':
-        temp = this.todayArr[0];
-        this.todayArr[this.todayArr.indexOf(user)] = temp;
-        this.todayArr[0] = user;
-        break;
-      case 'tomorrow':
-        temp = this.tomorrowArr[0];
-        this.tomorrowArr[this.tomorrowArr.indexOf(user)] = temp;
-        this.tomorrowArr[0] = user;
-        break;
-      case 'week':
-        temp = this.weekArr[0];
-        this.weekArr[this.weekArr.indexOf(user)] = temp;
-        this.weekArr[0] = user;
-        break;
-      case 'month':
-        temp = this.monthArr[0];
-        this.monthArr[this.monthArr.indexOf(user)] = temp;
-        this.monthArr[0] = user;
-        break;
-      default :
-        console.log('<Birth> check user: segment not detected:',{segment:segment,user:user});
-    }
+    // let temp;
+    // switch(segment){
+    //   case 'today':
+    //     temp = this.todayArr[0];
+    //     this.todayArr[this.todayArr.indexOf(user)] = temp;
+    //     this.todayArr[0] = user;
+    //     break;
+    //   case 'tomorrow':
+    //     temp = this.tomorrowArr[0];
+    //     this.tomorrowArr[this.tomorrowArr.indexOf(user)] = temp;
+    //     this.tomorrowArr[0] = user;
+    //     break;
+    //   case 'week':
+    //     temp = this.weekArr[0];
+    //     this.weekArr[this.weekArr.indexOf(user)] = temp;
+    //     this.weekArr[0] = user;
+    //     break;
+    //   case 'month':
+    //     temp = this.monthArr[0];
+    //     this.monthArr[this.monthArr.indexOf(user)] = temp;
+    //     this.monthArr[0] = user;
+    //     break;
+    //   default :
+    //     console.log('<Birth> check user: segment not detected:',{segment:segment,user:user});
+    // }
   }
   
   public openGreetingCard(user) : void {

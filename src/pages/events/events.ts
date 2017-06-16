@@ -56,7 +56,7 @@ export class LSEvents {
         this.getMonth();
         break;
       default:
-        console.log('<Events> clickLeft: this.calendar innown calendar value!')
+        console.log('<Events> clickLeft: this.calendar unknown calendar value!')
     }
   }
 
@@ -78,7 +78,7 @@ export class LSEvents {
         this.getMonth();
         break;
       default:
-        console.log('<Events> clickLeft: this.calendar innown calendar value!')
+        console.log('<Events> clickLeft: this.calendar unknown calendar value!')
     }
   }
 
