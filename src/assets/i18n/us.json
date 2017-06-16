@@ -30,6 +30,7 @@
     },
     "days":{
         "today":"today",
+        "day":"day",
         "tomorrow":"tomorrow",
         "week":"week",
         "month":"month",

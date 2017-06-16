@@ -87,7 +87,13 @@ export class LSEvents {
     let periodEnd = moment(this.dayDate.toJSON()).add(1,'d').toISOString();
       
     this.getEvents(periodStart,periodEnd).then(data=>{
-      this.DayEvents = data;
+      this.DayEvents = data.filter(item=>{
+        item.date = ( item.date != moment(periodStart).date() ? moment(periodStart).date() : item.date );
+        if(item.fAllDayEvent){
+          return (moment(item.EventDate).date() < moment(periodStart).date() ? null : item );
+        }
+        return item;
+      })
     })
   }
 
@@ -110,7 +116,14 @@ export class LSEvents {
   }
 
   private getEvents(periodStart : string,periodEnd : string) : Promise<any> {
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?$select=EventDate,EndDate,Duration,fAllDayEvent,Title,Location,fRecurrence,Description,Id,RecurrenceID,RecurrenceData&$expand=FieldValuesAsText/RecurrenceID,FieldValuesAsText/RecurrenceData&$filter=((EventDate+gt+datetime'${periodStart}') and (EndDate+lt+datetime'${periodEnd}')) or ((fAllDayEvent+eq+1) and (EventDate+ge+'${moment(periodStart).minutes(moment(periodStart).utcOffset()).toJSON()}') and (EndDate+le+'${moment(periodStart).minutes(moment(periodStart).utcOffset()).add(1,'d').toJSON()}')) or (fRecurrence+eq+1)`;
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?$select=EventDate,EndDate,Duration,fAllDayEvent,Title,Location,fRecurrence,Description,Id,RecurrenceID,RecurrenceData`
+    +`&$expand=FieldValuesAsText/RecurrenceID,FieldValuesAsText/RecurrenceData`
+    // +`&$filter=((EventDate+ge+datetime'${periodStart}') and (EndDate+le+datetime'${periodEnd}'))`
+    // +` or ((fAllDayEvent+eq+1) and (EventDate+ge+'${moment(periodStart).minutes(moment(periodStart).utcOffset()).toJSON()}') and (EndDate+le+'${moment(periodStart).minutes(moment(periodStart).utcOffset()).add(1,'d').toJSON()}'))`
+    // +` or (fRecurrence+eq+1)`;
+    +`&$filter=((EventDate+ge+datetime'${periodStart}') and (EventDate+lt+datetime'${periodEnd}'))`
+    +` or ((EndDate+gt+datetime'${periodStart}') and (EndDate+le+datetime'${periodEnd}'))`
+    +` or ((EventDate+le+datetime'${periodStart}') and (EndDate+ge+datetime'${periodEnd}'))`;
 
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
@@ -119,7 +132,7 @@ export class LSEvents {
       .then(res=>{
         return this.parser.parseEvents(res.json().d.results,new Date(periodStart), new Date(periodEnd)).map(item=>{
           item.month = moment(item.EventDate).format('MMM');
-          item.date= moment(item.EventDate).date();
+          item.date = moment(item.EventDate).date();
           return item;
         }).sort((a,b)=>{ return (a.date > b.date ? 1 : -1) });
       })
