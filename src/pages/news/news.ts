@@ -56,7 +56,7 @@ export class News {
         news.map((item) =>{
           !item.LSiNewsTags && (item.LSiNewsTags.results = []);
           item.liked = item.LikedByStringId && item.LikedByStringId.results && item.LikedByStringId.results.lastIndexOf(this.user.getId().toString()) != -1? true : false;
-          item.MyDate = (new Date(item.LSiNewsDate)).toLocaleString();
+          item.MyDate = (new Date(item.LSiNewsDate)).toLocaleDateString();
           item.MyBody = item.FieldValuesAsText.LSiNewsShortDescription.length > 230 ? item.FieldValuesAsText.LSiNewsShortDescription.substring(0,(item.FieldValuesAsText.LSiNewsShortDescription.substring(0,230).lastIndexOf(' ') != -1?item.FieldValuesAsText.LSiNewsShortDescription.substring(0,230).lastIndexOf(' ') : 230))+ "..."  : item.FieldValuesAsText.LSiNewsShortDescription;
           item.MyComments = [];
           item.commentsListGuid = commentsListGuid;

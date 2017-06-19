@@ -1,113 +1,52 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{loc.dic.modules.Birthdays}}</ion-title>
+    <ion-title>{{greeting_user.Title}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <div [ngSwitch]="birth">
-    <div *ngSwitchCase="'today'">
-        <div class="birthmain" >
-          <ion-item >
-            <ion-avatar  *ngIf="todayArr && todayArr.length != 0 && todayArr[0].UserEmail" (click)="openGreetindCard(todayArr[0])">
-                <img src="{{images.getImage(todayArr[0].UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+todayArr[0].UserEmail+'&mobile=0')}}">
-            </ion-avatar >
-            <ion-item class="mainTextItem" >
-              <ion-icon *ngIf="todayArr && todayArr.length != 0 && todayArr[0].Title" name="ribbon"></ion-icon>
-              <span *ngIf="todayArr && todayArr.length != 0 && todayArr[0].Title">{{todayArr[0].Title}}</span>
-              <span *ngIf="todayArr && todayArr.length == 0">{{loc.dic.mobile.Empty}}</span>
-              <span *ngIf="!todayArr">{{loc.dic.mobile.Downloading}}</span>
-            </ion-item>
-        </ion-item>
-        <div >
-          <div class="smallUsers" *ngFor="let BirthUser of todayArr" (tap)="checkNewUser(BirthUser,'today')" >
-              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=S&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
-              <p>{{BirthUser.Title}}</p>
-          </div>
-        </div>
+  <div class="birthmain" >
+    <ion-item >
+      <ion-avatar>
+          <img src="{{images.getImage(greeting_user.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+greeting_user.UserEmail+'&mobile=0')}}">
+      </ion-avatar >
+      <ion-item class="mainTextItem" >
+        <ion-icon name="ribbon"></ion-icon>
+        <span>{{greeting_user.Title}}</span>
+      </ion-item>
+      <div class="about">
+        <p>{{greeting_user.JobTitle}}</p>
+        <h1>{{greeting_user.BDate}}</h1>
       </div>
-    </div>
-    <div *ngSwitchCase="'tomorrow'">
-        <div class="birthmain" >
-          <ion-item>
-            <ion-avatar  *ngIf="tomorrowArr && tomorrowArr.length != 0 && tomorrowArr[0].UserEmail" (click)="openGreetindCard(tomorrowArr[0])"> 
-                <img src="{{images.getImage(tomorrowArr[0].UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+tomorrowArr[0].UserEmail+'&mobile=0')}}">
-            </ion-avatar >
-            <ion-item class="mainTextItem" >
-              <ion-icon *ngIf="tomorrowArr && tomorrowArr.length != 0 && tomorrowArr[0].Title" name="ribbon"></ion-icon>
-              <span *ngIf="tomorrowArr && tomorrowArr.length != 0 && tomorrowArr[0].Title">{{tomorrowArr[0].Title}}</span>
-              <span *ngIf="tomorrowArr && tomorrowArr.length == 0">{{loc.dic.mobile.Empty}}</span>
-              <span *ngIf="!tomorrowArr">{{loc.dic.mobile.Downloading}}</span>
-            </ion-item>
-        </ion-item>
-        <div >
-          <div class="smallUsers" *ngFor="let BirthUser of tomorrowArr" (tap)="checkNewUser(BirthUser,'tomorrow')" >
-              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=S&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
-              <p>{{BirthUser.Title}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'week'">
-        <div class="birthmain" >
-         <ion-item>
-          <ion-avatar *ngIf="weekArr && weekArr.length != 0 && weekArr[0].UserEmail" (click)="openGreetindCard(weekArr[0])">
-              <img src="{{images.getImage(weekArr[0].UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+weekArr[0].UserEmail+'&mobile=0')}}">
-          </ion-avatar >
-          <ion-item class="mainTextItem" >
-            <ion-icon  *ngIf="weekArr && weekArr.length != 0 && weekArr[0].Title" name="ribbon"></ion-icon>
-            <span *ngIf="weekArr && weekArr.length != 0 && weekArr[0].Title">{{weekArr[0].Title}}</span>
-            <span *ngIf="weekArr && weekArr.length == 0">{{loc.dic.mobile.Empty}}</span>
-            <span *ngIf="!weekArr">{{loc.dic.mobile.Downloading}}</span>
-          </ion-item>
-        </ion-item>
-        <div >
-          <div class="smallUsers" *ngFor="let BirthUser of weekArr" (tap)="checkNewUser(BirthUser,'week')" >
-              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=S&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
-              <p>{{BirthUser.Title}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'month'">
-      <div class="birthmain" >
-        <ion-item>
-          <ion-avatar  *ngIf="monthArr && monthArr.length != 0 && monthArr[0].UserEmail" (click)="openGreetindCard(monthArr[0])">
-              <img src="{{images.getImage(monthArr[0].UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+monthArr[0].UserEmail+'&mobile=0')}}">
-          </ion-avatar >
-          <ion-item class="mainTextItem" >
-            <ion-icon *ngIf="monthArr && monthArr.length != 0 && monthArr[0].Title" name="ribbon"></ion-icon>
-            <span *ngIf="monthArr && monthArr.length != 0 && monthArr[0].Title">{{monthArr[0].Title}}</span>
-            <span *ngIf="monthArr && monthArr.length == 0">{{loc.dic.mobile.Empty}}</span>
-            <span *ngIf="!monthArr">{{loc.dic.mobile.Downloading}}</span>
-          </ion-item>
-        </ion-item>
-        <div>
-          <div class="smallUsers" *ngFor="let BirthUser of monthArr" (tap)="checkNewUser(BirthUser,'month')" >
-              <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=S&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
-              <p>{{BirthUser.Title}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    </ion-item>
   </div>
+  <ion-list>
+    <ion-item class="comment" *ngFor="let comment of Comments">
+      <ion-avatar item-left>
+        <img src="{{images.getImage((comment.Author ?comment.Author.EMail : 'e@e'),'_layouts/15/userphoto.aspx?size=L&accountname='+(comment.Author ?comment.Author.EMail : 'e@e')+'&mobile=0')}}">
+      </ion-avatar>
+      <label>
+        <div class="commentTitle" >
+          <h2 *ngIf="comment.Author && comment.Author.Title" >{{comment.Author.Title}}</h2>
+          <span>{{comment.MyDate}}</span>
+        </div>
+        <div>
+          <p>{{comment.LSiBirthdayGreetingsText}}</p>
+        </div>
+      </label>
+    </ion-item>
+    <ion-row>
+      <ion-col class="leftcol">
+        <ion-item item-left>
+          <ion-label floating>{{loc.dic.mobile.write_greeting}}</ion-label>
+          <ion-textarea #textcomment (focus)="focuse('textcomment2')" rows="4"></ion-textarea>
+        </ion-item>
+      </ion-col>
+      <ion-col class="rightcol">
+        <button ion-button full icon-only (tap)="sendComment($event)" >
+            <ion-icon name="send"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-list>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <ion-segment [(ngModel)]="birth" color="new">
-      <ion-segment-button value="today"(click)="getToday()">
-        {{loc.dic.days.today}}
-      </ion-segment-button>
-      <ion-segment-button value="tomorrow" (click)="getTomorrow()">
-        {{loc.dic.days.tomorrow}}
-      </ion-segment-button>
-      <ion-segment-button value="week" (click)="getWeek()">
-        {{loc.dic.days.week}}
-      </ion-segment-button>
-      <ion-segment-button value="month" (click)="getMonth()">
-        {{loc.dic.days.month}}
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
-</ion-footer>

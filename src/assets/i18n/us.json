@@ -15,7 +15,8 @@
         "Comment":"Comment",
         "unsaved":"unsaved",
         "Make":"Make",
-        "choice":"choice"
+        "choice":"choice",
+        "write_greeting":"write a greeting"
     },
     "modules":{
         "News":"News",

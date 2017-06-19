@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as moment from 'moment';
@@ -27,7 +27,7 @@ export class Birthdays {
   weekArr : any;
   monthArr : any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController,@Inject(Access) public access : Access,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, @Inject(Access) public access : Access,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http) {
     this.title = navParams.data.title || loc.dic.modules.News;
     this.guid = navParams.data.guid;
     this.birth = 'today';
@@ -41,7 +41,7 @@ export class Birthdays {
   }
 
   private getBirthUsers(target : string) : Promise<any> {
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/GetItems(Query=@target)?$select=UserEmail,LSiBirthdayD,LSiBirthdayM,Title,Id,JobTitle&$top=50&@target={"ViewXml":"${target}"}`;
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/GetItems(Query=@target)?$select=UserEmail,LSiBirthdayD,LSiBirthdayM,Title,Id,User1Id,JobTitle&$top=50&@target={"ViewXml":"${target}"}`;
 
     let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose'});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
@@ -146,39 +146,41 @@ export class Birthdays {
       this.monthArr = users;
     })
   }
-
-  public checkNewUser(user,segment) : void {
-    // let temp;
-    // switch(segment){
-    //   case 'today':
-    //     temp = this.todayArr[0];
-    //     this.todayArr[this.todayArr.indexOf(user)] = temp;
-    //     this.todayArr[0] = user;
-    //     break;
-    //   case 'tomorrow':
-    //     temp = this.tomorrowArr[0];
-    //     this.tomorrowArr[this.tomorrowArr.indexOf(user)] = temp;
-    //     this.tomorrowArr[0] = user;
-    //     break;
-    //   case 'week':
-    //     temp = this.weekArr[0];
-    //     this.weekArr[this.weekArr.indexOf(user)] = temp;
-    //     this.weekArr[0] = user;
-    //     break;
-    //   case 'month':
-    //     temp = this.monthArr[0];
-    //     this.monthArr[this.monthArr.indexOf(user)] = temp;
-    //     this.monthArr[0] = user;
-    //     break;
-    //   default :
-    //     console.log('<Birth> check user: segment not detected:',{segment:segment,user:user});
-    // }
-  }
   
-  public openGreetingCard(user) : void {
-    this.modalCtrl.create(GreetingCard,{
-        greeting_user : user
-      }).present()
+  public openCard(user) : void {//
+    let greeting_guid = JSON.parse(window.localStorage.getItem('lsi'))['LSiBirthdayGreetingsList'];
+    this.navCtrl.push(GreetingCard,{
+        greeting_user : user,
+        guid : greeting_guid
+      });
   }
 
 }
+
+  // public checkNewUser(user,segment) : void {
+  //   // let temp;
+  //   // switch(segment){
+  //   //   case 'today':
+  //   //     temp = this.todayArr[0];
+  //   //     this.todayArr[this.todayArr.indexOf(user)] = temp;
+  //   //     this.todayArr[0] = user;
+  //   //     break;
+  //   //   case 'tomorrow':
+  //   //     temp = this.tomorrowArr[0];
+  //   //     this.tomorrowArr[this.tomorrowArr.indexOf(user)] = temp;
+  //   //     this.tomorrowArr[0] = user;
+  //   //     break;
+  //   //   case 'week':
+  //   //     temp = this.weekArr[0];
+  //   //     this.weekArr[this.weekArr.indexOf(user)] = temp;
+  //   //     this.weekArr[0] = user;
+  //   //     break;
+  //   //   case 'month':
+  //   //     temp = this.monthArr[0];
+  //   //     this.monthArr[this.monthArr.indexOf(user)] = temp;
+  //   //     this.monthArr[0] = user;
+  //   //     break;
+  //   //   default :
+  //   //     console.log('<Birth> check user: segment not detected:',{segment:segment,user:user});
+  //   // }
+  // }

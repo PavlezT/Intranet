@@ -1,8 +1,7 @@
-import { Component, Inject } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { Component, Inject, ViewChild } from '@angular/core';
+import { NavController, NavParams, Content, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
-import * as moment from 'moment';
 import * as consts from '../../../utils/consts';
 import { Localization } from '../../../utils/localization';
 import { Access } from '../../../utils/access';
@@ -15,164 +14,101 @@ import { User } from '../../../utils/user';
 })
 export class GreetingCard {
 
-  title: string;
+  @ViewChild('textcomment') textcomment : any;
+  @ViewChild(Content) content: Content;
+
+  greeting_user: any;
   guid:string;
-  birth: any;
+  Comments : any;
+
   access_token : string;
   digest : string;
 
-  todayArr : any;
-  tomorrowArr : any;
-  weekArr : any;
-  monthArr : any;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController,@Inject(Access) public access : Access,@Inject(User) public user : User,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http) {
-    this.title = navParams.data.title || loc.dic.modules.News;
+  constructor(public navCtrl: NavController, public navParams: NavParams,@Inject(Access) public access : Access,@Inject(User) public user : User,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http, private toastCtrl: ToastController) {
+    this.greeting_user = navParams.data.greeting_user;
     this.guid = navParams.data.guid;
-    this.birth = 'today';
-
-    Promise.all([access.getToken().then(token => this.access_token = token),access.getDigestValue().then(digest => this.digest = digest)])
-      .then(()=>{
-        this.getToday();
-      })    
+    this.Comments = [];
+    
+    access.getToken().then(token => this.access_token = token);
+    access.getDigestValue().then(digest => this.digest = digest);
+    this.getGreetings().then(data=>{this.Comments = data});
   }
 
-  private getBirthUsers(target : string) : Promise<any> {
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/GetItems(Query=@target)?$select=UserEmail,Title,Id,JobTitle&$top=50&@target={"ViewXml":"${target}"}`;
-
-    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose'});
+  private getGreetings() : Promise<any> {
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?$select=LSiBirthdayGreetingsText,LSiBirthdayPersonId,Id,Modified,Author/Id,Author/Title,Author/EMail&$expand=Author/Id&$filter=LSiBirthdayPersonId+eq+${this.greeting_user.User1Id}`;
+    
+    let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
 
-    return this.http.post(url,{},options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
-      .then(response=>{
-        return response.json().d.results;
+    return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+      .then(res=>{
+        return res.json().d.results.map(item=>{
+          item.MyDate = (new Date(item.Modified)).toLocaleDateString();
+          return item;
+        })
       })
       .catch(error=>{
-        console.log('<BirthDays> getBirthUsers error:',error);
+        console.log('<Greeting Card> getGreetings error: ',error);
         return [];
       })
   }
 
-  public getToday() : void {
-    let target =  '<View>'
-        +'<Query>'
-							+'<Where><And>'
-								+`<Eq><FieldRef Name=\'LSiBirthdayD\' /><Value Type=\'Number\'>${moment().date()}</Value></Eq>`
-								+`<Eq><FieldRef Name=\'LSiBirthdayM\' /><Value Type=\'Number\'>${(moment().month() + 1)}</Value></Eq>`
-							+'</And></Where>'
-				+'</Query>'
-    	+'</View>';
-
-    this.getBirthUsers(target).then(users=>{
-      this.todayArr = users;
-    })
-  }
-
-  public getTomorrow() : void {
-    let target = '<View>'+
-						'<Query>'+
-								'<Where><And>'+
-									'<Eq><FieldRef Name=\'LSiBirthdayD\' /><Value Type=\'Number\'>'+ moment().add(1,'day').date() +'</Value></Eq>'+
-									'<Eq><FieldRef Name=\'LSiBirthdayM\' /><Value Type=\'Number\'>'+ (moment().month() + 1) +'</Value></Eq>'+
-								'</And></Where>'+
-						'</Query>' +
-	    			'</View>';
-
-    this.getBirthUsers(target).then(users=>{
-      this.tomorrowArr = users;
-    })
-  }
-
-  public getWeek() : void {
-    let startOfWeek = moment().startOf('week'),
-					endOfWeek = moment().endOf('week');
-					
-		let target = (startOfWeek.month() ===  endOfWeek.month()) ?						
-					'<View>'+
-								'<Query>'+
-										'<Where>'+
-											'<And>'+
-												'<And>'+
-													'<Geq><FieldRef Name=\'LSiBirthdayD\' /><Value Type=\'Number\'>'+ startOfWeek.date() +'</Value></Geq>'+
-													'<Geq><FieldRef Name=\'LSiBirthdayM\' /><Value Type=\'Number\'>'+ (startOfWeek.month() + 1) +'</Value></Geq>'+
-												'</And>'+
-												'<And>'+
-													'<Leq><FieldRef Name=\'LSiBirthdayD\' /><Value Type=\'Number\'>'+ endOfWeek.date() +'</Value></Leq>'+
-													'<Leq><FieldRef Name=\'LSiBirthdayM\' /><Value Type=\'Number\'>'+ (endOfWeek.month() + 1)+'</Value></Leq>'+
-												'</And>'+
-											'</And>'+
-										'</Where>'+
-								'</Query>' +
-							'</View>'
-				:
-					'<View>'+
-								'<Query>'+
-										'<Where>'+
-											'<Or>'+
-												'<And>'+
-													'<Geq><FieldRef Name=\'LSiBirthdayD\' /><Value Type=\'Number\'>' + startOfWeek.date() + '</Value></Geq>'+
-													'<Eq><FieldRef Name=\'LSiBirthdayM\' /><Value Type=\'Number\'>'+ (startOfWeek.month() + 1) +'</Value></Eq>'+
-												'</And>'+
-												'<And>'+
-													'<Leq><FieldRef Name=\'LSiBirthdayD\' /><Value Type=\'Number\'>'+ endOfWeek.date() +'</Value></Leq>'+
-													'<Eq><FieldRef Name=\'LSiBirthdayM\' /><Value Type=\'Number\'>'+ (endOfWeek.month() + 1) +'</Value></Eq>'+
-												'</And>'+
-											'</Or>'+
-										'</Where>'+
-								'</Query>' +
-							'</View>';
-
-    this.getBirthUsers(target).then(users=>{
-      this.weekArr = users;
-    })
-  }
-
-  public getMonth() : void {
-    let target = '<View>'+
-						'<Query>'+
-								'<Where>'+
-									`<Eq><FieldRef Name=\'LSiBirthdayM\' /><Value Type=\'Number\'>${(moment().month() + 1)}</Value></Eq>`+
-								'</Where>'+
-						'</Query>' +
-	    			'</View>';
-
-    this.getBirthUsers(target).then(users=>{
-      this.monthArr = users;
-    })
-  }
-
-  public checkNewUser(user,segment) : void {
-    let temp;
-    switch(segment){
-      case 'today':
-        temp = this.todayArr[0];
-        this.todayArr[this.todayArr.indexOf(user)] = temp;
-        this.todayArr[0] = user;
-        break;
-      case 'tomorrow':
-        temp = this.tomorrowArr[0];
-        this.tomorrowArr[this.tomorrowArr.indexOf(user)] = temp;
-        this.tomorrowArr[0] = user;
-        break;
-      case 'week':
-        temp = this.weekArr[0];
-        this.weekArr[this.weekArr.indexOf(user)] = temp;
-        this.weekArr[0] = user;
-        break;
-      case 'month':
-        temp = this.monthArr[0];
-        this.monthArr[this.monthArr.indexOf(user)] = temp;
-        this.monthArr[0] = user;
-        break;
-      default :
-        console.log('<Birth> check user: segment not detected:',{segment:segment,user:user});
+  public sendComment(button) : Promise<any> {
+    if(!(this.textcomment.value.length > 0))return Promise.resolve();
+    button.target.parentNode.disabled = true;
+    let url = `${consts.siteUrl}/_api/Web/Lists('${this.guid}')/Items`;
+    let body = {
+        "__metadata": {
+          type : 'SP.Data.LSiBirthdayGreetingsListListItem'
+        },
+        LSiBirthdayGreetingsText : this.textcomment.value,
+        LSiBirthdayPersonId : this.greeting_user.User1Id,
+        LSiBirthdayPersonStringId: this.greeting_user.User1Id.toString(), 
+        "AuthorId" : this.user.getId()
     }
+    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'POST','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
+    let options = new RequestOptions({ headers: headers,withCredentials: true });
+
+    return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+      .then((data)=>{
+        button.target.parentNode.disabled = false;
+        this.textcomment.clearTextInput();
+        
+        let comment = data.json().d;
+        comment.MyDate = (new Date(comment.Modified)).toLocaleDateString();
+        comment.Author = {
+          Title : this.user.getUserName(),
+          EMail : this.user.getEmail()
+        }
+
+        this.Comments.push(comment);
+      })
+      .catch(error=>{
+        button.target.parentNode.disabled = false;
+        console.error('<GreetingCard> Send Comment error:',error);
+        this.showToast(this.loc.dic.mobile.OperationError+'. '+this.loc.dic.NotifField_TaskComment+' '+this.loc.dic.mobile.unsaved);
+      })
   }
-  
-  public openGreetindCard(user) : void {
-    // this.modalCtrl.create(GreetindCard,{
-    //     greeting_user : user
-    //   }).present()
+
+  public focuse(target) : void{
+      
+    //  +this.textcomment._native._elementRef.nativeElement.clientHeight
+      setTimeout(()=>{
+        console.log('this.textarea: ',this.textcomment)
+        console.log('this.content:',this.content)
+        let b = 75;//textarea height;
+        this.content.scrollTo(0,this.content.scrollHeight+b-this.content._scrollPadding);
+      },400);
+  }
+
+  private showToast(message: any){
+      let toast = this.toastCtrl.create({
+        message: (typeof message == 'string' )? message.substring(0,( message.indexOf('&#x') != -1? message.indexOf('&#x') : message.length)) : message.toString().substring(0,( message.toString().indexOf('&#x') != -1 ?message.toString().indexOf('&#x') : message.toString().length)) ,
+        position: 'bottom',
+        showCloseButton : true,
+        duration: 9000
+      });
+      toast.present();
   }
 
 }

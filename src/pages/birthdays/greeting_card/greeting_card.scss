@@ -1,12 +1,16 @@
 greeting_card {
 
 	ion-content{
-		background-image: url('../assets/templates/birth.png');
-		background-repeat: repeat;
-		background-size: contain;
+		// background-image: url('../assets/templates/birth.png');
+		// background-repeat: repeat;
+		// background-size: contain;
+		background-color: #ebebeb !important;
 	}
 
 	.birthmain{
+		background-image: url('../assets/templates/birth.png');
+		background-repeat: repeat;
+		background-size: contain;
 		ion-item{
 			background-color: transparent;
 			text-align: center;
@@ -18,13 +22,14 @@ greeting_card {
 				ion-label{
 					margin-right:0px !important;
 					margin-left:0px !important;
+					margin-bottom: 0px !important;
 				}
 			}
 			ion-avatar{
 				img {
-						margin:auto;
-						width: 160px;
-						height: 160px;
+					margin:auto;
+					width: 160px;
+					height: 160px;
 				}
 			}
 		}
@@ -53,6 +58,53 @@ greeting_card {
 			}
 		}
 	}
-// 	 display: -webkit-inline-flex;
-//   -webkit-align-items: center;
+
+	.about {
+		background-color: white;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		h1{
+			margin-bottom:0px !important;
+		}
+	}
+
+	.comment{
+		background-color: #ebebeb !important;
+	}
+
+	.row{
+		.col{
+			max-width: 50% !important;
+			button{
+				font-size: 1.5rem;
+				text-transform: none;
+				.icon{
+					margin-left:10px;
+				}
+			}
+		}
+
+		.leftcol{
+			max-width: 80% !important;
+			width:100%;
+		}
+		.rightcol{
+			max-width: 20% !important;
+			width: 20%;
+			button{
+				height:60px;
+				border-radius: 6px;
+			}
+		}
+	}
+
+	.commentTitle{
+		h2{
+			display: inline;
+		}
+		span {
+			display: inline;
+			font-size: 1.2rem;
+		}
+	}
 }

@@ -42,6 +42,7 @@ export class Card {
   }
 
   public sendComment(button) : Promise<any>{
+    if(!(this.textcomment.value.length > 0))return Promise.resolve();
     button.target.parentNode.disabled = true;
     let url = `${consts.siteUrl}/_api/Web/Lists('${this.card.commentsListGuid}')/Items`;
     let body = {
@@ -67,7 +68,6 @@ export class Card {
           Title : this.user.getUserName(),
           EMail : this.user.getEmail()
         }
-        console.log('this.user:',this.user.user)
         this.card.MyComments.push(comment);
       })
       .catch(error=>{
@@ -81,8 +81,7 @@ export class Card {
     if(target == 'comments'){
       this.content.scrollTo(0,this.commentsView.nativeElement.offsetTop,1000);
     } else if(target == 'textcomment'){
-      this.textcomment.setFocus();
-      setTimeout(()=>{this.content.scrollToBottom(800)},450);
+      this.content.scrollToBottom(800).then(()=>{this.textcomment.setFocus();})
     } else if(target == 'textcomment2'){
       setTimeout(()=>{this.content.scrollTo(0,this.content.scrollHeight-this.content._scrollPadding+this.content.contentTop)},450);
     }
