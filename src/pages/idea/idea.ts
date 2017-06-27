@@ -50,30 +50,38 @@ export class IdeaBox {
   }
 
   public getBest() : void {
-    let target = '<View>'+
-                // '<ViewAttribute>'+
-                //     `<FieldRef Name='LikedBy' /><FieldRef Name='LSiIdeaStatus' /><FieldRef Name='LikesCount' />`+
-                //   '</ViewAttribute>'+
-                '<ViewFields>'+
-                    `<FieldRef Name="ID"></FieldRef>`+
-                    `<FieldRef Name="Title"></FieldRef>`+
-                    `<FieldRef Name="LikesCount"></FieldRef>`+
-                    `<FieldRef Name="LikedBy" />`+
-                    `<FieldRef Name="AuthorId" />`+
-                `</ViewFields>`+
-                `<ProjectedFields>`+
-                  `<Field Name="AuthorId" Type="Lookup" ShowField="Title" />`+
-                `</ProjectedFields>`+
-                '<Query>'+
-                    '<Where><Eq><FieldRef Name=\'LSiIdeaStatus\' /><Value Type=\'Text\'>Active</Value></Eq></Where>'+
-        				 '<RowLimit>10</RowLimit>'+
-                //  "<queryOptions>"+
-                //       "<QueryOptions>"+
-                //           "<IncludeMandatoryColumns>FALSE</IncludeMandatoryColumns>"+
-                //           "<ViewFieldsOnly>TRUE</ViewFieldsOnly>"+
-                //       "</QueryOptions>"+
-                //   "</queryOptions>"+
-        			'</View>';
+    let target =
+            `<View>
+              <ViewFields>
+                  <FieldRef Name="Title" />
+                  <FieldRef Name="UserTitle" />
+                  <FieldRef Name="UserEmail" />
+              </ViewFields>
+              <RowLimit>10</RowLimit>
+              <Joins>
+                  <Join Type="LEFT" ListAlias="MyAuthore">
+                      <Eq>
+                          <FieldRef Name="Author" RefType="ID" />
+                          <FieldRef Name="ID" List="MyAuthore" />
+                      </Eq>
+                  </Join>
+              </Joins>
+              <ProjectedFields>
+                  <Field ShowField="Title" Type="Lookup" Name="UserTitle" List="MyAuthore" />
+                  <Field ShowField="EMail" Type="Lookup" Name="UserEmail" List="MyAuthore" />
+              </ProjectedFields>
+              <Query>
+                  <Where>
+                      <Eq>
+                          <FieldRef Name="LSiIdeaStatus" />
+                          <Value Type="Text">Active</Value>
+                      </Eq>
+                  </Where>
+                  <OrderBy>
+                      <FieldRef Name="LikesCount" Ascending="False" />
+                  </OrderBy>
+              </Query>
+            </View>`;
 
     this.getIdeas(target).then(data=>{
 
@@ -106,3 +114,37 @@ export class IdeaBox {
   }
 
 }
+
+`<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library">
+  <Actions>
+    <ObjectPath Id="259122" ObjectPathId="259121"/>
+    <Query Id="259123" ObjectPathId="259121">
+      <Query SelectAllProperties="true">
+        <Properties/>
+      </Query>
+      <ChildItemQuery SelectAllProperties="true">
+        <Properties/>
+      </ChildItemQuery>
+    </Query>
+  </Actions>
+  <ObjectPaths>
+    <Method Id="259121" ParentId="6730" Name="GetItems">
+      <Parameters>
+        <Parameter TypeId="{3d248d7b-fc86-40a3-aa97-02a75d69fb8a}">
+          <Property Name="DatesInUtc" Type="Boolean">true</Property>
+          <Property Name="FolderServerRelativePath" Type="Null"/>
+          <Property Name="FolderServerRelativeUrl" Type="Null"/>
+          <Property Name="ListItemCollectionPosition" Type="Null"/>
+          <Property Name="ViewXml" Type="String">  </Property>
+        </Parameter>
+      </Parameters>
+    </Method>
+    <Method Id="6730" ParentId="269" Name="GetById">
+      <Parameters>
+        <Parameter Type="String">98ad5c04-8dc5-4e11-94d4-9f892af18e4d</Parameter>
+      </Parameters>
+    </Method>
+    <Property Id="269" ParentId="8" Name="Lists"/>
+    <Identity Id="8" Name="75aaff9d-20c0-4000-24cc-8628b4b7295f|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:1df0ee95-1aa9-4f4c-ada5-97fa92602100:web:b377927e-6145-44a4-bb08-cf8e710fecdc"/>
+</ObjectPaths>
+</Request>`
