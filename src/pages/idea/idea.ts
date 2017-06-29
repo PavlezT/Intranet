@@ -20,6 +20,9 @@ export class IdeaBox {
 
   title: string;
   guid: string;
+  Best : any;
+  New : any;
+  ideas : any;
 
   access_token : string;
   digest : string;
@@ -27,7 +30,8 @@ export class IdeaBox {
   constructor(public navCtrl: NavController, public navParams: NavParams, @Inject(Localization) public loc : Localization,@Inject(Images) public images: Images,@Inject(Access) public access : Access,public http : Http) {
     this.title = navParams.data.title || loc.dic.modules.IdeaBox;
     this.guid = navParams.data.guid;
-
+    this.ideas = 'best';
+    
     Promise.all([access.getToken().then(token => this.access_token = token),access.getDigestValue().then(digest => this.digest = digest)])
       .then(()=>{
         moment.locale(this.loc.localization);
@@ -36,76 +40,54 @@ export class IdeaBox {
   }
 
   public getNew() : void {
-    let target = '<View>'+
-						'<Query>'+
-								'<Where><Eq><FieldRef Name=\'LSiIdeaStatus\' /><Value Type=\'Text\'>Active</Value></Eq></Where>'+
-								'<OrderBy><FieldRef Ascending=\'FALSE\' Name=\'Created\' /></OrderBy>'+
-						'</Query>' +
-        				'<RowLimit>10</RowLimit>'+
-        			'</View>';
+    let target = `Created`;
 
     this.getIdeas(target).then(data=>{
-
+      this.New = data.Row;
     })
   }
 
   public getBest() : void {
-    let target =
-            `<View>
-              <ViewFields>
-                  <FieldRef Name="Title" />
-                  <FieldRef Name="UserTitle" />
-                  <FieldRef Name="UserEmail" />
-              </ViewFields>
-              <RowLimit>10</RowLimit>
-              <Joins>
-                  <Join Type="LEFT" ListAlias="MyAuthore">
-                      <Eq>
-                          <FieldRef Name="Author" RefType="ID" />
-                          <FieldRef Name="ID" List="MyAuthore" />
-                      </Eq>
-                  </Join>
-              </Joins>
-              <ProjectedFields>
-                  <Field ShowField="Title" Type="Lookup" Name="UserTitle" List="MyAuthore" />
-                  <Field ShowField="EMail" Type="Lookup" Name="UserEmail" List="MyAuthore" />
-              </ProjectedFields>
-              <Query>
-                  <Where>
-                      <Eq>
-                          <FieldRef Name="LSiIdeaStatus" />
-                          <Value Type="Text">Active</Value>
-                      </Eq>
-                  </Where>
-                  <OrderBy>
-                      <FieldRef Name="LikesCount" Ascending="False" />
-                  </OrderBy>
-              </Query>
-            </View>`;
+    let target = `LikesCount`;
 
     this.getIdeas(target).then(data=>{
-
+      this.Best = data.Row;
     })
   }
 
   private getIdeas(target : string) : Promise<any> {//Created
     //items?$select=Title,Id,LSiIdeaStatus,LikesCount,Created,Author/Id,Author/Title,Author/EMail,LikedBy/Id,LikedBy/Title,LikedBy/EMail&$filter=LSiIdeaStatus+eq+'Active'&$orderby=Created desc&$top=10&$expand=LikedBy,Author
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/getitems`//?$select=Id,FieldValuesAsText,Title,FileLeafRef,LikesCount,LikedBy,Created,LikesCount,LikedBy&$expand=FieldValuesAsText`//LikedBy/Id,LikedBy/Title,LikedBy/EMail&$expand=LikedBy`;
-    let body = {
-      query : {
-        '__metadata': {
-           type: 'SP.CamlQuery' 
-        },
-        ViewXml: target 
-      }
-    }
-
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/renderlistdata(@viewXml)?@viewXml=`+
+      `'<View>`+
+        `<ViewFields>`+
+            `<FieldRef Name="Author" />`+
+            `<FieldRef Name="Body" TextOnly="TRUE" RefType = "Text" Format = "Text" DisplayName = "Text" Type = "Text"/>`+
+            `<FieldRef Name="Created" />`+
+            `<FieldRef Name="LikesCount" />`+
+            `<FieldRef Name="Id" />`+
+            `<FieldRef Name="Title" />`+
+        `</ViewFields>`+
+        `<RowLimit>10</RowLimit>`+
+        `<Query>`+
+          `<Where>`+
+            `<Eq>`+
+              `<FieldRef Name="LSiIdeaStatus" />`+
+                `<Value Type="Text">Active</Value>`+
+            `</Eq>`+
+          `</Where>`+
+          `<OrderBy>`+
+            `<FieldRef Name="${target}" Ascending="False" />`+
+          `</OrderBy>`+
+        `</Query>`+
+      `</View>'`;
+    
     let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+    return this.http.post(url,{},options).timeout(consts.timeoutDelay+3000).retry(consts.retryCount).toPromise()
       .then(res=>{
-        console.log('res.json:',res.json().d.results);
+        console.log('res.json:',JSON.parse(res.json().d.RenderListData));
+        return JSON.parse(res.json().d.RenderListData);
       })
       .catch(error=>{
         console.log('<Idea> getIdeas error:',error);
@@ -113,38 +95,87 @@ export class IdeaBox {
       })
   }
 
+  public ideaLiked(event,idea){
+    console.log('idea liked')
+  }
+
 }
 
-`<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library">
-  <Actions>
-    <ObjectPath Id="259122" ObjectPathId="259121"/>
-    <Query Id="259123" ObjectPathId="259121">
-      <Query SelectAllProperties="true">
-        <Properties/>
-      </Query>
-      <ChildItemQuery SelectAllProperties="true">
-        <Properties/>
-      </ChildItemQuery>
-    </Query>
-  </Actions>
-  <ObjectPaths>
-    <Method Id="259121" ParentId="6730" Name="GetItems">
-      <Parameters>
-        <Parameter TypeId="{3d248d7b-fc86-40a3-aa97-02a75d69fb8a}">
-          <Property Name="DatesInUtc" Type="Boolean">true</Property>
-          <Property Name="FolderServerRelativePath" Type="Null"/>
-          <Property Name="FolderServerRelativeUrl" Type="Null"/>
-          <Property Name="ListItemCollectionPosition" Type="Null"/>
-          <Property Name="ViewXml" Type="String">  </Property>
-        </Parameter>
-      </Parameters>
-    </Method>
-    <Method Id="6730" ParentId="269" Name="GetById">
-      <Parameters>
-        <Parameter Type="String">98ad5c04-8dc5-4e11-94d4-9f892af18e4d</Parameter>
-      </Parameters>
-    </Method>
-    <Property Id="269" ParentId="8" Name="Lists"/>
-    <Identity Id="8" Name="75aaff9d-20c0-4000-24cc-8628b4b7295f|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:1df0ee95-1aa9-4f4c-ada5-97fa92602100:web:b377927e-6145-44a4-bb08-cf8e710fecdc"/>
-</ObjectPaths>
-</Request>`
+//target query:
+//`<View><ViewFields><FieldRef Name="Title" /><FieldRef Name="UserTitle" /><FieldRef Name="UserEmail" /></ViewFields><RowLimit>10</RowLimit><Joins><Join Type="LEFT" ListAlias="MyAuthore"><Eq><FieldRef Name="Author" RefType="ID" /><FieldRef Name="ID" List="MyAuthore" /></Eq></Join></Joins><ProjectedFields><Field ShowField="Title" Type="Lookup" Name="UserTitle" List="MyAuthore" /><Field ShowField="EMail" Type="Lookup" Name="UserEmail" List="MyAuthore" /></ProjectedFields><Query><Where><Eq><FieldRef Name="LSiIdeaStatus" /><Value Type="Text">Active</Value></Eq></Where><OrderBy><FieldRef Name="LikesCount" Ascending="False" /></OrderBy></Query></View>`;
+            // `<View>
+            //   <ViewFields>
+            //       <FieldRef Name="Title" />
+            //       <FieldRef Name="UserTitle" />
+            //       <FieldRef Name="UserEmail" />
+            //       <FieldRef Name="Body" />
+            //   </ViewFields>
+            //   <RowLimit>10</RowLimit>
+            //   <Joins>
+            //       <Join Type="LEFT" ListAlias="MyAuthore">
+            //           <Eq>
+            //               <FieldRef Name="Author" RefType="ID" />
+            //               <FieldRef Name="ID" List="MyAuthore" />
+            //           </Eq>
+            //       </Join>
+            //   </Joins>
+            //   <ProjectedFields>
+            //       <Field ShowField="Title" Type="Lookup" Name="UserTitle" List="MyAuthore" />
+            //       <Field ShowField="EMail" Type="Lookup" Name="UserEmail" List="MyAuthore" />
+            //   </ProjectedFields>
+            //   <Query>
+            //       <Where>
+            //           <Eq>
+            //               <FieldRef Name="LSiIdeaStatus" />
+            //               <Value Type="Text">Active</Value>
+            //           </Eq>
+            //       </Where>
+            //       <OrderBy>
+            //           <FieldRef Name="LikesCount" Ascending="False" />
+            //       </OrderBy>
+            //   </Query>
+            // </View>`;
+
+
+//ProcessQuary
+// `<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library">`+
+//                   `<Actions>`+
+//                     `<ObjectPath Id="6727" ObjectPathId="6726" />`+
+//                       `<Query Id="6728" ObjectPathId="6726">`+
+//                         `<Query SelectAllProperties="true">`+
+//                           `<Properties />`+
+//                         `</Query>`+
+//                         `<ChildItemQuery SelectAllProperties="true">`+
+//                           `<Properties />`+
+//                         `</ChildItemQuery>`+
+//                       `</Query>`+
+//                     `</Actions>`+
+//                     `<ObjectPaths>`+
+//                       `<Method Id="6726" ParentId="259" Name="GetItems">`+
+//                         `<Parameters>`+
+//                           `<Parameter TypeId="{3d248d7b-fc86-40a3-aa97-02a75d69fb8a}">`+
+//                             `<Property Name="DatesInUtc" Type="Boolean">true</Property>`+
+//                             `<Property Name="ViewXml" Type="String">`+
+//                               `&lt;View&gt;&lt;ViewFields&gt;&lt;FieldRef Name="Title" /&gt;&lt;FieldRef Name="UserTitle" /&gt;&lt;FieldRef Name="UserEmail" /&gt;&lt;FieldRef Name="Body" /&gt;&lt;/ViewFields&gt;&lt;RowLimit&gt;10&lt;/RowLimit&gt;&lt;Joins&gt;&lt;Join Type="LEFT" ListAlias="MyAuthore"&gt;&lt;Eq&gt;&lt;FieldRef Name="Author" RefType="ID" /&gt;&lt;FieldRef Name="ID" List="MyAuthore" /&gt;&lt;/Eq&gt;&lt;/Join&gt;&lt;/Joins&gt;&lt;ProjectedFields&gt;&lt;Field ShowField="Title" Type="Lookup" Name="UserTitle" List="MyAuthore" /&gt;&lt;Field ShowField="EMail" Type="Lookup" Name="UserEmail" List="MyAuthore" /&gt;&lt;/ProjectedFields&gt;`+
+//                                 `&lt;Query&gt;`+
+//                                   `&lt;Where&gt;`+
+//                                     `&lt;Eq&gt;&lt;FieldRef Name="LSiIdeaStatus" /&gt;`+
+//                                       `&lt;Value Type="Text"&gt;Active&lt;/Value&gt;`+
+//                                     `&lt;/Eq&gt;`+
+//                                   `&lt;/Where&gt;`+
+//                                   `&lt;OrderBy&gt;`+
+//                                     `&lt;FieldRef Name="${target}" Ascending="False" /&gt;`+
+//                                   `&lt;/OrderBy&gt;&lt;/Query&gt;&lt;/View&gt;`+
+//                             `</Property>`+
+//                           `</Parameter>`+
+//                         `</Parameters>`+
+//                       `</Method>`+
+//                       `<Method Id="259" ParentId="255" Name="GetById">`+
+//                         `<Parameters>`+
+//                           `<Parameter Type="String">${this.guid}</Parameter>`+
+//                         `</Parameters>`+
+//                       `</Method>`+
+//                       `<Property Id="255" ParentId="11" Name="Lists" />`+
+//                       `<Identity Id="11" Name="064f009e-201c-4000-b229-01a17d0baf8f|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:1df0ee95-1aa9-4f4c-ada5-97fa92602100:web:b377927e-6145-44a4-bb08-cf8e710fecdc" />`+
+//                     `</ObjectPaths>`+
+//                   `</Request>`
