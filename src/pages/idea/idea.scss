@@ -1,3 +1,53 @@
 page-idea {
+    .content{
+		background-color: #ddd;
+	}
 
+	.card{
+		margin-bottom: 20px;
+	}
+
+	.row{
+		.col{
+			button{
+				font-size:2rem;
+			}
+		}
+        .col:last-child{
+            text-align: right;
+        }
+	}
+
+	.liked{
+		color:red;
+	}
+
+    .score{
+        color:white;
+        text-align: right;
+
+        h1{
+            color:#a1238e !important;
+        }
+        span{
+            font-size: 1.3rem;
+            background-color: #a1238e;
+            padding: 5px;
+        }
+    }
+
+    .userTitle{
+        font-weight: 500 !important;
+        span {
+            margin-left: 5px;
+            font-weight: normal;
+            font-size: 1.35rem;
+        }
+    }
+
+    .comments{
+        ion-item{
+            background-color: #f1f1f1 !important;
+        }
+    }
 }

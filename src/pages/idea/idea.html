@@ -13,12 +13,18 @@
       <ion-card *ngFor="let item of Best" >
         <div>
           <ion-item>
-            <h2>{{item.Title}}</h2>
+            <ion-avatar item-left>
+              <img src="{{images.getImage(item.Author[0].email,'_layouts/15/userphoto.aspx?size=L&accountname='+item.Author[0].email+'&mobile=0')}}">
+            </ion-avatar>
+            <h2 class="userTitle" >{{item.Author[0].title}}</h2>
             <p>{{item.Created}}</p>
+            <div class="score" item-right>
+              <h1>{{item.LikesCount || 0 }}</h1>
+              <span>{{getPoints(item.LikesCount || 0)}}</span>
+            </div>
           </ion-item>
-          <img src="{{images.getImage(item.Author[0].email)}}">
           <ion-card-content>
-            <p>{{item.Body}}</p>
+            <p>{{item.textBody}}</p>
           </ion-card-content>
         </div>
         <ion-row>
@@ -28,13 +34,26 @@
               <div>{{item.LikesCount || 0}}</div>
             </button>
           </ion-col>
-          <!--<ion-col>
-            <button ion-button icon-left clear small (tap)="newsComment(item)">
+          <ion-col>
+            <button ion-button icon-left clear small (tap)="showPrompt(item)">
               <ion-icon name="text"></ion-icon>
               <div>{{item.MyComments.length}}</div>
             </button>
-          </ion-col>-->
+          </ion-col>
         </ion-row>
+        <ion-list class="comments" >
+          <ion-item *ngFor="let comment of item.MyComments">
+            <ion-avatar item-left>
+              <img src="{{images.getImage(comment.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+comment.Author.EMail+'&mobile=0')}}">
+            </ion-avatar>
+            <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
+            <p>{{comment.FieldValuesAsText.Body}}</p>
+            <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
+              <ion-icon name="thumbs-up"></ion-icon>
+              <div>{{comment.LikesCount || 0}}</div>
+            </button>
+          </ion-item>
+        </ion-list>
       </ion-card>
       <ion-item *ngIf="Best && Best.length == 0">
         <h2>{{loc.dic.mobile.Empty}}</h2>
@@ -47,28 +66,47 @@
       <ion-card *ngFor="let item of New" >
         <div>
           <ion-item>
-            <h2>{{item.Title}}</h2>
+            <ion-avatar item-left>
+              <img src="{{images.getImage(item.Author[0].email,'_layouts/15/userphoto.aspx?size=L&accountname='+item.Author[0].email+'&mobile=0')}}">
+            </ion-avatar>
+            <h2 class="userTitle" >{{item.Author[0].title}}</h2>
             <p>{{item.Created}}</p>
+            <div class="score" item-right>
+              <h1>{{item.LikesCount || 0}}</h1>
+              <span>{{getPoints(item.LikesCount || 0)}}</span>
+            </div>
           </ion-item>
-          <img src="{{images.getImage(item.Author[0].email)}}">
           <ion-card-content>
-            <p>{{item.Body}}</p>
+            <p>{{item.textBody}}</p>
           </ion-card-content>
         </div>
         <ion-row>
           <ion-col>
-            <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="newsLiked($event,item)">
+            <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,item)">
               <ion-icon name="thumbs-up"></ion-icon>
               <div>{{item.LikesCount || 0}}</div>
             </button>
           </ion-col>
-          <!--<ion-col>
-            <button ion-button icon-left clear small (tap)="newsComment(item)">
+          <ion-col>
+            <button ion-button icon-left clear small (tap)="showPrompt(item)">
               <ion-icon name="text"></ion-icon>
               <div>{{item.MyComments.length}}</div>
             </button>
-          </ion-col>-->
+          </ion-col>
         </ion-row>
+        <ion-list class="comments" >
+          <ion-item *ngFor="let comment of item.MyComments">
+            <ion-avatar item-left>
+              <img src="{{images.getImage(comment.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+comment.Author.EMail+'&mobile=0')}}">
+            </ion-avatar>
+            <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
+            <p>{{comment.FieldValuesAsText.Body}}</p>
+            <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
+              <ion-icon name="thumbs-up"></ion-icon>
+              <div>{{comment.LikesCount || 0}}</div>
+            </button>
+          </ion-item>
+        </ion-list>
       </ion-card>
       <ion-item *ngIf="New && New.length == 0">
         <h2>{{loc.dic.mobile.Empty}}</h2>
@@ -84,10 +122,10 @@
   <ion-toolbar>
     <ion-segment [(ngModel)]="ideas" color="new">
       <ion-segment-button value="best"(click)="getBest()">
-        {{loc.dic.days.today}}
+        {{loc.dic.mobile.Best}}
       </ion-segment-button>
       <ion-segment-button value="new" (click)="getNew()">
-        {{loc.dic.days.yesterday}}
+        {{loc.dic.mobile.Newest}}
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>

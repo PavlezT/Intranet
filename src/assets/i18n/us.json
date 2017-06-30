@@ -16,7 +16,12 @@
         "unsaved":"unsaved",
         "Make":"Make",
         "choice":"choice",
-        "write_greeting":"write a greeting"
+        "write_greeting":"write a greeting",
+        "point0":"point",
+        "point1":"points",
+        "point2":"points",
+        "Best":"Best",
+        "Newest":"New"
     },
     "modules":{
         "News":"News",

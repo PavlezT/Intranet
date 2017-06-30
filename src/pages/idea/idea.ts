@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as moment from 'moment';
@@ -10,6 +10,7 @@ import 'moment/locale/en-gb';
 import * as consts from '../../utils/consts'
 import { Localization } from '../../utils/localization';
 import { Access } from '../../utils/access';
+import { User } from '../../utils/user';
 import { Images } from '../../utils/images';
 
 @Component({
@@ -27,7 +28,7 @@ export class IdeaBox {
   access_token : string;
   digest : string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, @Inject(Localization) public loc : Localization,@Inject(Images) public images: Images,@Inject(Access) public access : Access,public http : Http) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, @Inject(Localization) public loc : Localization,private alertCtrl: AlertController,@Inject(Images) public images: Images,private toastCtrl: ToastController, @Inject(User) public user : User,@Inject(Access) public access : Access,public http : Http) {
     this.title = navParams.data.title || loc.dic.modules.IdeaBox;
     this.guid = navParams.data.guid;
     this.ideas = 'best';
@@ -43,7 +44,7 @@ export class IdeaBox {
     let target = `Created`;
 
     this.getIdeas(target).then(data=>{
-      this.New = data.Row;
+      this.New = data;
     })
   }
 
@@ -51,11 +52,11 @@ export class IdeaBox {
     let target = `LikesCount`;
 
     this.getIdeas(target).then(data=>{
-      this.Best = data.Row;
+      this.Best = data;
     })
   }
 
-  private getIdeas(target : string) : Promise<any> {//Created
+  private getIdeas(target : string) : Promise<any> {
     //items?$select=Title,Id,LSiIdeaStatus,LikesCount,Created,Author/Id,Author/Title,Author/EMail,LikedBy/Id,LikedBy/Title,LikedBy/EMail&$filter=LSiIdeaStatus+eq+'Active'&$orderby=Created desc&$top=10&$expand=LikedBy,Author
     let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/renderlistdata(@viewXml)?@viewXml=`+
       `'<View>`+
@@ -86,8 +87,13 @@ export class IdeaBox {
 
     return this.http.post(url,{},options).timeout(consts.timeoutDelay+3000).retry(consts.retryCount).toPromise()
       .then(res=>{
-        console.log('res.json:',JSON.parse(res.json().d.RenderListData));
-        return JSON.parse(res.json().d.RenderListData);
+        return JSON.parse(res.json().d.RenderListData).Row.map(item=>{
+          item.liked = item.LikedBy && item.LikedBy.find((likes_item)=>{return likes_item.id == this.user.getId().toString()}) ? true : false;
+          item.textBody = this.getParsedBody(item.Body);
+          item.MyComments = [];
+          this.getComments(item);
+          return item;
+        })
       })
       .catch(error=>{
         console.log('<Idea> getIdeas error:',error);
@@ -95,8 +101,153 @@ export class IdeaBox {
       })
   }
 
-  public ideaLiked(event,idea){
-    console.log('idea liked')
+  private getComments(idea : any) : Promise<any> {
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/Items?$select=Title,Id,LikesCount,Body,LikedByStringId,FieldValuesAsText/Body,ParentItemID,Created,Author/Id,Author/Title,Author/EMail&$expand=FieldValuesAsText,Author&$filter=ParentItemID+eq+${idea.ID}`;
+    
+    let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
+    let options = new RequestOptions({ headers: headers ,withCredentials: true});
+
+    return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+      .then(res=>{
+        idea.MyComments = res.json().d.results.map(item=>{
+          item.MyCreated = moment(item.Created).fromNow();
+          item.liked = item.LikedByStringId && item.LikedByStringId.results && item.LikedByStringId.results.lastIndexOf(this.user.getId().toString()) != -1? true : false;
+          return item;
+        });
+      })
+      .catch(error=>{
+        console.log('<Idea> getComments error: ',error);
+      })
+  }
+
+  public ideaLiked(event,item){
+    event.target.offsetParent.disabled = true;
+    item.liked = item.liked? false : true;
+    item.liked?item.LikesCount++ : item.LikesCount--;
+
+    let errorShow = ()=>{
+      item.liked = item.liked? false : true;
+      item.liked?item.LikesCount++ : item.LikesCount--;
+      this.showToast(this.loc.dic.mobile.OperationError+'. '+(item.liked?this.loc.dic.mobile.Like:this.loc.dic.mobile.NotLike)+' '+this.loc.dic.mobile.unsaved);
+      event.target.offsetParent.disabled = false;
+    }
+
+    let url = `${consts.siteUrl}/_vti_bin/client.svc/ProcessQuery`;
+    let body = `<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><StaticMethod TypeId="{d9c758a9-d32d-4c9c-ab60-46fd8b3c79b7}" Name="SetLike" Id="63"><Parameters><Parameter Type="String">{${this.guid}}</Parameter><Parameter Type="Number">${item.ID}</Parameter><Parameter Type="Boolean">${item.liked}</Parameter></Parameters></StaticMethod></Actions><ObjectPaths><Identity Id="11" Name="list:${this.guid}:item:${item.ID},1" /></ObjectPaths></Request>`;
+    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose',"Content-Type": "text/xml"});
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(url,body,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+      .then(data=>{
+        if(data.json()[0].ErrorInfo){
+          let itemurl = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items(${item.ID})?$select=LikesCount,LikedByStringId,Id`
+
+          return this.http.get(itemurl,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+            .then(response=>{
+              let res = response.json().d;
+              if(res.LikesCount != item.LikesCount) {
+                errorShow();
+              }
+              event.target.offsetParent.disabled = false;
+            })
+            .catch(error=>{
+              console.error('<News> check like error:',error);
+              errorShow();
+            })
+            
+        } else {
+          event.target.offsetParent.disabled = false;
+        }
+      })
+      .catch(error=>{
+        console.log('<News> Liked error:',error);
+        errorShow();
+      })
+  }
+
+  public getPoints(number:number) : string {
+    let cases = [2, 0, 1, 1, 1, 2];  
+    return this.loc.dic.mobile['point'+((number%100>4 && number%100<20)? 2 : (cases[(number%10<5) ? number%10 : 5])) ];  
+  }
+
+  public getParsedBody(body) : string {
+    // let temp = (new DOMParser().parseFromString(item.Body, "text/html"));
+    // item.textBody = (temp && temp.getElementsByTagName('p') )? temp.getElementsByTagName('p').item(0).textContent : this.loc.dic.mobile.Empty;
+    let temp = document.createElement('template');
+    temp.innerHTML = body;
+    return temp.content.textContent || this.loc.dic.mobile.Empty;
+  }
+
+  private ideaComment(item : any, text : {comment_text:string} ) : Promise<any> {
+    console.log('item.ID:',item.ID)
+    if(!(text.comment_text.length > 0))return Promise.resolve();
+    let url = `${consts.siteUrl}/_api/Web/Lists('${this.guid}')/Items`;
+    let body = {
+        "__metadata": {
+          type : 'SP.Data.LSiIdeaBankListItem'
+        },
+        Body : text.comment_text,
+        ParentItemID : item.ID,
+        "AuthorId" : this.user.getId()
+    }
+    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'POST','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
+    let options = new RequestOptions({ headers: headers,withCredentials: true });
+
+    return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+      .then((data)=>{        
+        let comment = data.json().d;
+        comment.FieldValuesAsText.Body = text.comment_text;
+        comment.MyCreated = moment().fromNow();
+        comment.Author = {
+          Title : this.user.getUserName(),
+          EMail : this.user.getEmail()
+        }
+        item.MyComments.push(comment);
+      })
+      .catch(error=>{
+        console.error('<Idea> Send Comment error:',error);
+        this.showToast(this.loc.dic.mobile.OperationError+'. '+this.loc.dic.NotifField_TaskComment+' '+this.loc.dic.mobile.unsaved);
+      })
+  }
+
+  private showToast(message: any){
+      let toast = this.toastCtrl.create({
+        message: (typeof message == 'string' )? message.substring(0,( message.indexOf('&#x') != -1? message.indexOf('&#x') : message.length)) : message.toString().substring(0,( message.toString().indexOf('&#x') != -1 ?message.toString().indexOf('&#x') : message.toString().length)) ,
+        position: 'bottom',
+        showCloseButton : true,
+        duration: 9000
+      });
+      toast.present();
+  }
+
+  private showPrompt(item) : void {
+    let prompt = this.alertCtrl.create({
+      title: this.loc.dic.mobile.Comment,
+      message: this.loc.dic.Alert14,
+      enableBackdropDismiss: true,
+      inputs: [
+        {
+          name: 'comment_text',
+          type:'text'
+        }
+      ],
+      buttons: [
+        {
+          text: this.loc.dic.Close,
+          role: 'cancel',
+          handler: data => {
+            //prompt.dismiss();
+          }
+        },
+        {
+          text: this.loc.dic.Accept,
+          handler: data => {
+            this.ideaComment(item,data)
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
 }
