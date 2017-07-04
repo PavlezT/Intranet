@@ -27,6 +27,7 @@ export class IdeaBox {
 
   access_token : string;
   digest : string;
+  parentFieldReady : any;//Promise<any>
 
   constructor(public navCtrl: NavController, public navParams: NavParams, @Inject(Localization) public loc : Localization,private alertCtrl: AlertController,@Inject(Images) public images: Images,private toastCtrl: ToastController, @Inject(User) public user : User,@Inject(Access) public access : Access,public http : Http) {
     this.title = navParams.data.title || loc.dic.modules.IdeaBox;
@@ -37,6 +38,7 @@ export class IdeaBox {
       .then(()=>{
         moment.locale(this.loc.localization);
         this.getBest();
+        this.parentFieldReady = this.checkField();
       }) 
   }
 
@@ -120,6 +122,41 @@ export class IdeaBox {
       })
   }
 
+  private async checkField()  {//: Promise<any>
+    let geturl = consts.siteUrl+`/_api/Web/Lists('${this.guid}')/Fields?$filter=InternalName+eq+'ParentItemID'`;
+
+    let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
+    let options = new RequestOptions({ headers: headers ,withCredentials: true});
+
+    let res =  await this.http.get(geturl,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise().catch(error=>{console.log('<Idea> check Field error: ',error);return new Response({d:{results:[{ReadOnlyField:true}]}});});
+    let field = res.json().d.results[0];
+
+    if(field.ReadOnlyField == true){        
+      let url = `${consts.siteUrl}/_api/Web/Lists('${this.guid}')/Fields(guid'${field.Id}')`;
+      let body = {
+          "__metadata": {
+            "type": "SP.FieldNumber"
+          },
+          // ReadOnlyField : false,
+          // Sealed : false,
+          SchemaXml : field.SchemaXml.replace("ReadOnly=\"TRUE\"","ReadOnly=\"FALSE\"").replace("Sealed=\"TRUE\"","Sealed=\"FALSE\"").replace("DisplaceOnUpgrade=\"TRUE\"","DisplaceOnUpgrade=\"FALSE\"")
+      }
+
+      let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'MERGE','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
+      let options = new RequestOptions({ headers: headers,withCredentials: true });
+
+      return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+        .then(()=>{
+          return true;
+        })
+        .catch(error=>{
+          console.log('<Idea> check Field POST error:',error);
+          return false;
+        })
+    } else
+      return true;
+  }
+
   public ideaLiked(event,item){
     event.target.offsetParent.disabled = true;
     item.liked = item.liked? false : true;
@@ -178,31 +215,68 @@ export class IdeaBox {
     return temp.content.textContent || this.loc.dic.mobile.Empty;
   }
 
-  private ideaComment(item : any, text : {comment_text:string} ) : Promise<any> {
-    console.log('item.ID:',item.ID)
-    if(!(text.comment_text.length > 0))return Promise.resolve();
-    let url = `${consts.siteUrl}/_api/Web/Lists('${this.guid}')/Items`;
-    let body = {
-        "__metadata": {
-          type : 'SP.Data.LSiIdeaBankListItem'
-        },
-        Body : text.comment_text,
-        ParentItemID : item.ID,
-        "AuthorId" : this.user.getId()
-    }
+  private async ideaComment(item : any, text : {comment_text:string} ) : Promise<any> {
+    let status = await this.parentFieldReady;
+    if(!(text.comment_text.length > 0 && status))return this.showToast(this.loc.dic.mobile.OperationError+'. '+this.loc.dic.NotifField_TaskComment+' '+this.loc.dic.mobile.unsaved);
+    console.log('comment')
+
+    let body = `<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library">
+    <Actions>
+      <ObjectPath Id="352" ObjectPathId="351" />
+      <ObjectPath Id="354" ObjectPathId="353" />
+      <Method Name="SetFieldValue" Id="355" ObjectPathId="353">
+        <Parameters>
+          <Parameter Type="String">Body</Parameter>
+          <Parameter Type="String">${text.comment_text}</Parameter>
+        </Parameters>
+      </Method>
+      <Method Name="Update" Id="356" ObjectPathId="353" />
+      <Query Id="357" ObjectPathId="353">
+        <Query SelectAllProperties="false">
+          <Properties>
+            <Property Name="Body" ScalarProperty="true" />
+          </Properties>
+        </Query>
+      </Query>
+    </Actions>
+    <ObjectPaths>
+      <Method Id="351" ParentId="11" Name="GetItemByStringId">
+        <Parameters>
+          <Parameter Type="String">${item.ID}</Parameter>
+        </Parameters>
+      </Method>
+      <StaticMethod Id="353" Name="CreateNewDiscussionReply" TypeId="{16f43e7e-bf35-475d-b677-9dc61e549339}">
+        <Parameters>
+          <Parameter ObjectPathId="351" />
+        </Parameters>
+      </StaticMethod>
+      <Identity Id="11" Name="748c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:8df0ee95-1aa9-4f4c-ada5-97fa92602100:web:b377927e-6145-44a4-bb08-cf8e710fecdc:list:98ad5c04-8dc5-4e11-94d4-9f892af18e4d" />
+    </ObjectPaths>
+  </Request>`;//acf3019e-00d4-4000-18c1-8987e5a5dd6b|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:1df0ee95-1aa9-4f4c-ada5-97fa92602100:web:b377927e-6145-44a4-bb08-cf8e710fecdc:
+    // {
+    //     "__metadata": {
+    //       type : 'SP.Data.LSiIdeaBankListItem'
+    //     },
+    //     Body : text.comment_text,
+    //     ParentItemID : item.ID,
+    //     "AuthorId" : this.user.getId()
+    // }
+    let url = `${consts.siteUrl}/_vti_bin/client.svc/ProcessQuery`; //`${consts.siteUrl}/_api/Web/Lists('${this.guid}')/Items`;
+
     let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'POST','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
     let options = new RequestOptions({ headers: headers,withCredentials: true });
-
-    return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+//JSON.stringify(body)
+    return this.http.post(url,body,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then((data)=>{        
-        let comment = data.json().d;
-        comment.FieldValuesAsText.Body = text.comment_text;
-        comment.MyCreated = moment().fromNow();
-        comment.Author = {
-          Title : this.user.getUserName(),
-          EMail : this.user.getEmail()
-        }
-        item.MyComments.push(comment);
+        let comment = data.json();//.d
+    //     comment.FieldValuesAsText.Body = text.comment_text;
+    //     comment.MyCreated = moment().fromNow();
+    //     comment.Author = {
+    //       Title : this.user.getUserName(),
+    //       EMail : this.user.getEmail()
+    //     }
+    //     item.MyComments.push(comment);
+        console.log('created comment:',comment);
       })
       .catch(error=>{
         console.error('<Idea> Send Comment error:',error);
@@ -210,14 +284,14 @@ export class IdeaBox {
       })
   }
 
-  private showToast(message: any){
+  private showToast(message: any) : Promise<any>{
       let toast = this.toastCtrl.create({
         message: (typeof message == 'string' )? message.substring(0,( message.indexOf('&#x') != -1? message.indexOf('&#x') : message.length)) : message.toString().substring(0,( message.toString().indexOf('&#x') != -1 ?message.toString().indexOf('&#x') : message.toString().length)) ,
         position: 'bottom',
         showCloseButton : true,
         duration: 9000
       });
-      toast.present();
+      return toast.present();
   }
 
   private showPrompt(item) : void {
