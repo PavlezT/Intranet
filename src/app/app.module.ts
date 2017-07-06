@@ -12,7 +12,7 @@ import { DepartmentUsers } from '../pages/org-structure/department_users/departm
 import { Birthdays } from '../pages/birthdays/birthdays';
 import { GreetingCard } from '../pages/birthdays/greeting_card/greeting_card';
 import { LSEvents } from '../pages/events/events';
-import { About } from '../pages/about/about';
+import { Blogs } from '../pages/blogs/blogs';
 import { Newcomers } from '../pages/newcomers/newcomers';
 import { Survey } from '../pages/survey/survey';
 import { Policies } from '../pages/policies/policies';
@@ -37,7 +37,7 @@ import { CallNumber } from '@ionic-native/call-number';
 @NgModule({
   declarations: [
     MyApp,
-    News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies,
+    News,IdeaBox,OrgStructure,Birthdays,LSEvents,Blogs,Newcomers,Survey,Policies,
     Card,GreetingCard,DepartmentUsers
   ],
   imports: [
@@ -47,7 +47,7 @@ import { CallNumber } from '@ionic-native/call-number';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    News,IdeaBox,OrgStructure,Birthdays,LSEvents,About,Newcomers,Survey,Policies,
+    News,IdeaBox,OrgStructure,Birthdays,LSEvents,Blogs,Newcomers,Survey,Policies,
     Card,GreetingCard,DepartmentUsers
   ],
   providers: [

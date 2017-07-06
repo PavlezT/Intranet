@@ -19,7 +19,7 @@ import { IdeaBox } from '../pages/idea/idea';
 import { OrgStructure } from '../pages/org-structure/org-structure';
 import { Birthdays } from '../pages/birthdays/birthdays';
 import { LSEvents } from '../pages/events/events';
-import { About } from '../pages/about/about';
+import { Blogs } from '../pages/blogs/blogs';
 import { Newcomers } from '../pages/newcomers/newcomers';
 import { Survey } from '../pages/survey/survey';
 import { Policies } from '../pages/policies/policies';
@@ -45,7 +45,7 @@ export class MyApp {
       { lsiName: 'LSiDepartments',title: loc.dic.modules.OrgStructure , component: OrgStructure , guid : '1'}, 
       { lsiName: 'LSiUsers',title: loc.dic.modules.Birthdays , component: Birthdays , guid : '1'},
       { lsiName: 'LSiCalendar',title: loc.dic.modules.Events , component: LSEvents , guid : '1'},
-      { lsiName: 'SitePages',title: loc.dic.modules.About , component: About , guid : '1'},
+      { lsiName: 'Pages',title: loc.dic.modules.Blogs , component: Blogs , guid : '1'},
       { lsiName: 'LSiUsers',title: loc.dic.modules.Newcomers , component: Newcomers , guid : '1'},
       { lsiName: 'LSiUsers',title: loc.dic.modules.Survey , component: Survey , guid : '1'},//No
       { lsiName: 'LSiPolicies',title: loc.dic.modules.Policies , component: Policies , guid : '1'},
