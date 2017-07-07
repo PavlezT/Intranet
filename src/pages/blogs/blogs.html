@@ -8,5 +8,27 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-list>
+    <ion-item *ngFor="let post of Blogs" >
+      <div>
+      <ion-avatar item-left>
+        <img src="{{images.getImage(post.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+post.Author.EMail+'&mobile=0')}}">
+      </ion-avatar>
+      </div> 
+      <div>
+        <h2>{{post.Title}}</h2>
+        <p>{{post.FieldValuesAsText.LSiNewsShortDescription}}...</p>
+      </div>
+      <button [ngClass]="post.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="postLiked($event,post)">
+        <ion-icon name="thumbs-up"></ion-icon>
+        <div>{{post.LikesCount || 0}}</div>
+      </button>
+    </ion-item>
+    <ion-item *ngIf="Blogs && Blogs.length == 0">
+      <h2>{{loc.dic.mobile.Empty}}</h2>
+    </ion-item>
+    <ion-item *ngIf="!Blogs">
+      <h2>{{loc.dic.mobile.Downloading}}</h2>
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -255,7 +255,7 @@ export class IdeaBox {
 
     return this.http.post(url,body,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then((data)=>{        
-        if(data.json()['0'].ErrorInfo.length > 0)throw new Error('Error in ProcessQuery:'+data.json()['0'].ErrorInfo);
+        if(data.json()['0'].ErrorInfo && data.json()['0'].ErrorInfo.length > 0)throw new Error('Error in ProcessQuery:'+data.json()['0'].ErrorInfo);
         let comment = data.json()['2'];
         comment.FieldValuesAsText = {};
         comment.FieldValuesAsText.Body = text.comment_text;
