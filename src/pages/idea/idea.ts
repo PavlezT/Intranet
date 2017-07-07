@@ -24,6 +24,7 @@ export class IdeaBox {
   Best : any;
   New : any;
   ideas : any;
+  identity : Promise<any>;
 
   access_token : string;
   digest : string;
@@ -36,6 +37,7 @@ export class IdeaBox {
     Promise.all([access.getToken().then(token => this.access_token = token),access.getDigestValue().then(digest => this.digest = digest)])
       .then(()=>{
         moment.locale(this.loc.localization);
+        this.identity = this.getIdentity();
         this.getBest();
       }) 
   }
@@ -50,10 +52,42 @@ export class IdeaBox {
 
   public getBest() : void {
     let target = `LikesCount`;
-
+  
     this.getIdeas(target).then(data=>{
       this.Best = data;
     })
+  }
+
+  private getIdentity() : Promise<any> {
+    let body = `<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library">
+                  <Actions>
+                    <ObjectPath Id="1" ObjectPathId="0" />
+                    <Query Id="3" ObjectPathId="2">
+                      <Query SelectAllProperties="true">
+                        <Properties />
+                      </Query>
+                    </Query>
+                  </Actions>
+                  <ObjectPaths>
+                    <StaticProperty Id="0" TypeId="{3747adcd-a3c3-41b9-bfab-4a64dd2f1e0a}" Name="Current" />
+                    <Property Id="2" ParentId="0" Name="Web" />
+                  </ObjectPaths>
+                </Request>`;
+
+    let url = `${consts.siteUrl}/_vti_bin/client.svc/ProcessQuery`;
+
+    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose',"Content-Type": "text/xml"});
+    let options = new RequestOptions({ headers: headers,withCredentials: true });
+
+    return this.http.post(url,body,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+      .then((data)=>{        
+        let temp = data.json()['4']._ObjectIdentity_;
+        return temp.substring(temp.indexOf('|')+1,temp.length);
+      })
+      .catch(error=>{
+        console.error('<Idea> getIdentity error:',error);
+        return this.getIdentity();
+      })
   }
 
   private getIdeas(target : string) : Promise<any> {
@@ -180,28 +214,50 @@ export class IdeaBox {
   }
 
   private async ideaComment(item : any, text : {comment_text:string} ) : Promise<any> {
+    let identity = await this.identity;
+    
     if(!(text.comment_text.length > 0))return this.showToast(this.loc.dic.mobile.OperationError+'. '+this.loc.dic.NotifField_TaskComment+' '+this.loc.dic.mobile.unsaved);
 
-    let body = {
-        "__metadata": {
-          type : "SP.Data.LSiIdeaBankListItem"
-        },
-        "Body" : text.comment_text,
-        'FileSystemObjectType': 0,
-        'ContentTypeId': '0x01070042B2DA294EFEEA48A4421C0AA8EA05A9',
-        "ParentItemID" : item.ID,
-        "ParentFolderId" : item.ID,
-        "MessageId": "<019679471fbb4ad3b57b3d10159f96f7@SharePoint>",
-        "ParentItemEditorId": 1073741822
-    }
-    let url = `${consts.siteUrl}/_api/Web/Lists('${this.guid}')/Items?$select=*,FileDirRef,FileRef,ParentFolderId`;
+    let body = `<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library">
+                  <Actions>
+                    <Method Name="SetFieldValue" Id="355" ObjectPathId="353">
+                      <Parameters>
+                        <Parameter Type="String">Body</Parameter>
+                        <Parameter Type="String">${text.comment_text}</Parameter>
+                      </Parameters>
+                    </Method>
+                    <Method Name="Update" Id="356" ObjectPathId="353" />
+                    <Query Id="357" ObjectPathId="353">
+                      <Query SelectAllProperties="true">
+                        <Properties />
+                      </Query>
+                    </Query>
+                  </Actions>
+                  <ObjectPaths>
+                    <Method Id="351" ParentId="11" Name="GetItemByStringId">
+                      <Parameters>
+                        <Parameter Type="String">${item.ID}</Parameter>
+                      </Parameters>
+                    </Method>
+                    <StaticMethod Id="353" Name="CreateNewDiscussionReply" TypeId="{16f43e7e-bf35-475d-b677-9dc61e549339}">
+                      <Parameters>
+                        <Parameter ObjectPathId="351" />
+                      </Parameters>
+                    </StaticMethod>
+                    <Identity Id="11" Name="${identity}:list:${this.guid}" />
+                  </ObjectPaths>
+                </Request>`;
 
-    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'POST','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
+    let url = `${consts.siteUrl}/_vti_bin/client.svc/ProcessQuery`;
+
+    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose',"Content-Type": "text/xml"});
     let options = new RequestOptions({ headers: headers,withCredentials: true });
 
-    return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
+    return this.http.post(url,body,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then((data)=>{        
-        let comment = data.json().d;
+        if(data.json()['0'].ErrorInfo.length > 0)throw new Error('Error in ProcessQuery:'+data.json()['0'].ErrorInfo);
+        let comment = data.json()['2'];
+        comment.FieldValuesAsText = {};
         comment.FieldValuesAsText.Body = text.comment_text;
         comment.MyCreated = moment().fromNow();
         comment.Author = {
@@ -209,28 +265,9 @@ export class IdeaBox {
           EMail : this.user.getEmail()
         }
         item.MyComments.push(comment);
-        console.log('created comment:',comment);
-        return this.moveComment(comment,item);
       })
       .catch(error=>{
         console.error('<Idea> Send Comment error:',error);
-        this.showToast(this.loc.dic.mobile.OperationError+'. '+this.loc.dic.NotifField_TaskComment+' '+this.loc.dic.mobile.unsaved);
-      })
-  }
-
-  private moveComment(comment : any, item : any) : Promise<any> {
-    let new_folder = comment.FileRef.replace(comment.FileDirRef,item.FileRef);
-    let url= `${consts.siteUrl}/_api/web/getfilebyserverrelativeurl('${comment.FileRef}')/moveto(newurl='${new_folder}',flags=1)`
-    
-    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'POST','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
-    let options = new RequestOptions({ headers: headers,withCredentials: true });
-
-    return this.http.post(url,{},options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
-      .then(res=>{
-        console.log('res:',res.json());
-      })
-      .catch(error=>{
-        console.log('<Idea> moveComment error:',error);
         this.showToast(this.loc.dic.mobile.OperationError+'. '+this.loc.dic.NotifField_TaskComment+' '+this.loc.dic.mobile.unsaved);
       })
   }
@@ -276,42 +313,6 @@ export class IdeaBox {
   }
 
 }
-
-//idea comment create
-//   let body = `<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library">
-  //   <Actions>
-  //     <ObjectPath Id="352" ObjectPathId="351" />
-  //     <ObjectPath Id="354" ObjectPathId="353" />
-  //     <Method Name="SetFieldValue" Id="355" ObjectPathId="353">
-  //       <Parameters>
-  //         <Parameter Type="String">Body</Parameter>
-  //         <Parameter Type="String">${text.comment_text}</Parameter>
-  //       </Parameters>
-  //     </Method>
-  //     <Method Name="Update" Id="356" ObjectPathId="353" />
-  //     <Query Id="357" ObjectPathId="353">
-  //       <Query SelectAllProperties="false">
-  //         <Properties>
-  //           <Property Name="Body" ScalarProperty="true" />
-  //         </Properties>
-  //       </Query>
-  //     </Query>
-  //   </Actions>
-  //   <ObjectPaths>
-  //     <Method Id="351" ParentId="11" Name="GetItemByStringId">
-  //       <Parameters>
-  //         <Parameter Type="String">${item.ID}</Parameter>
-  //       </Parameters>
-  //     </Method>
-  //     <StaticMethod Id="353" Name="CreateNewDiscussionReply" TypeId="{16f43e7e-bf35-475d-b677-9dc61e549339}">
-  //       <Parameters>
-  //         <Parameter ObjectPathId="351" />
-  //       </Parameters>
-  //     </StaticMethod>
-  //     <Identity Id="11" Name="748c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:8df0ee95-1aa9-4f4c-ada5-97fa92602100:web:b377927e-6145-44a4-bb08-cf8e710fecdc:list:98ad5c04-8dc5-4e11-94d4-9f892af18e4d" />
-  //   </ObjectPaths>
-  // </Request>`;//acf3019e-00d4-4000-18c1-8987e5a5dd6b|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:1df0ee95-1aa9-4f4c-ada5-97fa92602100:web:b377927e-6145-44a4-bb08-cf8e710fecdc:
-
 
 //target query:
 //`<View><ViewFields><FieldRef Name="Title" /><FieldRef Name="UserTitle" /><FieldRef Name="UserEmail" /></ViewFields><RowLimit>10</RowLimit><Joins><Join Type="LEFT" ListAlias="MyAuthore"><Eq><FieldRef Name="Author" RefType="ID" /><FieldRef Name="ID" List="MyAuthore" /></Eq></Join></Joins><ProjectedFields><Field ShowField="Title" Type="Lookup" Name="UserTitle" List="MyAuthore" /><Field ShowField="EMail" Type="Lookup" Name="UserEmail" List="MyAuthore" /></ProjectedFields><Query><Where><Eq><FieldRef Name="LSiIdeaStatus" /><Value Type="Text">Active</Value></Eq></Where><OrderBy><FieldRef Name="LikesCount" Ascending="False" /></OrderBy></Query></View>`;
