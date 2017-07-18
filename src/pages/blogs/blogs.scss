@@ -1,3 +1,42 @@
 page-blogs {
+    
+    .user{
+        display: inline-block;
+        width:20%;
+        ion-avatar{
+            img{
+                width:55px;
+                height:55px;
+            }
+        }
+    }
+
+    .content_blog{
+        display: inline-block;
+        width:70%;
+        vertical-align: top;
+    }
+
+    #commentbutton{
+        float:right;
+    }
+
+    .liked{
+		color:red;
+    }
+    
+    .footer_blog_item{
+        width:100%;
+        div{
+            font-size: 1.2rem;
+            display: inline-block;
+            margin-top:12px;
+            width:50%;
+        }
+        span.buttons_right{
+            float: right;
+            width:30%;
+        }
+    }
 
 }

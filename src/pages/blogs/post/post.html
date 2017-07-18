@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{post.Title}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+      <!-- <img src="{{images.getImage(post.Image)}}"> -->
+      <div class="author_avatar" [style.background-image]="getBackImage()">
+          <div>        
+            <img src="{{images.getImage((post.Author ?post.Author.EMail : 'e@e'),'_layouts/15/userphoto.aspx?size=L&accountname='+(post.Author ?post.Author.EMail : 'e@e')+'&mobile=0')}}">
+          </div>
+      </div>
+      <div padding>
+        <h4>{{post.FieldValuesAsText.LSiNewsShortDescription}}</h4>
+        <p class="bodytext">{{post.FieldValuesAsText.LSiNewsBody}}</p>
+        <ion-row>
+          <ion-col>
+            <button [ngClass]="post.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="postLiked($event,post)">
+              {{post.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
+              <ion-icon name="thumbs-up"></ion-icon>
+              <div>{{post.LikesCount || 0}}</div>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-left clear small >
+                <!-- (tap)="focuse('textcomment')" -->
+              {{loc.dic.mobile.Comment}}
+              <ion-icon name="text"></ion-icon>
+              <div>{{post.MyComments.length}}</div>
+            </button>
+          </ion-col>
+        </ion-row>
+        <div #comments>
+          <ion-item *ngFor="let comment of post.MyComments">
+            <ion-avatar item-left>
+              <img src="{{images.getImage((comment.Author ?comment.Author.EMail : 'e@e'),'_layouts/15/userphoto.aspx?size=L&accountname='+(comment.Author ?comment.Author.EMail : 'e@e')+'&mobile=0')}}">
+            </ion-avatar>
+            <label>
+              <div class="commentTitle" >
+                <h2 *ngIf="comment.Author && comment.Author.Title" >{{comment.Author.Title}}</h2>
+                <span>{{comment.MyCreated}}</span>
+              </div>
+              <div>
+                <p>{{comment.FieldValuesAsText.LSiCommentText}}</p>
+              </div>
+            </label>
+          </ion-item>
+          <ion-row>
+            <ion-col class="leftcol">
+              <ion-item item-left>
+                <ion-label floating>{{loc.dic.Alert14}}</ion-label>
+                <ion-textarea #textcomment (focus)="focuse('textcomment2')" rows="4"></ion-textarea>
+              </ion-item>
+            </ion-col>
+            <ion-col class="rightcol">
+              <button ion-button full icon-only (tap)="sendComment($event)" >
+                  <ion-icon name="send"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </div>
+    </div>
+</ion-content>

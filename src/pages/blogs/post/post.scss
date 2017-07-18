@@ -1,0 +1,62 @@
+page-post{
+    ion-content{
+		.bodytext{
+			white-space: pre-line;
+		}
+	}
+	.row{
+		.col{
+			max-width: 50% !important;
+			button{
+				font-size: 1.5rem;
+				text-transform: none;
+				.icon{
+					margin-left:10px;
+				}
+			}
+		}
+
+		.leftcol{
+			max-width: 80% !important;
+			width:100%;
+		}
+		.rightcol{
+			max-width: 20% !important;
+			width: 20%;
+			button{
+				height:60px;
+				border-radius: 6px;
+			}
+		}
+    }
+
+    .commentTitle{
+		h2{
+			display: inline;
+		}
+		span {
+			display: inline;
+			font-size: 1.2rem;
+		}
+	}
+
+	.liked{
+		color:red;
+    }
+    
+    .author_avatar{
+        position: relative;
+        width:100%;
+        margin : auto;
+        background-position: center;
+        background-size: cover;
+        padding : 20px;
+        div{
+            width:50%;
+            margin:auto;
+            img {
+                border-radius: 50%;
+            }
+        }
+    }
+}

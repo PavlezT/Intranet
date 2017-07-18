@@ -10,19 +10,28 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let post of Blogs" >
-      <div>
-      <ion-avatar item-left>
-        <img src="{{images.getImage(post.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+post.Author.EMail+'&mobile=0')}}">
-      </ion-avatar>
+      <div class="user" (tap)="openPost(post)">
+        <ion-avatar item-left>
+          <img src="{{images.getImage(post.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+post.Author.EMail+'&mobile=0')}}">
+        </ion-avatar>
       </div> 
-      <div>
+      <div class="content_blog" (tap)="openPost(post)">
         <h2>{{post.Title}}</h2>
         <p>{{post.FieldValuesAsText.LSiNewsShortDescription}}...</p>
       </div>
-      <button [ngClass]="post.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="postLiked($event,post)">
-        <ion-icon name="thumbs-up"></ion-icon>
-        <div>{{post.LikesCount || 0}}</div>
-      </button>
+      <div class="footer_blog_item">
+        <div>{{post.Author.Title}} | {{post.MyCreated}}</div>
+        <span class="buttons_right">
+          <button [ngClass]="post.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="postLiked($event,post)">
+            <ion-icon name="thumbs-up"></ion-icon>
+            <div>{{post.LikesCount || 0}}</div>
+          </button>
+          <button ion-button icon-left #commentbutton clear small (tap)="openPost(post)">
+              <ion-icon name="text"></ion-icon>
+              <div>{{post.MyComments.length}}</div>
+          </button>
+        </span>
+      </div>
     </ion-item>
     <ion-item *ngIf="Blogs && Blogs.length == 0">
       <h2>{{loc.dic.mobile.Empty}}</h2>
