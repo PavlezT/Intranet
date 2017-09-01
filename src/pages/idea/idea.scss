@@ -10,13 +10,20 @@ page-idea {
 	.row{
 		.col{
 			button{
-				font-size:2rem;
+                font-size:2rem;
+                .like_icon {
+                    padding-bottom:5px;
+                }
 			}
 		}
         .col:last-child{
             text-align: right;
         }
-	}
+    }
+    
+    .like_icon_comment{
+        padding-bottom:3px;
+    }
 
 	.liked{
 		color:red;

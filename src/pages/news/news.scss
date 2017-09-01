@@ -12,8 +12,18 @@ page-news {
 		.col{
 			button{
 				font-size:2rem;
+				.like_icon{
+					padding-bottom: 6px;
+				}
+			}
+			.comment_button{
+				float: right;
 			}
 		}
+	}
+
+	.note_text{
+		padding-right:9px;
 	}
 
 	.liked{

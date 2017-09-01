@@ -17,6 +17,18 @@ page-card {
 			button{
 				font-size: 1.5rem;
 				text-transform: none;
+				.like_icon.icon-md{
+					padding-bottom:2px;
+				}
+				.like_icon.icon-ios{
+					padding-bottom:5px;
+				}
+				.comment_icon.icon-md {
+					// margin-bottom: -4px;
+				}
+				.comment_icon.icon-ios {
+					padding-bottom: 0px;
+				}
 				.icon{
 					margin-left:10px;
 				}
@@ -34,6 +46,13 @@ page-card {
 				height:60px;
 				border-radius: 6px;
 			}
+		}
+	}
+
+	.content-md {
+		.rightcol{
+			max-width: 15% !important;
+			width:15%;
 		}
 	}
 

@@ -20,7 +20,7 @@
           <ion-col>
             <button [ngClass]="post.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="postLiked($event,post)">
               {{post.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
-              <ion-icon name="thumbs-up"></ion-icon>
+              <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
               <div>{{post.LikesCount || 0}}</div>
             </button>
           </ion-col>

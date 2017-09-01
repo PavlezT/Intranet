@@ -30,7 +30,7 @@
         <ion-row>
           <ion-col>
             <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,item)">
-              <ion-icon name="thumbs-up"></ion-icon>
+              <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
               <div>{{item.LikesCount || 0}}</div>
             </button>
           </ion-col>
@@ -49,7 +49,7 @@
             <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
             <p>{{comment.FieldValuesAsText.Body}}</p>
             <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
-              <ion-icon name="thumbs-up"></ion-icon>
+              <ion-icon class="like_icon_comment"  name="thumbs-up"></ion-icon>
               <div>{{comment.LikesCount || 0}}</div>
             </button>
           </ion-item>
@@ -83,7 +83,7 @@
         <ion-row>
           <ion-col>
             <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,item)">
-              <ion-icon name="thumbs-up"></ion-icon>
+              <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
               <div>{{item.LikesCount || 0}}</div>
             </button>
           </ion-col>
@@ -102,7 +102,7 @@
             <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
             <p>{{comment.FieldValuesAsText.Body}}</p>
             <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
-              <ion-icon name="thumbs-up"></ion-icon>
+              <ion-icon class="like_icon_comment" name="thumbs-up"></ion-icon>
               <div>{{comment.LikesCount || 0}}</div>
             </button>
           </ion-item>

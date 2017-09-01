@@ -13,6 +13,9 @@ page-post{
 				.icon{
 					margin-left:10px;
 				}
+				.like_icon.icon-ios{
+					padding-bottom:5px;
+				}
 			}
 		}
 
@@ -28,7 +31,14 @@ page-post{
 				border-radius: 6px;
 			}
 		}
-    }
+	}
+	
+	.content-md {
+		.rightcol{
+			max-width: 15% !important;
+			width:15%;
+		}
+	}
 
     .commentTitle{
 		h2{

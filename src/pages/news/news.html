@@ -22,23 +22,26 @@
         <p>{{item.MyBody}}</p>
       </ion-card-content>
     </div>
+    <ion-row padding>
+      <ion-col >
+          <!-- center text-center -->
+        <ion-note class="note_text" *ngFor="let tag of item.LSiNewsTags.results">
+          #{{tag.Label}}
+        </ion-note>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col>
         <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="newsLiked($event,item)">
-          <ion-icon name="thumbs-up"></ion-icon>
+          <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
           <div>{{item.LikesCount || 0}}</div>
         </button>
       </ion-col>
       <ion-col>
-        <button ion-button icon-left clear small (tap)="newsComment(item)">
+        <button class="comment_button" ion-button icon-left clear small (tap)="newsComment(item)">
           <ion-icon name="text"></ion-icon>
           <div>{{item.MyComments.length}}</div>
         </button>
-      </ion-col>
-      <ion-col center text-center>
-        <ion-note *ngFor="let tag of item.LSiNewsTags.results">
-          #{{tag.Label}}
-        </ion-note>
       </ion-col>
     </ion-row>
   </ion-card>

@@ -18,14 +18,14 @@
           <ion-col>
             <button [ngClass]="card.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="newsLiked($event,card)">
               {{card.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
-              <ion-icon name="thumbs-up"></ion-icon>
+              <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
               <div>{{card.LikesCount || 0}}</div>
             </button>
           </ion-col>
           <ion-col>
             <button ion-button icon-left clear small (tap)="focuse('textcomment')">
               {{loc.dic.mobile.Comment}}
-              <ion-icon name="text"></ion-icon>
+              <ion-icon class="comment_icon" name="text"></ion-icon>
               <div>{{card.MyComments.length}}</div>
             </button>
           </ion-col>

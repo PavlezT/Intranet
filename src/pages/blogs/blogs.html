@@ -23,11 +23,11 @@
         <div>{{post.Author.Title}} | {{post.MyCreated}}</div>
         <span class="buttons_right">
           <button [ngClass]="post.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="postLiked($event,post)">
-            <ion-icon name="thumbs-up"></ion-icon>
+            <ion-icon class="icons" name="thumbs-up"></ion-icon>
             <div>{{post.LikesCount || 0}}</div>
           </button>
           <button ion-button icon-left #commentbutton clear small (tap)="openPost(post)">
-              <ion-icon name="text"></ion-icon>
+              <ion-icon class="icons" name="text"></ion-icon>
               <div>{{post.MyComments.length}}</div>
           </button>
         </span>
