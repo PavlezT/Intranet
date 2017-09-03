@@ -17,7 +17,7 @@ export class User{
 
     constructor(@Inject(Http) public http: Http ){ 
       this.email = 'e@e';
-      this.locale = 'ru';
+      this.locale = 'en-gb';
       this.user = {};
       this.user.Title = 'Bob';
       this.itemPropsLoaded = Promise.resolve();

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
+import { ViewController,Platform, NavParams } from 'ionic-angular';
 
 import { CallNumber } from '@ionic-native/call-number';
 
@@ -16,12 +16,18 @@ export class DepartmentUsers {
   guid:string;
   Users : any;
   
-  constructor(public navParams: NavParams,public viewCtrl: ViewController,@Inject(Images) public images: Images,public callNumber: CallNumber, @Inject(Localization) public loc : Localization) {
+  constructor(public platform: Platform,public navParams: NavParams,public viewCtrl: ViewController,@Inject(Images) public images: Images,public callNumber: CallNumber, @Inject(Localization) public loc : Localization) {
     this.Title = navParams.data.Title;
     this.guid = navParams.data.guid;
     this.Users = navParams.data.users.filter(user=>{
       if(user.IDDepartment == this.guid) return user;
     });
+  }
+
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction((e)=>{
+      this.dismiss();
+    },100);
   }
 
   public dismiss() : void {

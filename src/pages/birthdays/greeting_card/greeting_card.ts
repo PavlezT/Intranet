@@ -1,5 +1,5 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { NavController, NavParams, Content, ToastController } from 'ionic-angular';
+import { NavController, NavParams, Platform, Content, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as consts from '../../../utils/consts';
@@ -24,7 +24,7 @@ export class GreetingCard {
   access_token : string;
   digest : string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,@Inject(Access) public access : Access,@Inject(User) public user : User,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http, private toastCtrl: ToastController) {
+  constructor(public platform : Platform,public navCtrl: NavController, public navParams: NavParams,@Inject(Access) public access : Access,@Inject(User) public user : User,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http, private toastCtrl: ToastController) {
     this.greeting_user = navParams.data.greeting_user;
     this.guid = navParams.data.guid;
     this.Comments = [];
@@ -33,6 +33,12 @@ export class GreetingCard {
     access.getDigestValue().then(digest => this.digest = digest);
     this.getGreetings().then(data=>{this.Comments = data});
   }
+
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction((e)=>{
+      this.navCtrl.pop();
+  },100);
+}
 
   private getGreetings() : Promise<any> {
     let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?$select=LSiBirthdayGreetingsText,LSiBirthdayPersonId,Id,Modified,Author/Id,Author/Title,Author/EMail&$expand=Author/Id&$filter=LSiBirthdayPersonId+eq+${this.greeting_user.User1Id}`;

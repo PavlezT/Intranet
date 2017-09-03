@@ -35,6 +35,8 @@
                 {{item.LSiWorkPhone}}
               </div>
             </ion-col>
+          </ion-row>
+          <ion-row>
             <ion-col *ngIf="item.LSiHomePhone"> 
               <div (click)="makeCall(item.LSiHomePhone)">
                 <ion-icon name="ios-home-outline"></ion-icon>
@@ -46,7 +48,7 @@
       </ion-card-content>
     </div>
   </ion-card>
-  <ion-item *ngIf="Users && Users.length == 0">
+  <ion-item class="empty" *ngIf="Users && Users.length == 0">
     <h2>{{loc.dic.mobile.Empty}}</h2>
   </ion-item>
   <ion-item *ngIf="!Users">

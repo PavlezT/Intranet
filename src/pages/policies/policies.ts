@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, Platform, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
@@ -24,14 +24,27 @@ export class Policies {
   fileTransfer : TransferObject;
   title: string;
   guid:string;
+  backbuttonPressed : number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private transfer: Transfer,private fileOpener: FileOpener, public file : File,public http : Http, @Inject(Loader) public loaderctrl: Loader, @Inject(Localization) public loc : Localization,public toastCtrl: ToastController) {
+  constructor(public platform : Platform, public navCtrl: NavController, public navParams: NavParams,private transfer: Transfer,private fileOpener: FileOpener, public file : File,public http : Http, @Inject(Loader) public loaderctrl: Loader, @Inject(Localization) public loc : Localization,public toastCtrl: ToastController) {
     this.title = navParams.data.title || loc.dic.modules.News;
     this.guid = navParams.data.guid;
+    this.backbuttonPressed = 0;
     this.getDocuments();
     try{
       this.fileTransfer = this.transfer.create();
     }catch(e){console.error('<Policies> FileTransfer create error:',e)};
+  }
+
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction((e)=>{
+      if(this.backbuttonPressed == 0){
+        this.showToast(this.loc.dic.mobile.Exit);
+        this.backbuttonPressed = 1;
+      } else
+        this.platform.exitApp();
+      return false;
+    },100);
   }
 
   private getDocuments(loadNew?:boolean) : Promise<any> {
@@ -114,6 +127,9 @@ export class Policies {
         duration: 9000
       });
       toast.present();
+      toast.onDidDismiss((a,b)=>{
+        this.backbuttonPressed = 0;
+      })
   }
 
 }

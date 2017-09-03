@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ToastController, Platform } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as consts from '../../utils/consts';
@@ -19,14 +19,28 @@ export class OrgStructure {
   usersListId : string;
   Depts : any;
   Users : any;
+  backbuttonPressed : number;
+
   
-  constructor(public navCtrl: NavController, public navParams: NavParams,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization, public http : Http) {
+  constructor(public platform : Platform, public toastCtrl : ToastController, public navCtrl: NavController, public navParams: NavParams,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization, public http : Http) {
     this.title = navParams.data.title;
     this.guid = navParams.data.guid;
+    this.backbuttonPressed = 0;
 
     this.usersListId = JSON.parse(window.localStorage.getItem('lsi'))['LSiUsers'];
     this.getDepartments();
     this.getUsers();
+  }
+
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction((e)=>{
+      if(this.backbuttonPressed == 0){
+        this.showToast(this.loc.dic.mobile.Exit);
+        this.backbuttonPressed = 1;
+      } else
+        this.platform.exitApp();
+      return false;
+    },100);
   }
 
   private getDepartments() : Promise<any>{
@@ -68,5 +82,18 @@ export class OrgStructure {
         Title : item.Title
     })
   }
+
+  private showToast(message: any){
+    let toast = this.toastCtrl.create({
+      message: (typeof message == 'string' )? message.substring(0,( message.indexOf('&#x') != -1? message.indexOf('&#x') : message.length)) : message.toString().substring(0,( message.toString().indexOf('&#x') != -1 ?message.toString().indexOf('&#x') : message.toString().length)) ,
+      position: 'bottom',
+      showCloseButton : true,
+      duration: 9000
+    });
+    toast.present();
+    toast.onDidDismiss((a,b)=>{
+      this.backbuttonPressed = 0;
+    })
+}
 
 }

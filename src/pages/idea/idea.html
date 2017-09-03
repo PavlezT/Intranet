@@ -55,7 +55,7 @@
           </ion-item>
         </ion-list>
       </ion-card>
-      <ion-item *ngIf="Best && Best.length == 0">
+      <ion-item class="empty" *ngIf="Best && Best.length == 0">
         <h2>{{loc.dic.mobile.Empty}}</h2>
       </ion-item>
       <ion-item *ngIf="!Best">
@@ -108,7 +108,7 @@
           </ion-item>
         </ion-list>
       </ion-card>
-      <ion-item *ngIf="New && New.length == 0">
+      <ion-item class="empty" *ngIf="New && New.length == 0">
         <h2>{{loc.dic.mobile.Empty}}</h2>
       </ion-item>
       <ion-item *ngIf="!New">

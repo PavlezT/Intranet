@@ -45,7 +45,7 @@
       </ion-col>
     </ion-row>
   </ion-card>
-  <ion-item *ngIf="News && News.length == 0">
+  <ion-item class="empty" *ngIf="News && News.length == 0">
     <h2>{{loc.dic.mobile.Empty}}</h2>
   </ion-item>
   <ion-item *ngIf="!News">

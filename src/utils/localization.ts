@@ -13,7 +13,7 @@ export class Localization {
     dic : any;
 
     constructor(@Inject(User) public user : User,public events: Events ,public plat : Platform){ 
-        this.localization = 'ru';
+        this.localization = 'en-gb';
         this.loadDictionary();
         events.subscribe('user:loaded',()=>{
                 this.localization = this.transformLocale(this.user.locale);

@@ -1,5 +1,5 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, Platform, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as moment from 'moment';
@@ -27,7 +27,7 @@ export class Post {
     guid:string;
     post : any;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams,private toastCtrl: ToastController,@Inject(User) public user : User, @Inject(Access) public access : Access,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization, public http : Http) {
+    constructor(public platform : Platform,public navCtrl: NavController, public navParams: NavParams,private toastCtrl: ToastController,@Inject(User) public user : User, @Inject(Access) public access : Access,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization, public http : Http) {
         this.title = navParams.data.blog.Title;
         this.guid = navParams.data.guid;
         this.comment_list = navParams.data.comment_list;
@@ -37,6 +37,12 @@ export class Post {
         this.getImage();
         access.getToken().then(token => this.access_token = token);
         access.getDigestValue().then(digest => this.digest = digest);
+    }
+
+    ionViewDidEnter(){
+        this.platform.registerBackButtonAction((e)=>{
+          this.navCtrl.pop();
+        },100);
     }
 
     public focuse (target : string) : void {

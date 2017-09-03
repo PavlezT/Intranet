@@ -53,10 +53,6 @@ export class MyApp {
 
   }
 
-  ionViewDidEnter(){
-    this.platform.registerBackButtonAction((e)=>{this.platform.exitApp();return false;},100);
-  }
-
   initializeApp() {
     this.platform.ready().then(() => {
       this.loaderctrl.presentLoading();

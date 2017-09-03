@@ -23,7 +23,7 @@
       </ion-card-content>
     </div>
   </ion-card>
-  <ion-item *ngIf="Depts && Depts.length == 0">
+  <ion-item class="empty" *ngIf="Depts && Depts.length == 0">
     <h2>{{loc.dic.mobile.Empty}}</h2>
   </ion-item>
   <ion-item *ngIf="!Depts">

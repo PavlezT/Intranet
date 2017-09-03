@@ -23,7 +23,7 @@
             </div>         
           </ion-item>
         </ion-list>
-        <ion-item *ngIf="todayArr && todayArr.length == 0">
+        <ion-item class="empty" *ngIf="todayArr && todayArr.length == 0">
           <h2>{{loc.dic.mobile.Empty}}</h2>
         </ion-item>
         <ion-item *ngIf="!todayArr">
@@ -44,7 +44,7 @@
             </div>         
           </ion-item>
         </ion-list>
-        <ion-item *ngIf="yesterdayArr && yesterdayArr.length == 0">
+        <ion-item class="empty" *ngIf="yesterdayArr && yesterdayArr.length == 0">
           <h2>{{loc.dic.mobile.Empty}}</h2>
         </ion-item>
         <ion-item *ngIf="!yesterdayArr">
@@ -65,7 +65,7 @@
             </div>         
           </ion-item>
         </ion-list>
-        <ion-item *ngIf="weekArr && weekArr.length == 0">
+        <ion-item class="empty" *ngIf="weekArr && weekArr.length == 0">
           <h2>{{loc.dic.mobile.Empty}}</h2>
         </ion-item>
         <ion-item *ngIf="!weekArr">
@@ -86,7 +86,7 @@
             </div>         
           </ion-item>
         </ion-list>
-        <ion-item *ngIf="monthArr && monthArr.length == 0">
+        <ion-item class="empty" *ngIf="monthArr && monthArr.length == 0">
           <h2>{{loc.dic.mobile.Empty}}</h2>
         </ion-item>
         <ion-item *ngIf="!monthArr">

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { NavController, NavParams,  ToastController } from 'ionic-angular';
+import { NavController, NavParams, Platform, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as consts from '../../utils/consts';
@@ -28,10 +28,13 @@ export class Survey {
   access_token : string;
   digest : string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, @Inject(Localization) public loc : Localization,private toastCtrl: ToastController, @Inject(Loader) public loaderctrl: Loader, @Inject(Access) public access : Access, public http: Http,@Inject(User) private user : User) {
+  backbuttonPressed : number;
+
+  constructor(public platform : Platform, public navCtrl: NavController, public navParams: NavParams, @Inject(Localization) public loc : Localization,private toastCtrl: ToastController, @Inject(Loader) public loaderctrl: Loader, @Inject(Access) public access : Access, public http: Http,@Inject(User) private user : User) {
     this.title = navParams.data.title;
     this.current_question = 0;
     this.survey_answers = [];
+    this.backbuttonPressed = 0;
 
     Promise.all([access.getToken().then(token => this.access_token = token),access.getDigestValue().then(digest => this.digest = digest)])
       .then(()=>{
@@ -55,6 +58,17 @@ export class Survey {
         this.Answers = [];
         this.question = null;
       })
+  }
+
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction((e)=>{
+      if(this.backbuttonPressed == 0){
+        this.showToast(this.loc.dic.mobile.Exit);
+        this.backbuttonPressed = 1;
+      } else
+        this.platform.exitApp();
+      return false;
+    },100);
   }
 
   private getConfig() : Promise<any> {
@@ -158,7 +172,7 @@ export class Survey {
     let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/Items`;
     let body = {
         "__metadata": {
-          type : "SP.Data.1ListItem"
+          type : `SP.Data.${this.config.PollListName.substring(this.config.PollListName.indexOf('":"')+'":"'.length,this.config.PollListName.indexOf('"}'))}ListItem`
         }
     }
     this.survey_answers.map(item=>{
@@ -166,7 +180,7 @@ export class Survey {
     })
 
     let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'POST','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
-    let options = new RequestOptions({ headers: headers,withCredentials: true });
+    let options = new RequestOptions({ headers: headers,withCredentials: false });
 
     return this.http.post(url,JSON.stringify(body),options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
             .then(res=>{
@@ -204,6 +218,9 @@ export class Survey {
         duration: 2500
       });
       toast.present();
+      toast.onDidDismiss((a,b)=>{
+        this.backbuttonPressed = 0;
+      })
   }
 
 }

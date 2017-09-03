@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, Platform, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as moment from 'moment';
@@ -24,15 +24,17 @@ export class Blogs {
   title: string;
   guid:string;
   commentlist_guid : string;
+  backbuttonPressed : number;
 
   Blogs : any;
 
   digest : string;
   access_token : string;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams,private toastCtrl: ToastController,@Inject(User) public user : User, @Inject(Access) public access : Access,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization, public http : Http) {
+  constructor(public platform : Platform, public navCtrl: NavController, public navParams: NavParams,private toastCtrl: ToastController,@Inject(User) public user : User, @Inject(Access) public access : Access,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization, public http : Http) {
     this.title = navParams.data.title;
     this.guid = navParams.data.guid;
+    this.backbuttonPressed = 0;
     this.commentlist_guid = JSON.parse(window.localStorage.getItem('lsi'))['LSiBlogCommentsList'];
 
     access.getToken().then(token => this.access_token = token);
@@ -42,6 +44,17 @@ export class Blogs {
     this.getBlogs();
   }
 
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction((e)=>{
+      if(this.backbuttonPressed == 0){
+        this.showToast(this.loc.dic.mobile.Exit);
+        this.backbuttonPressed = 1;
+      } else
+        this.platform.exitApp();
+      return false;
+    },100);
+  }
+  
   private getBlogs() : Promise<any> {
     let url = `${consts.siteUrl}/_api/Web/Lists('${this.guid}')/Items?$select=Title,Id,LSiBlogCategory,Created,LikesCount,LSiNewsBody,LSiNewsShortDescription,`+
               `Author/Title,Author/JobTitle,Author/EMail,ContentType/Name,FieldValuesAsText/LSiNewsBody,FieldValuesAsText/LSiNewsShortDescription,`+
@@ -146,6 +159,9 @@ export class Blogs {
         duration: 9000
       });
       toast.present();
+      toast.onDidDismiss(()=>{
+        this.backbuttonPressed = 0;
+      })
   }
 
 }

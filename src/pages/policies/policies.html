@@ -11,12 +11,12 @@
   <ion-list  no-lines style="z-index: -1">
     <ion-item (click)="docClicked(document)" *ngFor="let document of Docs" >
       <div item-left>
-      <div margin-right class="file-icon file-icon-lg " [attr.data-type]="document.icon"></div>
+        <div margin-right class="file-icon file-icon-lg " [attr.data-type]="document.icon"></div>
       </div>
-      <h2>{{document.Title || document.FileLeafRef}}</h2>
+      <h2>{{ document.FileLeafRef || document.Title}}</h2>
       <p>{{loc.dic.Created}}: {{document.Created}}</p>
     </ion-item>
-    <ion-item *ngIf="Docs && Docs.length == 0">
+    <ion-item class="empty" *ngIf="Docs && Docs.length == 0">
       <h2>{{loc.dic.mobile.Empty}}</h2>
     </ion-item>
     <ion-item *ngIf="!Docs">

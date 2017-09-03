@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, Platform, ToastController, AlertController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as moment from 'moment';
@@ -29,10 +29,13 @@ export class IdeaBox {
   access_token : string;
   digest : string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, @Inject(Localization) public loc : Localization,private alertCtrl: AlertController,@Inject(Images) public images: Images,private toastCtrl: ToastController, @Inject(User) public user : User,@Inject(Access) public access : Access,public http : Http) {
+  backbuttonPressed : number;
+
+  constructor(public platform : Platform, public navCtrl: NavController, public navParams: NavParams, @Inject(Localization) public loc : Localization,private alertCtrl: AlertController,@Inject(Images) public images: Images,private toastCtrl: ToastController, @Inject(User) public user : User,@Inject(Access) public access : Access,public http : Http) {
     this.title = navParams.data.title || loc.dic.modules.IdeaBox;
     this.guid = navParams.data.guid;
     this.ideas = 'best';
+    this.backbuttonPressed = 0; 
     
     Promise.all([access.getToken().then(token => this.access_token = token),access.getDigestValue().then(digest => this.digest = digest)])
       .then(()=>{
@@ -40,6 +43,17 @@ export class IdeaBox {
         this.identity = this.getIdentity();
         this.getBest();
       }) 
+  }
+
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction((e)=>{
+      if(this.backbuttonPressed == 0){
+        this.showToast(this.loc.dic.mobile.Exit);
+        this.backbuttonPressed = 1;
+      } else
+        this.platform.exitApp();
+      return false;
+    },100);
   }
 
   public getNew() : void {
@@ -279,6 +293,9 @@ export class IdeaBox {
         showCloseButton : true,
         duration: 9000
       });
+      toast.onDidDismiss(()=>{
+        this.backbuttonPressed = 0;
+      })
       return toast.present();
   }
 
@@ -302,7 +319,7 @@ export class IdeaBox {
           }
         },
         {
-          text: this.loc.dic.Accept,
+          text: this.loc.dic.Send,
           handler: data => {
             this.ideaComment(item,data)
           }

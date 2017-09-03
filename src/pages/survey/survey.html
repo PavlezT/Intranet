@@ -37,7 +37,7 @@
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
   </div>
-  <ion-item *ngIf="Answers &&  Answers.length == 0" class="question">
+  <ion-item class="empty" *ngIf="Answers &&  Answers.length == 0" class="question">
     <h2>{{loc.dic.mobile.Empty}}</h2>
   </ion-item>
   <ion-item *ngIf="!Answers" class="question">

@@ -21,10 +21,12 @@ export class News {
   News: any;
   digest : string;
   access_token : string;
+  backbuttonPressed : number;
 
   constructor(public platform: Platform,public navCtrl: NavController,public events : Events, @Inject(Access) public access : Access,@Inject(User) public user : User, public navParams: NavParams,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http,private toastCtrl: ToastController) {
     this.title = navParams.data.title || loc.dic.modules.News;
     this.guid = navParams.data.guid;
+    this.backbuttonPressed = 0;
 
     this.platform.ready().then(() => {
       this.events.subscribe('user:loaded',(guid)=>{
@@ -40,6 +42,17 @@ export class News {
 
   }
 
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction((e)=>{
+      if(this.backbuttonPressed == 0){
+        this.showToast(this.loc.dic.mobile.Exit);
+        this.backbuttonPressed = 1;
+      } else
+        this.platform.exitApp();
+      return false;
+    },100);
+  }
+  
   private getNews(loadNew? : boolean) : Promise<any> {
     let lastDate = this.News && this.News.length > 1 && loadNew ? encodeURI(encodeURIComponent(this.News[this.News.length-1].LSiNewsDate.replace(/-/g,'').replace('T',' ').replace('Z',''))) : false;
     let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?${ lastDate ? '$skiptoken=Paged=TRUE=p_LSiNewsDate='+lastDate+'&' : ''}$top=5&$orderby=LSiNewsDate+desc&$expand=FieldValuesAsText&$filter=ContentTypeId+eq+'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900810CD0D360D80542BC6396D515AB1E3700096A9BAA8C2FA345B2A6F2E29566FD63'`;
@@ -138,7 +151,7 @@ export class News {
     this.openCard(item,this.guid,true);
   }
 
-  public openCard(item,guid?:string, comments?:boolean,) : void {
+  public openCard(item,guid?:string, comments?:boolean) : void {
     this.navCtrl.push(Card,{item:item,guid:guid,comments:comments,newsLiked:this.newsLiked});
   }
 
@@ -157,6 +170,9 @@ export class News {
         duration: 9000
       });
       toast.present();
+      toast.onDidDismiss((a,b)=>{
+        this.backbuttonPressed = 0;
+      })
   }
 
 }

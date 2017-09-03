@@ -105,7 +105,8 @@ export class Auth {
       if(res.includes('<S:Fault>') || res.startsWith('Error')){
          let reason = res.substring(res.indexOf('<S:Detail>'),res.indexOf('</S:Detail>'));
          reason = reason.substring(reason.indexOf('<psf:text>') + '<psf:text>'.length,reason.indexOf('</psf:text>'));
-         throw new Error(`Fail in loggin!\n ${reason}`);
+         console.error(`<Auth> Fail in loggin: ${reason}`);
+         throw new Error(`Fail in loggin!\n The email or password you entered is incorrect.`);//${reason}
       } else {
          let token = res.substring(res.indexOf('<wsse:BinarySecurityToken Id="Compact0">') + '<wsse:BinarySecurityToken Id="Compact0">'.length,res.indexOf('</wsse:BinarySecurityToken>'));
          let expires = res.substring(res.indexOf('<wst:Lifetime>'),res.indexOf('</wst:Lifetime>'));

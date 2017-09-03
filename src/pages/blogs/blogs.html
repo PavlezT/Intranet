@@ -33,7 +33,7 @@
         </span>
       </div>
     </ion-item>
-    <ion-item *ngIf="Blogs && Blogs.length == 0">
+    <ion-item class="empty" *ngIf="Blogs && Blogs.length == 0">
       <h2>{{loc.dic.mobile.Empty}}</h2>
     </ion-item>
     <ion-item *ngIf="!Blogs">

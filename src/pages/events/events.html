@@ -16,7 +16,7 @@
         </button>
         <ion-label>
           <span class="date">
-            {{dayDate.format('dddd, DD.MM.YYYY')}}
+            {{dayDate.format('dddd, DD/MM/YYYY')}}
           </span>
         </ion-label>
         <button item-right ion-button icon-only large outline (click)="clickRight()">
@@ -31,7 +31,7 @@
           </div>
           {{event.Title}}   
         </ion-item>
-        <ion-item class="eventitem" *ngIf="DayEvents && DayEvents.length == 0">
+        <ion-item class="empty eventitem" *ngIf="DayEvents && DayEvents.length == 0">
           <h2>{{loc.dic.mobile.Empty}}</h2>
         </ion-item>
         <ion-item class="eventitem" *ngIf="!DayEvents">
@@ -46,7 +46,7 @@
         </button>
         <ion-label>
           <span class="date">
-            {{weekDate.format('DD.MM.YYYY')}} - {{weekDate.clone().endOf('week').format('DD.MM.YYYY')}}
+            {{weekDate.format('DD/MM/YYYY')}} - {{weekDate.clone().endOf('week').format('DD/MM/YYYY')}}
           </span>
         </ion-label>
         <button item-right ion-button icon-only large outline (click)="clickRight()">
@@ -61,7 +61,7 @@
           </div>
           {{event.Title}}   
         </ion-item>
-        <ion-item class="eventitem" *ngIf="WeekEvents && WeekEvents.length == 0">
+        <ion-item class="eventitem empty" *ngIf="WeekEvents && WeekEvents.length == 0">
           <h2>{{loc.dic.mobile.Empty}}</h2>
         </ion-item>
         <ion-item class="eventitem" *ngIf="!WeekEvents">
@@ -91,7 +91,7 @@
           </div>
           {{event.Title}}   
         </ion-item>
-        <ion-item class="eventitem" *ngIf="MonthEvents && MonthEvents.length == 0">
+        <ion-item class="eventitem empty" *ngIf="MonthEvents && MonthEvents.length == 0">
           <h2>{{loc.dic.mobile.Empty}}</h2>
         </ion-item>
         <ion-item class="eventitem" *ngIf="!MonthEvents">

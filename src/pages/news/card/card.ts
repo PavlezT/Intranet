@@ -1,5 +1,5 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { NavController, NavParams, Events, Content, ToastController } from 'ionic-angular';
+import { NavController, NavParams, Platform, Events, Content, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as moment from 'moment';
@@ -26,7 +26,7 @@ export class Card {
   access_token : string;
   newsLiked : any;
   
-  constructor(public navCtrl: NavController,public events : Events, @Inject(User) public user : User, @Inject(Access) public access : Access, public navParams: NavParams,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http,private toastCtrl: ToastController) {
+  constructor(public platform: Platform,public navCtrl: NavController,public events : Events, @Inject(User) public user : User, @Inject(Access) public access : Access, public navParams: NavParams,@Inject(Images) public images: Images, @Inject(Localization) public loc : Localization,public http : Http,private toastCtrl: ToastController) {
     this.card = navParams.data.item;
     this.getCommentsUsers();
     this.showComments = navParams.data.comments;
@@ -39,6 +39,9 @@ export class Card {
 
   ionViewDidEnter(){
     this.showComments ? this.focuse('comments'): null;
+    this.platform.registerBackButtonAction((e)=>{
+      this.navCtrl.pop();
+    },100);
   }
 
   public sendComment(button) : Promise<any>{
