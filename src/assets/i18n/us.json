@@ -22,7 +22,8 @@
         "point2":"points",
         "Best":"Best",
         "Newest":"New",
-        "Exit":"Click again to close"
+        "Exit":"Click again to close",
+        "ShowMoreComments":"Show more comments"
     },
     "modules":{
         "News":"News",

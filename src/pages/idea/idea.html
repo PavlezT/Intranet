@@ -42,17 +42,22 @@
           </ion-col>
         </ion-row>
         <ion-list class="comments" >
-          <ion-item *ngFor="let comment of item.MyComments">
-            <ion-avatar item-left>
-              <img src="{{images.getImage(comment.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+comment.Author.EMail+'&mobile=0')}}">
-            </ion-avatar>
-            <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
-            <p>{{comment.FieldValuesAsText.Body}}</p>
-            <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
-              <ion-icon class="like_icon_comment"  name="thumbs-up"></ion-icon>
-              <div>{{comment.LikesCount || 0}}</div>
-            </button>
-          </ion-item>
+            <ion-item class="showcomments" *ngIf="!item.showcomments && item.MyComments.length > 2 ">
+                <p (tap)="item.showcomments = true">{{loc.dic.mobile.ShowMoreComments}}</p>
+            </ion-item>
+            <ng-container *ngFor="let comment of item.MyComments; index as i">
+              <ion-item *ngIf="item.showcomments || i == item.MyComments.length-1 ||i == item.MyComments.length-2 ">
+                <ion-avatar item-left>
+                  <img src="{{images.getImage(comment.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+comment.Author.EMail+'&mobile=0')}}">
+                </ion-avatar>
+                <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
+                <p>{{comment.FieldValuesAsText.Body}}</p>
+                <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
+                  <ion-icon class="like_icon_comment"  name="thumbs-up"></ion-icon>
+                  <div>{{comment.LikesCount || 0}}</div>
+                </button>
+              </ion-item>
+            </ng-container>
         </ion-list>
       </ion-card>
       <ion-item class="empty" *ngIf="Best && Best.length == 0">
@@ -95,17 +100,22 @@
           </ion-col>
         </ion-row>
         <ion-list class="comments" >
-          <ion-item *ngFor="let comment of item.MyComments">
-            <ion-avatar item-left>
-              <img src="{{images.getImage(comment.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+comment.Author.EMail+'&mobile=0')}}">
-            </ion-avatar>
-            <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
-            <p>{{comment.FieldValuesAsText.Body}}</p>
-            <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
-              <ion-icon class="like_icon_comment" name="thumbs-up"></ion-icon>
-              <div>{{comment.LikesCount || 0}}</div>
-            </button>
+          <ion-item class="showcomments" *ngIf="!item.showcomments  && item.MyComments.length > 2">
+              <p (tap)="item.showcomments = true">{{loc.dic.mobile.ShowMoreComments}}</p>
           </ion-item>
+          <ng-container *ngFor="let comment of item.MyComments; index as i">
+            <ion-item *ngIf="item.showcomments || i == item.MyComments.length-1 ||i == item.MyComments.length-2 ">
+              <ion-avatar item-left>
+                <img src="{{images.getImage(comment.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+comment.Author.EMail+'&mobile=0')}}">
+              </ion-avatar>
+              <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
+              <p>{{comment.FieldValuesAsText.Body}}</p>
+              <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
+                <ion-icon class="like_icon_comment" name="thumbs-up"></ion-icon>
+                <div>{{comment.LikesCount || 0}}</div>
+              </button>
+            </ion-item>
+          </ng-container>
         </ion-list>
       </ion-card>
       <ion-item class="empty" *ngIf="New && New.length == 0">

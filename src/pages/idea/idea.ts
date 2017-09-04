@@ -140,6 +140,7 @@ export class IdeaBox {
           item.liked = item.LikedBy && item.LikedBy.find((likes_item)=>{return likes_item.id == this.user.getId().toString()}) ? true : false;
           item.textBody = this.getParsedBody(item.Body);
           item.MyComments = [];
+          item.showcomments = false;
           this.getComments(item);
           return item;
         })
