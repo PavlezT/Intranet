@@ -55,7 +55,9 @@ export class News {
   
   private getNews(loadNew? : boolean) : Promise<any> {
     let lastDate = this.News && this.News.length > 1 && loadNew ? encodeURI(encodeURIComponent(this.News[this.News.length-1].LSiNewsDate.replace(/-/g,'').replace('T',' ').replace('Z',''))) : false;
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?${ lastDate ? '$skiptoken=Paged=TRUE=p_LSiNewsDate='+lastDate+'&' : ''}$top=5&$orderby=LSiNewsDate+desc&$expand=FieldValuesAsText&$filter=ContentTypeId+eq+'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900810CD0D360D80542BC6396D515AB1E3700096A9BAA8C2FA345B2A6F2E29566FD63'`;
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?${ lastDate ? '$skiptoken=Paged=TRUE=p_LSiNewsDate='+lastDate+'&' : ''}$top=5&$orderby=LSiNewsDate+desc&$expand=FieldValuesAsText&$filter=ContentTypeId+eq+`
+              +`'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900810CD0D360D80542BC6396D515AB1E3700241FC8EA0963B744B84EC3DBC03F3163'`;
+              //+`'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900810CD0D360D80542BC6396D515AB1E3700096A9BAA8C2FA345B2A6F2E29566FD63'`;
     
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
@@ -84,8 +86,8 @@ export class News {
               item.MyComments = res[1].json().d.results;
               
               let str = res[0].json().d.LSiNewsImage;
-              //////////////////Warning
-              item.Image = str.substring(str.indexOf('src="/sites/lsintranet365')+'src=\"sites/lsintranet365'.length+1,str.lastIndexOf('.')+4);///  -4
+              //////////////////Warning        
+              item.Image = str.substring(str.indexOf('src="/sites/ls-intranetEU')+'src=\"sites/ls-intranetEU'.length+1,str.lastIndexOf('.')+4);///  -4
             })
             .catch(error=>{
               console.error('<News> Load images or Comments error:',error)

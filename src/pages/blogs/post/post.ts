@@ -58,7 +58,7 @@ export class Post {
         return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
             .then(res=>{
                 let str = res.json().d.LSiNewsImage;
-                this.post.Image = str.substring(str.indexOf('src="/sites/lsintranet365')+'src=\"sites/lsintranet365'.length+1,str.lastIndexOf('.')+4);///  -4
+                this.post.Image = str.substring(str.indexOf('src="/sites/ls-intranetEU')+'src=\"sites/ls-intranetEU'.length+1,str.lastIndexOf('.')+4);///  -4
             })
             .catch(error=>{
                 console.log('<Post> getImage error:',error);

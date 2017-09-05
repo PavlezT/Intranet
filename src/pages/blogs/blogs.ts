@@ -59,7 +59,8 @@ export class Blogs {
     let url = `${consts.siteUrl}/_api/Web/Lists('${this.guid}')/Items?$select=Title,Id,LSiBlogCategory,Created,LikesCount,LSiNewsBody,LSiNewsShortDescription,`+
               `Author/Title,Author/JobTitle,Author/EMail,ContentType/Name,FieldValuesAsText/LSiNewsBody,FieldValuesAsText/LSiNewsShortDescription,`+
               `LikedBy/UserName,LikedBy/EMail,LikedBy/Id&$expand=Author,FieldValuesAsText,ContentType,LikedBy&$orderby=Created+desc&$top=20&$filter=ContentTypeId+eq+`+
-              `'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39006B501587D2B00E41AEB6CE25B613EAC9004B61128CCCEC874B87E3A9CBA486DE54'`
+              `'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39006B501587D2B00E41AEB6CE25B613EAC9009461EE46563236489A51CB56F4444DE3'`;
+              //`'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39006B501587D2B00E41AEB6CE25B613EAC9004B61128CCCEC874B87E3A9CBA486DE54'`
 
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
