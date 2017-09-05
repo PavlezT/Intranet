@@ -85,9 +85,9 @@ export class News {
             .then(res=>{
               item.MyComments = res[1].json().d.results;
               
-              let str = res[0].json().d.LSiNewsImage;
-              //////////////////Warning        
-              item.Image = str.substring(str.indexOf('src="/sites/ls-intranetEU')+'src=\"sites/ls-intranetEU'.length+1,str.lastIndexOf('.')+4);///  -4
+              let str = this.getParsedImage(res[0].json().d.LSiNewsImage);
+              let sites = consts.siteUrl.substring(consts.siteUrl.indexOf('/sites/'),consts.siteUrl.length);
+              item.Image = str.substring(str.indexOf(sites)+sites.length+1,str.length);   
             })
             .catch(error=>{
               console.error('<News> Load images or Comments error:',error)
@@ -100,6 +100,14 @@ export class News {
         console.error('<News> Loading News error!',error);
         !this.News && (this.News = []);
       })
+  }
+
+  private getParsedImage(body) : string {
+    // let temp = (new DOMParser().parseFromString(item.Body, "text/html"));
+    // item.textBody = (temp && temp.getElementsByTagName('p') )? temp.getElementsByTagName('p').item(0).textContent : this.loc.dic.mobile.Empty;
+    let temp = document.createElement('template');
+    temp.innerHTML = body;
+    return temp.content.firstElementChild.getAttribute('src') || '/sites/lsintranet365/PublishingImages';
   }
 
   public newsLiked(event,item) : Promise<any> {

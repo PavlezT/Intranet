@@ -57,14 +57,23 @@ export class Post {
 
         return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
             .then(res=>{
-                let str = res.json().d.LSiNewsImage;
-                this.post.Image = str.substring(str.indexOf('src="/sites/ls-intranetEU')+'src=\"sites/ls-intranetEU'.length+1,str.lastIndexOf('.')+4);///  -4
+                let str = this.getParsedImage(res.json().d.LSiNewsImage);
+                let sites = consts.siteUrl.substring(consts.siteUrl.indexOf('/sites/'),consts.siteUrl.length);
+                this.post.Image = str.substring(str.indexOf(sites)+sites.length+1,str.length);
             })
             .catch(error=>{
                 console.log('<Post> getImage error:',error);
                 //return this.getImage();
             })
 
+    }
+
+    private getParsedImage(body) : string {
+        // let temp = (new DOMParser().parseFromString(item.Body, "text/html"));
+        // item.textBody = (temp && temp.getElementsByTagName('p') )? temp.getElementsByTagName('p').item(0).textContent : this.loc.dic.mobile.Empty;
+        let temp = document.createElement('template');
+        temp.innerHTML = body;
+        return temp.content.firstElementChild.getAttribute('src') || '/sites/lsintranet365/PublishingImages';
     }
 
     public sendComment(button) : Promise<any>{
