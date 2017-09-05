@@ -13,7 +13,7 @@
 
       <div padding>
         <h4>{{card.FieldValuesAsText.LSiNewsShortDescription}}</h4>
-        <p class="bodytext">{{card.FieldValuesAsText.LSiNewsBody}}</p>
+        <p class="bodytext" [innerHTML]="card.LSiNewsBody"></p>
         <ion-row>
           <ion-col>
             <button [ngClass]="card.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="newsLiked($event,card)">
