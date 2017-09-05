@@ -55,9 +55,9 @@ export class News {
   
   private getNews(loadNew? : boolean) : Promise<any> {
     let lastDate = this.News && this.News.length > 1 && loadNew ? encodeURI(encodeURIComponent(this.News[this.News.length-1].LSiNewsDate.replace(/-/g,'').replace('T',' ').replace('Z',''))) : false;
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?${ lastDate ? '$skiptoken=Paged=TRUE=p_LSiNewsDate='+lastDate+'&' : ''}$top=5&$orderby=LSiNewsDate+desc&$expand=FieldValuesAsText&$filter=ContentTypeId+eq+`
-              +`'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900810CD0D360D80542BC6396D515AB1E3700241FC8EA0963B744B84EC3DBC03F3163'`;
-              //+`'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900810CD0D360D80542BC6396D515AB1E3700096A9BAA8C2FA345B2A6F2E29566FD63'`;
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?${ lastDate ? '$skiptoken=Paged=TRUE=p_LSiNewsDate='+lastDate+'&' : ''}$top=5&$orderby=LSiNewsDate+desc&$expand=FieldValuesAsText&$filter=ContentType+eq+'News'`
+              //+`'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900810CD0D360D80542BC6396D515AB1E3700241FC8EA0963B744B84EC3DBC03F3163'`; //ls-intranetEU
+              //+`'0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900810CD0D360D80542BC6396D515AB1E3700096A9BAA8C2FA345B2A6F2E29566FD63'`; //lsintranet365
     
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
