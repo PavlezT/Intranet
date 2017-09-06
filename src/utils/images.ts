@@ -49,7 +49,7 @@ export class Images {
       let endpointURI = cordova && cordova.file && cordova.file.dataDirectory ? cordova.file.dataDirectory : 'file:///android_asset/';
 
       try{
-          this.images[key] = !consts.OnPremise ? (cordova.file.applicationDirectory + 'www/assets/templates/loading.gif') : listGet;
+          this.images[key] = !window.localStorage.getItem('OnPremise') ? (cordova.file.applicationDirectory + 'www/assets/templates/loading.gif') : listGet;
       }catch(e){
           console.error('<Images> loadImage: this.image[key]= ',e);
           this.images[key] = listGet;

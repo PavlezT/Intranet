@@ -12,6 +12,7 @@ export class Access{
     private access_token : string;
     private access_expiry : string;
     private r_token : string;
+    private site_realm : string;
     private inited : any;
     private ready : any;
 
@@ -24,7 +25,7 @@ export class Access{
     }
 
     public _init() : void {
-        (consts.OnPremise ? Promise.resolve() :  this.getContextToken().then(()=>{return this.getAccessToken()}) ).then(()=>{
+        (window.localStorage.getItem('OnPremise') ? Promise.resolve() :  this.getSiteRealm().then(()=>{ return this.getContextToken()}).then(()=>{return this.getAccessToken()}) ).then(()=>{
             this.getDigest().then(()=>this.ready.then(resolve=>resolve()));
         });
     }
@@ -32,7 +33,7 @@ export class Access{
     private getDigest() : Promise<any> {
         let listGet = `${consts.siteUrl}/_api/contextinfo`;
 
-        let headers = new Headers({'Authorization':(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),'Accept':"application/json; odata=verbose",'Content-Type': 'application/x-www-form-urlencoded'});
+        let headers = new Headers({'Authorization':(window.localStorage.getItem('OnPremise')?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),'Accept':"application/json; odata=verbose",'Content-Type': 'application/x-www-form-urlencoded'});
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(listGet,{},options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
@@ -43,11 +44,26 @@ export class Access{
             })
             .catch( err =>{
                 console.log('<Access> getDigest error',err);
-                if(err.status == '500' && !consts.OnPremise){
+                if(err.status == '500' && !window.localStorage.getItem('OnPremise')){
                     return this.getAccessToken().then(()=>{ return this.getDigest()});
                 }
                 return {FormDigestValue:''};
             })
+    }
+    
+    private getSiteRealm() : Promise<any>{
+        let domen = consts.siteUrl.substring('https://'.length,consts.siteUrl.indexOf('.sharepoint.'));
+        let urlAuth = `https://login.microsoftonline.com/${domen}.onmicrosoft.com/.well-known/openid-configuration`;
+        
+        let headers = new Headers({'Accept': 'application/json;odata=verbose'});
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.get(urlAuth,options).timeout(consts.timeoutDelay+1000).retry(consts.retryCount+2).toPromise()
+            .then(data=>{
+                let text = data.json().issuer;
+                this.site_realm = text.substring("https://sts.windows.net/".length,text.length-1);
+            })
+            .catch(error=>{console.error('<Access> getSiteRealm error:',error)})
     }
 
     private getContextToken() : Promise<any>{
@@ -68,12 +84,12 @@ export class Access{
     }
 
     private getAccessToken() : Promise<any>{
-        let url = `https://accounts.accesscontrol.windows.net/${consts.site_realm}/tokens/OAuth/2`;
+        let url = `https://accounts.accesscontrol.windows.net/${this.site_realm}/tokens/OAuth/2`;
 
         let body = `grant_type=refresh_token&
-                client_id=${consts.client_id}@${consts.site_realm}&
+                client_id=${consts.client_id}@${this.site_realm}&
                 client_secret=${encodeURIComponent(consts.secret)}&
-                resource=${consts.resource}/${consts.siteUrl.substring('https://'.length,consts.siteUrl.indexOf('/sites'))}@${consts.site_realm}&
+                resource=${consts.resource}/${consts.siteUrl.substring('https://'.length,consts.siteUrl.indexOf('/sites'))}@${this.site_realm}&
                 refresh_token=${this.r_token}`
 
         let headers = new Headers({'Accept': 'application/json;odata=verbose','Content-Type':'application/x-www-form-urlencoded'});
@@ -89,7 +105,7 @@ export class Access{
     }
 
     public getToken() : Promise<string> {
-        return (this.access_expiry && (new Date(this.access_expiry)) <= (new Date())) && !consts.OnPremise ?  this.getAccessToken().then(()=>{return this.access_token}) : this.inited.then(()=>{ return Promise.resolve(consts.OnPremise?consts.access_tokenOnPremise :this.access_token)});
+        return (this.access_expiry && (new Date(this.access_expiry)) <= (new Date())) && !window.localStorage.getItem('OnPremise') ?  this.getAccessToken().then(()=>{return this.access_token}) : this.inited.then(()=>{ return Promise.resolve(window.localStorage.getItem('OnPremise')?consts.access_tokenOnPremise :this.access_token)});
     }
 
     public getDigestValue() : Promise<string> {

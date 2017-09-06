@@ -10,7 +10,7 @@ declare var cordova:any;
 
 @Injectable()
 export class Auth {
-   url:string;
+   url : string;
    options: { username : string, password : string};
    http: Http;
 
@@ -21,6 +21,7 @@ export class Auth {
    public init(url:string, options:{username:string,password:string}){
       this.url = url;
       this.options = options;
+      window.localStorage.setItem('OnPremise',(url.indexOf('.sharepoint.com/') == -1 ? 'true' : ''));
       this.options.username = this.options.username
             .replace(/&/g, '&amp;')
             .replace(/"/g, '&quot;')
@@ -36,7 +37,7 @@ export class Auth {
    }
 
    saveUserCredentials(): void{
-      if(consts.OnPremise){
+      if(window.localStorage.getItem('OnPremise')){
          window.localStorage.setItem('username',this.options.username);
          window.localStorage.setItem('password',this.options.password);
       }
@@ -83,11 +84,11 @@ export class Auth {
       let self = this;
       let host = self.url.substring(0,self.url.indexOf('/sites/'));
 
-      return (!consts.OnPremise ?  this.getTokenWithOnline().then( (res : string) => {return this.XmlParse(res)})
+      return (!window.localStorage.getItem('OnPremise') ?  this.getTokenWithOnline().then( (res : string) => {return this.XmlParse(res)})
                                                           .then( tokenResponse => {
                                                               return self.postToken(tokenResponse)
                                                            })
-                                  : Promise.resolve([60*60*24*365]) )
+                                            : Promise.resolve([60*60*24*365]) )
                                                    .then( response => {
                                                       let diffSeconds = response[0];
                                                       let now = new Date();

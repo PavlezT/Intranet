@@ -76,7 +76,7 @@ export class Blogs {
         })
       })
       .catch(error=>{
-        console.log('<OrgStructure> get departments error:',error);
+        console.log('<Blogs> get departments error:',error);
         return this.getBlogs();
         //this.Blogs = [];
       })
@@ -96,7 +96,7 @@ export class Blogs {
         });
       })
       .catch(error=>{
-        console.log('<Blog> getComments error: ',error);
+        console.log('<Blogs> getComments error: ',error);
       })
     
   }
@@ -116,7 +116,7 @@ export class Blogs {
     let url = `${consts.siteUrl}/_vti_bin/client.svc/ProcessQuery`;
   
     let body = `<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library"><Actions><StaticMethod TypeId="{d9c758a9-d32d-4c9c-ab60-46fd8b3c79b7}" Name="SetLike" Id="63"><Parameters><Parameter Type="String">{${this.guid}}</Parameter><Parameter Type="Number">${item.Id}</Parameter><Parameter Type="Boolean">${item.liked}</Parameter></Parameters></StaticMethod></Actions><ObjectPaths><Identity Id="11" Name="list:${this.guid}:item:${item.Id},1" /></ObjectPaths></Request>`;//f864f49d-4048-4000-b229-0df7c147a8b5|740c6a0b-85e2-48a0-a494-e0f1759d4aa7:site:1df0ee95-1aa9-4f4c-ada5-97fa92602100:web:b377927e-6145-44a4-bb08-cf8e710fecdc:
-    let headers = new Headers({"Authorization":(consts.OnPremise?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose',"Content-Type": "text/xml"});
+    let headers = new Headers({"Authorization":(window.localStorage.getItem('OnPremise')?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'Accept': 'application/json;odata=verbose',"Content-Type": "text/xml"});
     let options = new RequestOptions({ headers: headers });
 
     return this.http.post(url,body,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
