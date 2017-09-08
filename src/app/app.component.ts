@@ -66,7 +66,7 @@ export class MyApp {
 
       this.checkNetwork().then(()=>{
         this.loaderctrl.stopLoading();
-        if(!(this.auth.checkAuthAlready(consts.siteUrl))){
+        if(!(this.auth.checkAuthAlready())){
             this.showPrompt();
          } else if(!(this.auth.checkAuthActive(consts.siteUrl))){
             this.reLogin();
@@ -108,7 +108,7 @@ export class MyApp {
               this.errorCounter++;
               this.loaderctrl.stopLoading();
               this.reLogin();
-          } else if((this.errorCounter <= 1 && error.status == '401') || (this.errorCounter > 1 && error.status == '403')){
+          } else if((this.errorCounter <= 1 && error.status == '401') || (this.errorCounter > 1 && error.status == '403') || (error.status == '404')){
               this.errorCounter++;
               this.showPrompt();
               this.loaderctrl.stopLoading();
@@ -119,12 +119,14 @@ export class MyApp {
       })
   }
 
-  getLogin(userName : string , userPassword : string) : void {
+  getLogin(userName : string , userPassword : string, url? : string) : void {
      this.loaderctrl.presentLoading();
+     url && consts.setUrl(url);
      this.auth.init(consts.siteUrl,{username : userName, password : userPassword});
      this.auth.getAuth().then(
         result => {
            this.loaderctrl.stopLoading();
+           url && window.localStorage.setItem('siteUrl',url);
            this.startApp();
         },
         errorMessage => {
@@ -161,7 +163,7 @@ export class MyApp {
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
 
-    return this.http.get(url,options).timeout(consts.timeoutDelay).toPromise()//.retry(consts.retryCount)
+    return this.http.get(url,options).timeout(consts.timeoutDelay+2000).toPromise()//.retry(consts.retryCount)
       .then( response =>{
         let text = response.text();
         text = text.replace(/\'/g,`"`).replace(/;/g,'');
@@ -211,19 +213,27 @@ export class MyApp {
       inputs: [
         {
           name: 'Email',
+          type:'text',
           placeholder: 'Email'
         },
         {
           name: 'Password',
           type: 'password',
           placeholder: 'Password'
+        },
+        {
+          name: 'URL',
+          type:'text',
+          label:'URL',
+          value: consts.siteUrl? consts.siteUrl : '',
+          placeholder:'https://example.sharepoint.com/sites/exampleintranet'
         }
       ],
       buttons: [
         {
           text: this.loc.dic.Accept,
           handler: data => {
-            this.getLogin(data.Email,data.Password);
+            this.getLogin(data.Email,data.Password,data.URL);
           }
         }
       ]

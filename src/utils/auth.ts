@@ -67,7 +67,10 @@ export class Auth {
       return true;
    }
 
-   checkAuthAlready(host : string){
+   checkAuthAlready(){
+      let host = window.localStorage.getItem('siteUrl');
+      if(!host) return false;
+      consts.setUrl(host);
       host = host.substring(0,host.indexOf('/sites/'));
       let expiry= window.localStorage.getItem(host);
       if(expiry)
@@ -88,7 +91,7 @@ export class Auth {
                                                           .then( tokenResponse => {
                                                               return self.postToken(tokenResponse)
                                                            })
-                                            : Promise.resolve([60*60*24*365]) )
+                                            : this.checkOnPremise())
                                                    .then( response => {
                                                       let diffSeconds = response[0];
                                                       let now = new Date();
@@ -101,6 +104,15 @@ export class Auth {
                                                       throw new Error(error.message);
                                                    })
      }
+
+  private checkOnPremise() : Promise<any> {
+    return this.http.get(consts.siteUrl).toPromise()
+      .then(()=>{return [60*60*24*365]})
+      .catch(err=>{
+        console.log('<Auth> error checking onPremise:',err);
+        throw new Error('Url is invalid or site is unreachable.')
+      });
+  }
 
    public XmlParse(res) : Object {
       if(res.includes('<S:Fault>') || res.startsWith('Error')){
