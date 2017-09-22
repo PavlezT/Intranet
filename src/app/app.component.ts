@@ -122,6 +122,7 @@ export class MyApp {
   getLogin(userName : string , userPassword : string, url? : string) : void {
      this.loaderctrl.presentLoading();
      url && consts.setUrl(url);
+     window.localStorage.setItem('tempuserEmail',userName);
      this.auth.init(consts.siteUrl,{username : userName, password : userPassword});
      this.auth.getAuth().then(
         result => {
@@ -215,7 +216,7 @@ export class MyApp {
           name: 'Email',
           type:'text',
           placeholder: 'Email',
-          value: this.user.getEmail() || ''
+          value: window.localStorage.getItem('tempuserEmail') || this.user.getEmail() || ''
         },
         {
           name: 'Password',
