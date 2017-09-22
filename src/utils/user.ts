@@ -64,7 +64,7 @@ export class User{
    }
 
    public getEmail() : string {
-     return this.email;
+    return this.email === 'e@e' ? '' : this.email ;
    }
 
    public getUserName() : string {

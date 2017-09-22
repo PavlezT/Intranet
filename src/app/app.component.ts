@@ -214,7 +214,8 @@ export class MyApp {
         {
           name: 'Email',
           type:'text',
-          placeholder: 'Email'
+          placeholder: 'Email',
+          value: this.user.getEmail() || ''
         },
         {
           name: 'Password',
