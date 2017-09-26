@@ -7,7 +7,7 @@
         "anotherUser":"another user",
         "EnterMessage":"Enter your email and password to login.",
         "Wait":"Wait...",
-        "Downloading":"Downloading...",
+        "Downloading":"Loading...",
         "Empty":"There is no information to display",
         "OperationError":"Operation failed. Error has occurred",
         "NotLike":"Don`t like",
@@ -28,7 +28,7 @@
     "modules":{
         "News":"News",
         "IdeaBox":"Idea Box",
-        "OrgStructure":"Organisational Structure",
+        "OrgStructure":"Employee Directory",
         "Birthdays":"Birthdays",
         "LSEvents":"Events",
         "Blogs":"Blogs",

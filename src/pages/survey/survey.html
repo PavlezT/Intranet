@@ -17,7 +17,7 @@
       <ion-radio value="{{answer}}">{{answer}}</ion-radio>
     </ion-item>
   </ion-list>
-  <ion-list no-lines *ngIf="!question && Answers && Surveys.length !=0" >
+  <ion-list no-lines *ngIf="!question && Answers && Surveys && Surveys.length !=0" >
     <ion-item  class="question">
       <h2>{{Surveys[current_question].Title}}</h2>
     </ion-item>

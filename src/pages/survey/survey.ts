@@ -41,6 +41,8 @@ export class Survey {
         return this.getConfig();
       })
       .then(()=>{
+        if(!this.config.PollListId)
+          throw new Error('There is no PollListId');
         let temp = JSON.parse(this.config.PollListId);
         this.guid = temp[Object.keys(temp)[0]];
         return this.getSurvey();
@@ -141,11 +143,17 @@ export class Survey {
 
     return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount+20).toPromise()
       .then(res=>{
+        this.Surveys.total = 0;
         res.json().d.results.map((answer,i,mass)=>{
-          this.Surveys.total = mass.length;//this.Surveys.total?this.Surveys.total+1 : 1;
-          this.Surveys.map(survey_item=>{
+          //this.Surveys.total = mass.length;//this.Surveys.total?this.Surveys.total+1 : 1;
+          this.Surveys.map((survey_item,i,mass)=>{
             survey_item.Choices.counts ? "" : (survey_item.Choices.counts=[]);
-            survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])!= -1 && (survey_item.Choices.counts[survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])] ? survey_item.Choices.counts[survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])]++ : (survey_item.Choices.counts[survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])] = 1)) ;
+            if(survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])!= -1) {
+              i+1 == mass.length && this.Surveys.total++;
+              survey_item.Choices.counts[survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])] ?
+                 survey_item.Choices.counts[survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])]++ 
+                 : (survey_item.Choices.counts[survey_item.Choices.results.indexOf(answer[survey_item.EntityPropertyName])] = 1);
+            }
           })
         })
       })
@@ -207,7 +215,7 @@ export class Survey {
   }
 
   public getProcents(index) : number {
-    return Math.round((this.Surveys[this.current_question].Choices.counts[index] ? this.Surveys[this.current_question].Choices.counts[index] : 0)/(this.Surveys.total && this.Surveys.total!=0?this.Surveys.total : 1)*100);
+    return Math.round(((this.Surveys[this.current_question].Choices.counts[index] ? this.Surveys[this.current_question].Choices.counts[index] : 0)/(this.Surveys.total && this.Surveys.total!=0?this.Surveys.total : 1))*100);
   }
 
   private showToast(message: any){

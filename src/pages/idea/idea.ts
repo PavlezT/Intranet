@@ -94,13 +94,15 @@ export class IdeaBox {
     let options = new RequestOptions({ headers: headers,withCredentials: true });
 
     return this.http.post(url,body,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
-      .then((data)=>{        
-        let temp = data.json()['4']._ObjectIdentity_;
+      .then((data)=>{
+        if(data.json()['0'] && data.json()['0'].ErrorInfo )
+                 throw (data.json()['0'].ErrorInfo.ErrorMessage);
+        let temp = data.json()['4'] && data.json()['4']._ObjectIdentity_ || " |  ";
         return temp.substring(temp.indexOf('|')+1,temp.length);
       })
       .catch(error=>{
         console.error('<Idea> getIdentity error:',error);
-        return this.getIdentity();
+        return Promise.reject("error:"+error.toString());//this.getIdentity();
       })
   }
 
@@ -178,7 +180,7 @@ export class IdeaBox {
     let errorShow = ()=>{
       item.liked = item.liked? false : true;
       item.liked?item.LikesCount++ : item.LikesCount--;
-      this.showToast(this.loc.dic.mobile.OperationError+'. '+(item.liked?this.loc.dic.mobile.Like:this.loc.dic.mobile.NotLike)+' '+this.loc.dic.mobile.unsaved);
+      this.showToast(this.loc.dic.mobile.OperationError+'. '+(item.liked?this.loc.dic.mobile.NotLike:this.loc.dic.mobile.Like)+' '+this.loc.dic.mobile.unsaved);
       event.target.offsetParent.disabled = false;
     }
 
@@ -232,7 +234,8 @@ export class IdeaBox {
     let identity = await this.identity;
     
     if(!(text.comment_text.length > 0))return this.showToast(this.loc.dic.mobile.OperationError+'. '+this.loc.dic.NotifField_TaskComment+' '+this.loc.dic.mobile.unsaved);
-
+    if(identity.length !> 0) return Promise.reject('There is no Identity');
+  
     let body = `<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library">
                   <Actions>
                     <Method Name="SetFieldValue" Id="355" ObjectPathId="353">

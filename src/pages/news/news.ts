@@ -118,7 +118,7 @@ export class News {
     let errorShow = ()=>{
       item.liked = item.liked? false : true;
       item.liked?item.LikesCount++ : item.LikesCount--;
-      this.showToast(this.loc.dic.mobile.OperationError+'. '+(item.liked?this.loc.dic.mobile.Like:this.loc.dic.mobile.NotLike)+' '+this.loc.dic.mobile.unsaved);
+      this.showToast(this.loc.dic.mobile.OperationError+'. '+(item.liked?this.loc.dic.mobile.NotLike:this.loc.dic.mobile.Like)+' '+this.loc.dic.mobile.unsaved);
       event.target.offsetParent.disabled = false;
     }
 

@@ -45,7 +45,7 @@ export class Access{
             .catch( err =>{
                 console.log('<Access> getDigest error',err);
                 if(err.status == '500' && !window.localStorage.getItem('OnPremise')){
-                    return this.getAccessToken().then(()=>{ return this.getDigest()});
+                   // return this.getAccessToken().then(()=>{ return this.getDigest()});
                 }
                 return {FormDigestValue:''};
             })
@@ -67,7 +67,7 @@ export class Access{
     }
 
     private getContextToken() : Promise<any>{
-        let urlAuth = `${consts.siteUrl.substring(0,consts.siteUrl.indexOf('/sites'))}/_layouts/15/appredirect.aspx?client_id=${consts.client_id}&redirect_uri=${consts.redirect_uri}`;
+        let urlAuth = `${consts.siteUrl}/_layouts/15/appredirect.aspx?client_id=${consts.client_id}&redirect_uri=${consts.redirect_uri}`;//.substring(0,consts.siteUrl.indexOf('/sites'))
 
         let headers = new Headers({'Accept': 'application/json;odata=verbose'});
         let options = new RequestOptions({ headers: headers ,withCredentials: true});
@@ -77,7 +77,8 @@ export class Access{
                 let text = data.text();
                 let tokeninput = text.substring(text.indexOf('name="SPAppToken"'),text.length);
                 let token = tokeninput.substring(tokeninput.indexOf(`value="`)+`value="`.length,tokeninput.indexOf('" />'));
-
+                if(!token || token.length == 0)
+                    return Promise.reject('Invalid Context token!');
                 this.r_token = jwt(token).refreshtoken;
             })
             .catch(error=>{console.error('<Access> getContextToken error:',error)})

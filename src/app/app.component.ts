@@ -235,7 +235,8 @@ export class MyApp {
         {
           text: this.loc.dic.Accept,
           handler: data => {
-            this.getLogin(data.Email,data.Password,data.URL);
+            data.URL && this.getLogin(data.Email,data.Password,data.URL);
+            !data.URL && this.showPrompt();
           }
         }
       ]

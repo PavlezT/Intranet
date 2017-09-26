@@ -75,10 +75,16 @@ export class OrgStructure {
       })
   }
 
+  public revealDepts(item){
+    this.Depts.map(child => {
+      child.ParentDepID == item.Id && (child.revealed = !child.revealed);
+    })
+  }
+
   public openDept(item) : void {
     this.navCtrl.push(DepartmentUsers,{
         users : this.Users,
-        guid : item.Id,
+        dept : item,
         Title : item.Title
     })
   }

@@ -12,6 +12,10 @@ page-post{
 				text-transform: none;
 				.icon{
 					margin-left:10px;
+					line-height: .67 !important;
+				}
+				.ion-ios-text{
+					margin-bottom: -3px;
 				}
 				.like_icon.icon-ios{
 					padding-bottom:5px;
@@ -35,8 +39,8 @@ page-post{
 	
 	.content-md {
 		.rightcol{
-			max-width: 15% !important;
-			width:15%;
+			max-width: 23% !important;
+			width: 23%;
 		}
 	}
 
