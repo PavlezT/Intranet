@@ -15,23 +15,28 @@ export class DepartmentUsers {
   Title: string;
   guid:string;
   Users : any;
+  Depts : any;
   dept : any;
   
   constructor(public platform: Platform,public navParams: NavParams,public viewCtrl: ViewController,@Inject(Images) public images: Images,public callNumber: CallNumber, @Inject(Localization) public loc : Localization) {
     this.Title = navParams.data.Title;
-    this.guid = navParams.data.item.Id;
-    this.dept  = navParams.data.item;
+    this.guid = navParams.data.dept.Id;
+    this.dept  = navParams.data.dept;
+    this.Depts = navParams.data.depts;
     
     this.getUsers(navParams.data.users);
   }
 
-  private getUsers(users : any) : void {
+  private getUsers(users : Array<any>) : void {
     this.Users = users.filter(user=>{
       if(user.IDDepartment == this.guid) return user;
     });
-    if(this.dept.ParentDepID == 0){
-      
-    }
+    this.Depts.map(dept=>{
+      if(dept.ParentDepID == this.guid){
+        let user  = users.find(user=>{return (dept.DepManager.Id && user.User1Id == dept.DepManager.Id)?true:false});
+        user && this.Users.push(user);
+      }
+    })
   }
 
   ionViewDidEnter(){

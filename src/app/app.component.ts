@@ -119,21 +119,22 @@ export class MyApp {
       })
   }
 
-  getLogin(userName : string , userPassword : string, url? : string) : void {
+  getLogin(userName : string , userPassword : string, url? : string) : Promise<any> {
      this.loaderctrl.presentLoading();
      url && consts.setUrl(url);
      window.localStorage.setItem('tempuserEmail',userName);
      this.auth.init(consts.siteUrl,{username : userName, password : userPassword});
-     this.auth.getAuth().then(
+     return this.auth.getAuth().then(
         result => {
            this.loaderctrl.stopLoading();
            url && window.localStorage.setItem('siteUrl',url);
-           this.startApp();
+           return this.startApp();
         },
         errorMessage => {
            this.showPrompt();
            this.showToast(errorMessage.message?errorMessage.message : errorMessage);
            this.loaderctrl.stopLoading();
+           return true;
         })
   }
 
@@ -235,7 +236,11 @@ export class MyApp {
         {
           text: this.loc.dic.Accept,
           handler: data => {
-            data.URL && this.getLogin(data.Email,data.Password,data.URL);
+            data.URL && this.getLogin(data.Email,data.Password,data.URL).then((error)=>{
+              !error &&  this.pages.map(page=>{
+                page.component == this.nav.getActive().component && this.openPage(page);
+              }) && window.localStorage.removeItem('tempuserEmail');
+            });
             !data.URL && this.showPrompt();
           }
         }

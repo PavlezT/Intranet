@@ -13,11 +13,17 @@ export class Access{
     private access_expiry : string;
     private r_token : string;
     private site_realm : string;
-    private inited : any;
+    private inited : Promise<any>;
     private ready : any;
+    private errorcount : number;
 
     constructor(@Inject(Http) public http: Http){
-        this.inited = new Promise((resolve,reject)=>{
+        this.errorcount  = 0;
+        this.inited = this.getNewPromise();
+    }
+
+    public getNewPromise() : Promise<any>{
+        return new Promise((resolve,reject)=>{
             this.ready = new Promise((res,rej)=>{
                 res(resolve);
             })
@@ -25,6 +31,7 @@ export class Access{
     }
 
     public _init() : void {
+        this.access_expiry &&  (this.inited = this.getNewPromise()) && delete this.access_expiry && delete this.digest_expiry;
         (window.localStorage.getItem('OnPremise') ? Promise.resolve() :  this.getSiteRealm().then(()=>{ return this.getContextToken()}).then(()=>{return this.getAccessToken()}) ).then(()=>{
             this.getDigest().then(()=>this.ready.then(resolve=>resolve()));
         });
@@ -45,7 +52,7 @@ export class Access{
             .catch( err =>{
                 console.log('<Access> getDigest error',err);
                 if(err.status == '500' && !window.localStorage.getItem('OnPremise')){
-                   // return this.getAccessToken().then(()=>{ return this.getDigest()});
+                    return this.errorcount < 4 ? this.getAccessToken().then(()=>{ return this.getDigest()}) : Promise.reject('Unexpected 500 error');
                 }
                 return {FormDigestValue:''};
             })
@@ -106,7 +113,7 @@ export class Access{
     }
 
     public getToken() : Promise<string> {
-        return (this.access_expiry && (new Date(this.access_expiry)) <= (new Date())) && !window.localStorage.getItem('OnPremise') ?  this.getAccessToken().then(()=>{return this.access_token}) : this.inited.then(()=>{ return Promise.resolve(window.localStorage.getItem('OnPremise')?consts.access_tokenOnPremise :this.access_token)});
+        return (this.access_expiry && (new Date(this.access_expiry)) <= (new Date())) && !window.localStorage.getItem('OnPremise') ?  this.getAccessToken().then((access)=>{ return this.access_token }) : this.inited.then(()=>{ return Promise.resolve(window.localStorage.getItem('OnPremise')?consts.access_tokenOnPremise :this.access_token)});
     }
 
     public getDigestValue() : Promise<string> {

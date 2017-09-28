@@ -17,7 +17,7 @@ export class OrgStructure {
   title: string;
   guid:string;
   usersListId : string;
-  Depts : any;
+  Depts : Array<{Id:number,Title:string,ParentDepID:number,DepManager:any,revealed : boolean}>;
   Users : any;
   backbuttonPressed : number;
 
@@ -51,7 +51,25 @@ export class OrgStructure {
 
     return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
       .then(res=>{
-        this.Depts = res.json().d.results;
+        let DeptsTemp : Array<{Id:number,Title:string,ParentDepID:number,DepManager:any,revealed : boolean}> = res.json().d.results;
+        this.Depts = [];
+        DeptsTemp.sort((a,b)=>{
+          if(a.ParentDepID < b.ParentDepID)
+            return 1
+          else 
+            return 0;
+        })
+        for(let dept = DeptsTemp[0],i = 0;i<DeptsTemp.length;i++,dept=DeptsTemp[i]){
+          if(dept.ParentDepID != 0 ){
+             let temp = DeptsTemp.splice(i,1)[0];
+                let index = DeptsTemp.findIndex(item=>{return item.Id == dept.ParentDepID?true : false});
+                let tempmas = DeptsTemp.splice(index+1,DeptsTemp.length);
+                DeptsTemp.push(temp);
+                DeptsTemp=DeptsTemp.concat(tempmas);
+                if(i<=index )i = i-1;
+            }
+        }
+        this.Depts = DeptsTemp;
       })
       .catch(error=>{
         console.log('<OrgStructure> get departments error:',error);
@@ -84,6 +102,7 @@ export class OrgStructure {
   public openDept(item) : void {
     this.navCtrl.push(DepartmentUsers,{
         users : this.Users,
+        depts : this.Depts,
         dept : item,
         Title : item.Title
     })

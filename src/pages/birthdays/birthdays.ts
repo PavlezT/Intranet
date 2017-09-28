@@ -179,34 +179,7 @@ export class Birthdays {
     toast.onDidDismiss((a,b)=>{
       this.backbuttonPressed = 0;
     })
-}
+  }
 
 }
 
-  // public checkNewUser(user,segment) : void {
-  //   // let temp;
-  //   // switch(segment){
-  //   //   case 'today':
-  //   //     temp = this.todayArr[0];
-  //   //     this.todayArr[this.todayArr.indexOf(user)] = temp;
-  //   //     this.todayArr[0] = user;
-  //   //     break;
-  //   //   case 'tomorrow':
-  //   //     temp = this.tomorrowArr[0];
-  //   //     this.tomorrowArr[this.tomorrowArr.indexOf(user)] = temp;
-  //   //     this.tomorrowArr[0] = user;
-  //   //     break;
-  //   //   case 'week':
-  //   //     temp = this.weekArr[0];
-  //   //     this.weekArr[this.weekArr.indexOf(user)] = temp;
-  //   //     this.weekArr[0] = user;
-  //   //     break;
-  //   //   case 'month':
-  //   //     temp = this.monthArr[0];
-  //   //     this.monthArr[this.monthArr.indexOf(user)] = temp;
-  //   //     this.monthArr[0] = user;
-  //   //     break;
-  //   //   default :
-  //   //     console.log('<Birth> check user: segment not detected:',{segment:segment,user:user});
-  //   // }
-  // }
