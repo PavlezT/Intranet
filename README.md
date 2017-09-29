@@ -8,3 +8,16 @@ Mobile app for LSIntanet
  ## TO DO 
  1. Content Types of *News* and *Blogs*  are not the same
  2. Image Src in *News* and *Blogs* are **hardcoded** (find dynamic method of identifining src od publishing image)
+
+ ### add animation on SplashScreen
+ *Android : ```Java
+
+    import android.view.animation.AccelerateInterpolator;
+    // function showSplashScreen #line :300
+    AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
+    fadeIn.setInterpolator(new AccelerateInterpolator((float)1.5));
+    fadeIn.setDuration(2000);
+
+    splashImageView.setAnimation(fadeIn);
+    splashImageView.startAnimation(fadeIn);
+```

@@ -97,6 +97,10 @@ export class Auth {
                                                       let now = new Date();
                                                       now.setSeconds(now.getSeconds() + diffSeconds);
                                                       
+                                                      let authPage : string = (response[1] && response[1].text) ? response[1].text() : " ";
+                                                      if(authPage.includes('Correlation ID:'))
+                                                        throw new Error(`Error in login user in sharepoint:${authPage.slice( authPage.indexOf('id="errordisplay-IssueTypeValue">')+'id="errordisplay-IssueTypeValue">'.length,authPage.lastIndexOf('</span>') )}`)
+
                                                       self.setCookieExpiry(host, now);
                                                       return true;
                                                    })
@@ -107,7 +111,7 @@ export class Auth {
 
   private checkOnPremise() : Promise<any> {
     return this.http.get(consts.siteUrl).toPromise()
-      .then(()=>{return [60*60*24*365]})
+      .then(()=>{return [60*60*24*365,]})
       .catch(err=>{
         console.log('<Auth> error checking onPremise:',err);
         throw new Error('Url is invalid or site is unreachable.')
