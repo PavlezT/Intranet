@@ -5,11 +5,16 @@ page-org-structure {
 			margin-top: 15px !important;
 			ion-icon {
 				margin-left: 10px !important;
+				margin-top: 28px !important;
 			}
 			.parent{
 				padding-top: 33px !important;
 				padding-bottom: 33px !important;
 			}
+		}
+
+		.hidden{
+			display:none;
 		}
 	}
 }

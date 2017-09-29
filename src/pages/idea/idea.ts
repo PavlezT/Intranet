@@ -234,7 +234,7 @@ export class IdeaBox {
     let identity = await this.identity;
     
     if(!(text.comment_text.length > 0))return this.showToast(this.loc.dic.mobile.OperationError+'. '+this.loc.dic.NotifField_TaskComment+' '+this.loc.dic.mobile.unsaved);
-    if(identity.length !> 0) return Promise.reject('There is no Identity');
+    if(identity.length == 0) return Promise.reject('There is no Identity');
   
     let body = `<Request xmlns="http://schemas.microsoft.com/sharepoint/clientquery/2009" SchemaVersion="15.0.0.0" LibraryVersion="16.0.0.0" ApplicationName="Javascript Library">
                   <Actions>

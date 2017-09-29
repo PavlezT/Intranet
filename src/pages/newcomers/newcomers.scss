@@ -3,8 +3,9 @@ page-newcomers {
 	ion-item{
 		ion-avatar{
 			img {
-				width: 60px !important;
-				height: 60px !important;
+				// width: 60px !important;
+				// height: 60px !important;
+				max-width: 60px !important;
 			}
 		}
 	}

@@ -44,6 +44,12 @@ ion-icon{
   line-height: .27 !important;
 }
 
+.item ion-avatar img {
+  height: auto !important;
+  width: auto !important;
+  max-width: 40px;
+}
+
 // .toolbar-ios{
 //   min-height: 64px;
 // }

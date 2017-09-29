@@ -5,15 +5,16 @@ page-blogs {
         width:20%;
         ion-avatar{
             img{
-                width:55px;
-                height:55px;
+                // width:55px;
+                // height:55px;
+                max-width: 75px;
             }
         }
     }
 
     .content_blog{
         display: inline-block;
-        width:70%;
+        width:77%;
         vertical-align: top;
     }
 

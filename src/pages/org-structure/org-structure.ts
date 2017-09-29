@@ -93,9 +93,12 @@ export class OrgStructure {
       })
   }
 
-  public revealDepts(item){
+  public revealDepts(item, revealed?){
     this.Depts.map(child => {
-      child.ParentDepID == item.Id && (child.revealed = !child.revealed);
+      if(child.ParentDepID == item.Id) {
+        child.revealed = (revealed == false? revealed : !child.revealed);
+        this.revealDepts(child,false);
+      }
     })
   }
 

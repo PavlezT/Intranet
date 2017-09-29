@@ -9,7 +9,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let item of Depts" >
+  <ion-card *ngFor="let item of Depts" [ngClass]="(item.ParentDepID == 0 || item.revealed)? '' : 'hidden'">
       <ion-card-content *ngIf="item.ParentDepID == 0 || item.revealed" [ngClass]="item.ParentDepID == 0? 'parent' : ''">
         <ion-item>
           <ion-label (click)="revealDepts(item)">

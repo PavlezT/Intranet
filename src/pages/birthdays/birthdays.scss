@@ -1,61 +1,4 @@
 page-birthdays {
-
-	// ion-content{
-	// 	background-image: url('../assets/templates/birth.png');
-	// 	background-repeat: repeat;
-	// 	background-size: contain;
-	// }
-
-	// .birthmain{
-	// 	ion-item{
-	// 		background-color: transparent;
-	// 		text-align: center;
-	// 		padding-left: 0px !important;
-	// 		padding-right: 0px !important;
-	// 		.item-inner{
-	// 			border: none !important;
-	// 			padding-right: 0px !important;
-	// 			ion-label{
-	// 				margin-right:0px !important;
-	// 				margin-left:0px !important;
-	// 			}
-	// 		}
-	// 		ion-avatar{
-	// 			img {
-	// 					margin:auto;
-	// 					width: 160px;
-	// 					height: 160px;
-	// 			}
-	// 		}
-	// 	}
-
-	// 	.mainTextItem{
-	// 		background-color: rgba(17, 76, 153, 0.55);
-	// 		color: white;
-	// 		margin-top: 10px;
-	// 		font-size: 2.5rem;
-	// 	}
-
-	// 	.smallUsers{
-	// 		display: inline-block;
-	// 		padding: 10px 30px 10px 30px;
-	// 		text-align: center;
-	// 		color: #444;
-	// 		font-size: 1.7rem;
-	// 		max-width: 160px;
-	// 		vertical-align: text-top;
-	// 		img{
-	// 			border-radius: 50%;
-	// 			width: 90px;
-	// 		}
-	// 		p{
-	// 			margin-top: 1px
-	// 		}
-	// 	}
-	// }
-// 	 display: -webkit-inline-flex;
-//   -webkit-align-items: center;
-
 	.container{
 		h1{
 			background-color: #c0d3f8;
@@ -66,7 +9,7 @@ page-birthdays {
 		background-color: #eeeeee;
 	}
 
-	ion-item {
+	ion-item.item {
 		padding-top: 10px;
 		padding-bottom: 10px;
 		background-color: transparent !important;
@@ -89,8 +32,9 @@ page-birthdays {
 
 		ion-avatar {
 			img{
-				width: 80px !important;
-				height: 80px !important;
+				// width: 80px !important;
+				// height: 80px !important;
+				max-width: 80px;
 			}
 		}
 	}
