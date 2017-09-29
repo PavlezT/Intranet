@@ -10,8 +10,8 @@ Mobile app for LSIntanet
  2. Image Src in *News* and *Blogs* are **hardcoded** (find dynamic method of identifining src od publishing image)
 
  ### add animation on SplashScreen
- *Android : ```Java
-
+ * Android : 
+ ```Java
     import android.view.animation.AccelerateInterpolator;
     // function showSplashScreen #line :300
     AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
