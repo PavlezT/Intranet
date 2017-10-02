@@ -8,7 +8,7 @@
   <div class="birthmain" >
     <ion-item >
       <ion-avatar>
-          <img src="{{images.getImage(greeting_user.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+greeting_user.UserEmail+'&mobile=0')}}">
+          <img src="{{images.getImage(greeting_user.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (greeting_user.UserEmail || 'e@e')+'&mobile=0')}}">
       </ion-avatar >
       <ion-item class="mainTextItem" >
         <ion-icon name="ribbon"></ion-icon>

@@ -12,7 +12,7 @@
     <ion-item *ngFor="let post of Blogs" >
       <div class="user" (tap)="openPost(post)">
         <ion-avatar item-left>
-          <img src="{{images.getImage(post.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+post.Author.EMail+'&mobile=0')}}">
+          <img src="{{images.getImage(post.Author.EMail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (post.Author.EMail || 'e@e')+'&mobile=0')}}">
         </ion-avatar>
       </div> 
       <div class="content_blog" (tap)="openPost(post)">

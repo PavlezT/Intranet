@@ -51,8 +51,9 @@ export class Access{
             })
             .catch( err =>{
                 console.log('<Access> getDigest error',err);
-                if(err.status == '500' && !window.localStorage.getItem('OnPremise')){
-                    return this.errorcount < 4 ? this.getAccessToken().then(()=>{ return this.getDigest()}) : Promise.reject('Unexpected 500 error');
+                if((err.status == '500' || err.status == '400' ) && !window.localStorage.getItem('OnPremise')){
+                    this.errorcount ++;
+                    return this.errorcount < 4 ? this.getAccessToken().then(()=>{ return this.getDigest()}) : Promise.reject(`Unexpected ${err.status} error`);
                 }
                 return {FormDigestValue:''};
             })

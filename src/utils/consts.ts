@@ -18,7 +18,7 @@ export let siteUrl;// = 'https://lizardsoftdev.sharepoint.com/sites/lsintranet36
 //##deprecated  export const OnPremise = false; 
 
 export function setUrl(url:string): void {
-    siteUrl = url;
+    siteUrl = url.trim();
 }
 
 //isserId lsdocs 26bab6fd-6d83-4f7b-8a9c-54195697d012

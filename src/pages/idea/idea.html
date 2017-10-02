@@ -14,7 +14,7 @@
         <div>
           <ion-item>
             <ion-avatar item-left>
-              <img src="{{images.getImage(item.Author[0].email,'_layouts/15/userphoto.aspx?size=L&accountname='+item.Author[0].email+'&mobile=0')}}">
+              <img src="{{images.getImage(item.Author[0].email || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (item.Author[0].email || 'e@e')+'&mobile=0')}}">
             </ion-avatar>
             <h2 class="userTitle" >{{item.Author[0].title}}</h2>
             <p>{{item.Created}}</p>
@@ -48,7 +48,7 @@
             <ng-container *ngFor="let comment of item.MyComments; index as i">
               <ion-item *ngIf="item.showcomments || i == item.MyComments.length-1 ||i == item.MyComments.length-2 ">
                 <ion-avatar item-left>
-                  <img src="{{images.getImage(comment.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+comment.Author.EMail+'&mobile=0')}}">
+                  <img src="{{images.getImage(comment.Author.EMail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (comment.Author.EMail || 'e@e')+'&mobile=0')}}">
                 </ion-avatar>
                 <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
                 <p>{{comment.FieldValuesAsText.Body}}</p>
@@ -72,7 +72,7 @@
         <div>
           <ion-item>
             <ion-avatar item-left>
-              <img src="{{images.getImage(item.Author[0].email,'_layouts/15/userphoto.aspx?size=L&accountname='+item.Author[0].email+'&mobile=0')}}">
+              <img src="{{images.getImage(item.Author[0].email || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(item.Author[0].email || 'e@e')+'&mobile=0')}}">
             </ion-avatar>
             <h2 class="userTitle" >{{item.Author[0].title}}</h2>
             <p>{{item.Created}}</p>
@@ -106,7 +106,7 @@
           <ng-container *ngFor="let comment of item.MyComments; index as i">
             <ion-item *ngIf="item.showcomments || i == item.MyComments.length-1 ||i == item.MyComments.length-2 ">
               <ion-avatar item-left>
-                <img src="{{images.getImage(comment.Author.EMail,'_layouts/15/userphoto.aspx?size=L&accountname='+comment.Author.EMail+'&mobile=0')}}">
+                <img src="{{images.getImage(comment.Author.EMail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (comment.Author.EMail || 'e@e')+'&mobile=0')}}">
               </ion-avatar>
               <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
               <p>{{comment.FieldValuesAsText.Body}}</p>

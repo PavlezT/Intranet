@@ -13,7 +13,7 @@
       <ion-list>
         <ion-item *ngFor="let BirthUser of todayArr" (click)="openCard(BirthUser)" >
           <ion-avatar item-left>
-            <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
+            <img src="{{images.getImage(BirthUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
           <div class="container">
             <h1>{{BirthUser.Title}}</h1>
@@ -32,7 +32,7 @@
       <ion-list>
         <ion-item *ngFor="let BirthUser of tomorrowArr" (click)="openCard(BirthUser)" >
           <ion-avatar item-left>
-            <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
+            <img src="{{images.getImage(BirthUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
           <div class="container">
             <h1>{{BirthUser.Title}}</h1>
@@ -51,7 +51,7 @@
       <ion-list>
         <ion-item *ngFor="let BirthUser of weekArr" (click)="openCard(BirthUser)" >
           <ion-avatar item-left>
-            <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
+            <img src="{{images.getImage(BirthUser.UserEmail || 'e@e' ,'_layouts/15/userphoto.aspx?size=L&accountname='+ (BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
           <div class="container">
             <h1>{{BirthUser.Title}}</h1>
@@ -70,7 +70,7 @@
       <ion-list>
         <ion-item *ngFor="let BirthUser of monthArr" (click)="openCard(BirthUser)" >
           <ion-avatar item-left>
-            <img src="{{images.getImage(BirthUser.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+BirthUser.UserEmail+'&mobile=0')}}">
+            <img src="{{images.getImage(BirthUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
           <div class="container">
             <h1>{{BirthUser.Title}}</h1>

@@ -68,7 +68,10 @@ export class Images {
       return this.images[key];
    }
 
-   public getImage(key : string,path?:string) : string {
+   public getImage(key : string,path?:string) : string { 
+     console.log('keys:',key)
+      //  key = key || "e@e";
+      //  path && path.includes("&accountname=&") && path.replace("accountname=&",`accountname=${key}&`);
        return this.images[key] || this.loadImage(key,path);
    }
 

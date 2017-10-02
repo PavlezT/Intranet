@@ -98,14 +98,14 @@ export class Auth {
                                                       now.setSeconds(now.getSeconds() + diffSeconds);
                                                       
                                                       let authPage : string = (response[1] && response[1].text) ? response[1].text() : " ";
-                                                      if(authPage.includes('Correlation ID:'))
+                                                      if(authPage.includes('Correlation ID:') || authPage.includes('<div id="errordisplay-mainDiv">'))
                                                         throw new Error(`Error in login user in sharepoint:${authPage.slice( authPage.indexOf('id="errordisplay-IssueTypeValue">')+'id="errordisplay-IssueTypeValue">'.length,authPage.lastIndexOf('</span>') )}`)
 
                                                       self.setCookieExpiry(host, now);
                                                       return true;
                                                    })
                                                    .catch(error => {
-                                                      throw new Error(error.message);
+                                                      throw new Error(error.message || error);
                                                    })
      }
 
@@ -139,6 +139,9 @@ export class Auth {
         let self = this;
         let host = self.url.substring(0,self.url.indexOf('/sites/'));
         let spFormsEndPoint =  host + "/" + consts.FormsPath;
+
+        if(!host.includes('https://'))
+          return Promise.reject("The URL should support the HTTPS protocol.");
 
         return self.readFile(consts.Online_saml_path ,consts.Online_saml)
                .then( (text:string) => {
