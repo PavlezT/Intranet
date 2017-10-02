@@ -30,10 +30,10 @@
     <button ion-button  *ngIf="question" (click)="acceptAnswer()">
       {{loc.dic.Send}}
     </button>
-    <button ion-button icon-only *ngIf="!question && Answers && Answers.length != 0" (click)="previousAnswer()">
+    <button ion-button icon-only *ngIf="!question && Answers && Answers.length != 0 && Surveys && Surveys.length > 1 " (click)="previousAnswer()">
       <ion-icon name="arrow-back"></ion-icon>
     </button>
-    <button ion-button icon-only *ngIf="!question && Answers && Answers.length != 0" (click)="nextAnswer()">
+    <button ion-button icon-only *ngIf="!question && Answers && Answers.length !=0 && Surveys && Surveys.length > 1" (click)="nextAnswer()">
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
   </div>
