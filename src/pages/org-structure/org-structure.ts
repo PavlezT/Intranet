@@ -44,7 +44,7 @@ export class OrgStructure {
   }
 
   private getDepartments() : Promise<any>{
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?$select=Id,Title,ParentDepID,DepManager/Id,DepManager/Name,DepManager/Title,DepManager/EMail&$expand=DepManager/Id`;
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/items?$select=Id,Title,ParentDepID,DepManager/Id,DepManager/Name,DepManager/Title,DepManager/EMail&$expand=DepManager/Id&$top=5000`;
     
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
@@ -78,7 +78,7 @@ export class OrgStructure {
   }
 
   private getUsers() : Promise<any> {
-     let url = `${consts.siteUrl}/_api/web/lists('${this.usersListId}')/items?$select=Id,User1Id,IDDepartment,Title,JobTitle,LSiWorkPhone,LSiMobilePhone,LSiWorkEmail,LSiHomePhone,UserEmail`;
+     let url = `${consts.siteUrl}/_api/web/lists('${this.usersListId}')/items?$select=Id,User1Id,IDDepartment,Title,JobTitle,LSiWorkPhone,LSiMobilePhone,LSiWorkEmail,LSiHomePhone,UserEmail&$top=5000`;
     
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
