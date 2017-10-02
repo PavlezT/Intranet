@@ -76,7 +76,7 @@ export class Survey {
   private getConfig() : Promise<any> {
     let url= `${consts.siteUrl}/_catalogs/masterpage/LSIntranet/js/core/LSi.Config.js`;
 
-    let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
+    let headers = new Headers({'Accept': 'application/json;odata=verbose', 'Pragma' : 'no-cache', 'Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
 
     return this.http.get(url,options).timeout(consts.timeoutDelay).retry(consts.retryCount).toPromise()
