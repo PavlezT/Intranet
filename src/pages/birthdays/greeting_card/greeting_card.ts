@@ -69,7 +69,7 @@ export class GreetingCard {
         },
         LSiBirthdayGreetingsText : this.textcomment.value,
         LSiBirthdayPersonId : this.greeting_user.User1Id,
-        LSiBirthdayPersonStringId: this.greeting_user.User1Id.toString(), 
+        LSiBirthdayPersonStringId: this.greeting_user.User1Id?this.greeting_user.User1Id.toString() : "", 
         "AuthorId" : this.user.getId()
     }
     let headers = new Headers({"Authorization":(window.localStorage.getItem('OnPremise')?`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`:`Bearer ${this.access_token}`),"X-RequestDigest": this.digest,'X-HTTP-Method':'POST','IF-MATCH': '*','Accept': 'application/json;odata=verbose',"Content-Type": "application/json;odata=verbose"});
