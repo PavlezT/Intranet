@@ -7,6 +7,7 @@ import * as consts from '../../utils/consts';
 import { Localization } from '../../utils/localization';
 
 import { spEventsParser } from './sp-events-parser';
+import { EventView } from './eventview/eventview';
 
 @Component({
   selector: 'page-events',
@@ -167,6 +168,10 @@ export class LSEvents {
     toast.onDidDismiss((a,b)=>{
       this.backbuttonPressed = 0;
     })
-}
+  }
+
+  public openEvent(event) : void {
+    this.navCtrl.push(EventView,{item:event});
+  }
 
 }

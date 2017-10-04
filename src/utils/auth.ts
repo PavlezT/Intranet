@@ -111,7 +111,7 @@ export class Auth {
 
   private checkOnPremise() : Promise<any> {
     return this.http.get(consts.siteUrl).toPromise()
-      .then(()=>{return [60*60*24*365,]})
+      .then(()=>{return [60*60*24*365,{}]})
       .catch(err=>{
         console.log('<Auth> error checking onPremise:',err);
         throw new Error('Url is invalid or site is unreachable.')

@@ -12,6 +12,7 @@ import { DepartmentUsers } from '../pages/org-structure/department_users/departm
 import { Birthdays } from '../pages/birthdays/birthdays';
 import { GreetingCard } from '../pages/birthdays/greeting_card/greeting_card';
 import { LSEvents } from '../pages/events/events';
+import { EventView } from '../pages/events/eventview/eventview';
 import { Blogs } from '../pages/blogs/blogs';
 import { Post } from '../pages/blogs/post/post';
 import { Newcomers } from '../pages/newcomers/newcomers';
@@ -39,7 +40,7 @@ import { CallNumber } from '@ionic-native/call-number';
   declarations: [
     MyApp,
     News,IdeaBox,OrgStructure,Birthdays,LSEvents,Blogs,Newcomers,Survey,Policies,
-    Card,GreetingCard,DepartmentUsers,Post
+    Card,GreetingCard,DepartmentUsers,Post,EventView
   ],
   imports: [
     BrowserModule,HttpModule,
@@ -49,7 +50,7 @@ import { CallNumber } from '@ionic-native/call-number';
   entryComponents: [
     MyApp,
     News,IdeaBox,OrgStructure,Birthdays,LSEvents,Blogs,Newcomers,Survey,Policies,
-    Card,GreetingCard,DepartmentUsers,Post
+    Card,GreetingCard,DepartmentUsers,Post,EventView
   ],
   providers: [
     StatusBar,FileOpener,CallNumber,

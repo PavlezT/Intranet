@@ -97,7 +97,7 @@ export class Policies {
   }
 
   public opendDocs(nativeURL,docName) : void {
-    this.fileOpener.open(decodeURIComponent(nativeURL),mimes.lookup(decodeURIComponent(docName)))
+    this.fileOpener.open(decodeURIComponent(nativeURL), (mimes.lookup(decodeURIComponent(docName)) || 'application/msword'))
       .then((data)=>{this.loaderctrl.stopLoading();})
       .catch(err=>{
         this.loaderctrl.stopLoading();

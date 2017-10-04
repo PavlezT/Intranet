@@ -24,7 +24,7 @@
         </button>
       </ion-item>
       <ion-list padding>
-        <ion-item class="eventitem" *ngFor="let event of DayEvents">
+        <ion-item class="eventitem" *ngFor="let event of DayEvents" (tap)="openEvent(event)">
           <div item-left class="itemdate" >
               <h2>{{event.month}}</h2>
               <h1>{{event.date}}</h1>
@@ -54,7 +54,7 @@
         </button>
       </ion-item>
       <ion-list padding>
-        <ion-item class="eventitem" *ngFor="let event of WeekEvents">
+        <ion-item class="eventitem" *ngFor="let event of WeekEvents" (tap)="openEvent(event)">
           <div item-left class="itemdate" >
               <h2>{{event.month}}</h2>
               <h1>{{event.date}}</h1>
@@ -84,7 +84,7 @@
         </button>
       </ion-item>
       <ion-list padding>
-        <ion-item class="eventitem" *ngFor="let event of MonthEvents">
+        <ion-item class="eventitem" *ngFor="let event of MonthEvents" (tap)="openEvent(event)">
           <div item-left class="itemdate" >
               <h2>{{event.month}}</h2>
               <h1>{{event.date}}</h1>

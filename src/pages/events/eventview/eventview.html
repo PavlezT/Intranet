@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{event.Title}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-label>
+    <div class="line" >
+       <ion-icon name="ios-calendar-outline"></ion-icon>
+       <div class="left">{{loc.dic.NotifField_StartDate}}: </div>
+       <div class="right">{{getStartDate()}}</div>
+    </div>
+    <div class="line">
+       <ion-icon name="ios-calendar"></ion-icon>
+       <div class="left">{{loc.dic.NotifField_TaskDueDate}}: </div>
+       <div class="right">{{getEndDate()}}</div>
+    </div>
+    <div class="line">
+       <ion-icon name="md-stopwatch"></ion-icon>
+       <div class="left">{{loc.dic.RouteStateEstim}}: </div>
+       <div class="right">{{getDuration()}}</div>
+    </div>
+    <div class="line">
+       <!-- <ion-icon name="md-globe"></ion-icon>
+       <ion-icon name="md-locate"></ion-icon> -->
+       <ion-icon name="md-pin"></ion-icon>
+       <div class="left">{{loc.dic.Location}}: </div>
+       <div class="right">{{getLocation()}}</div>
+    </div>
+  </ion-label>
+</ion-content>
