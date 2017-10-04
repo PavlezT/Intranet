@@ -1,10 +1,6 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { NavController, NavParams, Platform, ToastController } from 'ionic-angular';
-import { Http, Headers, RequestOptions  } from '@angular/http';
 
-import * as moment from 'moment';
-
-import * as consts from '../../../utils/consts';
 import { Localization } from '../../../utils/localization';
 
 @Component({
@@ -49,16 +45,6 @@ export class EventView {
                 .join(":")
         }
         return toHHMMSS(this.event.Duration);
-    }
-
-    private showToast(message: any){
-      let toast = this.toastCtrl.create({
-        message: (typeof message == 'string' )? message.substring(0,( message.indexOf('&#x') != -1? message.indexOf('&#x') : message.length)) : message.toString().substring(0,( message.toString().indexOf('&#x') != -1 ?message.toString().indexOf('&#x') : message.toString().length)) ,
-        position: 'bottom',
-        showCloseButton : true,
-        duration: 9000
-      });
-      toast.present();
     }
 
 }

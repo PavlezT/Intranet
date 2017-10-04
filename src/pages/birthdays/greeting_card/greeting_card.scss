@@ -9,8 +9,8 @@ greeting_card {
 
 	.birthmain{
 		background-image: url('../assets/templates/birth.png');
-		background-repeat: repeat;
-		background-size: contain;
+		background-repeat: no-repeat;
+		background-size: cover;
 		ion-item{
 			background-color: transparent;
 			text-align: center;
@@ -19,7 +19,7 @@ greeting_card {
 			.item-inner{
 				border: none !important;
 				padding-right: 0px !important;
-				ion-label{
+				ion-label {
 					margin-right:0px !important;
 					margin-left:0px !important;
 					margin-bottom: 0px !important;
@@ -40,6 +40,10 @@ greeting_card {
 			color: white;
 			margin-top: 10px;
 			font-size: 2.5rem;
+			ion-label{
+				line-height: 55px;
+				margin-top: 0 !important;
+			}
 		}
 
 		.smallUsers{

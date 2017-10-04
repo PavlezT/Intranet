@@ -11,8 +11,10 @@
           <img src="{{images.getImage(greeting_user.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (greeting_user.UserEmail || 'e@e')+'&mobile=0')}}">
       </ion-avatar >
       <ion-item class="mainTextItem" >
-        <ion-icon name="ribbon"></ion-icon>
-        <span>{{greeting_user.Title}}</span>
+          <!-- <ion-label> -->
+            <ion-icon name="ribbon"></ion-icon>
+            <span>{{greeting_user.Title}}</span>
+          <!-- </ion-label> -->
       </ion-item>
       <div class="about">
         <p>{{greeting_user.JobTitle}}</p>
