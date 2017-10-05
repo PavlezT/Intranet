@@ -236,7 +236,7 @@ export class MyApp {
         {
           text: this.loc.dic.Accept,
           handler: data => {
-            data.URL && this.getLogin(data.Email,data.Password,data.URL).then((error)=>{
+            data.URL && this.getLogin(data.Email,data.Password,data.URL.toLowerCase()).then((error)=>{
               !error &&  this.pages.map(page=>{
                 page.component == this.nav.getActive().component && this.openPage(page);
               }) && window.localStorage.removeItem('tempuserEmail');
