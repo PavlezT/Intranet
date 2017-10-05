@@ -21,3 +21,12 @@ Mobile app for LSIntanet
     splashImageView.setAnimation(fadeIn);
     splashImageView.startAnimation(fadeIn);
 ```
+* Objective-C : 
+```Objective-C
+    //line 483 : (void)setVisible:(BOOL)visible andForce:(BOOL)force (function) -> if (_visible){ (close)
+            [UIView animateWithDuration:fadeDuration/1000
+                             animations:^{
+                printf("\n\nprivetprivet pritvet privet\n\n");
+                [weakSelf hideViews];
+            }];
+```
