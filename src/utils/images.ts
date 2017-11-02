@@ -24,7 +24,7 @@ export class Images {
      }catch(e){console.log('<Iamges> FileTransfer _initing error',e)};
 
       this.imagesLoad().then(res => {
-        let first = res[Object.keys(res)[0]];
+        let first = null;// res[Object.keys(res)[0]];
         if(first){
           this.file.checkFile(first.substring(0,first.lastIndexOf(`/`)+1),first.substring(first.lastIndexOf(`/`)+1,first.length)).then(
             data => {this.images = res;},
