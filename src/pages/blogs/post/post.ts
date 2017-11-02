@@ -1,5 +1,5 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { NavController, NavParams, Platform, ToastController } from 'ionic-angular';
+import { NavController, NavParams, Platform, Content, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions  } from '@angular/http';
 
 import * as moment from 'moment';
@@ -17,6 +17,8 @@ import { User } from '../../../utils/user';
 export class Post {
 
     @ViewChild('textcomment') textcomment : any;
+    @ViewChild('comments') commentsView: any;
+    @ViewChild(Content) content: Content;
 
     digest : string;
     access_token : string;
@@ -46,7 +48,13 @@ export class Post {
     }
 
     public focuse (target : string) : void {
-        console.log('focuse');
+        if(target == 'comments'){
+            this.content.scrollTo(0,this.commentsView.nativeElement.offsetTop,1000);
+        } else if(target == 'textcomment'){
+            this.content.scrollToBottom(800).then(()=>{this.textcomment.setFocus();})
+        } else if(target == 'textcomment2'){
+            setTimeout(()=>{this.content.scrollTo(0,this.content.scrollHeight-this.content._scrollPadding+this.content.contentTop)},450);
+        }
     }
 
     public getImage() : Promise<any> {
