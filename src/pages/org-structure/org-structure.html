@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -12,14 +11,14 @@
   <ion-card *ngFor="let item of Depts" [ngClass]="(item.ParentDepID == 0 || item.revealed)? '' : 'hidden'">
       <ion-card-content *ngIf="item.ParentDepID == 0 || item.revealed" [ngClass]="item.ParentDepID == 0? 'parent' : ''">
         <ion-item>
-          <ion-label (click)="revealDepts(item)">
+          <ion-label (tap)="revealDepts(item)">
             <h2>{{item.Title}}</h2>
             <p>{{item.DepManager.Title}}</p>
           </ion-label>
-          <ion-avatar item-right (click)="openDept(item)">
+          <ion-avatar item-right (tap)="openDept(item)">
             <img src="{{images.getImage(item.DepManager.EMail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(item.DepManager.EMail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
-          <ion-icon item-right name="ios-arrow-forward" (click)="openDept(item)"></ion-icon>
+          <ion-icon item-right name="ios-arrow-forward" (tap)="openDept(item)"></ion-icon>
         </ion-item>
       </ion-card-content>
   </ion-card>

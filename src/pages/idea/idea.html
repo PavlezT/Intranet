@@ -131,10 +131,10 @@
 <ion-footer>
   <ion-toolbar>
     <ion-segment [(ngModel)]="ideas" color="new">
-      <ion-segment-button value="best"(click)="getBest()">
+      <ion-segment-button value="best"(tap)="getBest()">
         {{loc.dic.mobile.Best}}
       </ion-segment-button>
-      <ion-segment-button value="new" (click)="getNew()">
+      <ion-segment-button value="new" (tap)="getNew()">
         {{loc.dic.mobile.Newest}}
       </ion-segment-button>
     </ion-segment>

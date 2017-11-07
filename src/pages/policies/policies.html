@@ -9,9 +9,9 @@
 
 <ion-content padding>
   <ion-list  no-lines style="z-index: -1">
-    <ion-item (click)="docClicked(document)" *ngFor="let document of Docs" >
+    <ion-item (tap)="docClicked(document)" *ngFor="let document of Docs" >
       <div item-left>
-        <div margin-right class="file-icon file-icon-lg " [attr.data-type]="document.icon"></div>
+        <div class="file-icon" [attr.data-type]="document.icon"></div>
       </div>
       <h2>{{ document.FileLeafRef || document.Title}}</h2>
       <p>{{loc.dic.Created}}: {{document.Created}}</p>

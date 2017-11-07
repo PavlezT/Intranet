@@ -1,7 +1,7 @@
 <ion-menu type="reveal" [content]="content">
   <ion-header>
     <ion-toolbar>
-      <ion-item (click)="userTapped()" class="userAvatart">
+      <ion-item (tap)="userTapped()" class="userAvatart">
           <ion-avatar item-left>
             <img  #Myimg src="{{images.getImage(user.getEmail(),'_layouts/15/userphoto.aspx?size=L&accountname='+user.getEmail()+'&mobile=0')}}">
           </ion-avatar >
@@ -12,7 +12,7 @@
 
   <ion-content  class="menucontainer" >
     <ion-list>
-      <button text-left ion-button full clear  menuClose  *ngFor="let p of (pages)" (click)="openPage(p)">
+      <button text-left ion-button full clear  menuClose  *ngFor="let p of (pages)" (tap)="openPage(p)">
         <ion-label color="light">
            <ion-icon margin-right name="{{p.icon}}">
           </ion-icon>{{p.title}}

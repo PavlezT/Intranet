@@ -1,7 +1,13 @@
 page-post{
-    ion-content{
+    
+	ion-content{
 		.bodytext{
 			white-space: pre-line;
+			padding: 0px;
+			margin: 0px;
+			p{
+				margin:0px !important;
+			}
 		}
 	}
 	.row{
@@ -30,7 +36,14 @@ page-post{
 		.rightcol{
 			max-width: 20% !important;
 			width: 20%;
-			button{
+			button.sendText{
+				height:100%;
+				vertical-align: bottom;
+				color: #387ef5;
+				padding-left: 0;
+				font-size: 2.8rem;
+			}
+			button.sendIcon{
 				height:60px;
 				border-radius: 6px;
 			}

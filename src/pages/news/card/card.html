@@ -12,8 +12,8 @@
       <!--{{images.getImage(item.Image)}}-->
 
       <div padding>
-        <h4>{{card.FieldValuesAsText.LSiNewsShortDescription}}</h4>
-        <p class="bodytext" [innerHTML]="card.LSiNewsBody"></p>
+        <h4 *ngIf="card.FieldValuesAsText.LSiNewsShortDescription" >{{card.FieldValuesAsText.LSiNewsShortDescription}}</h4>
+        <p *ngIf="card.FieldValuesAsText.LSiNewsBody && card.FieldValuesAsText.LSiNewsBody.length > 0" class="bodytext" [innerHTML]="card.LSiNewsBody"></p>
         <ion-row>
           <ion-col>
             <button [ngClass]="card.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="newsLiked($event,card)">
@@ -38,7 +38,7 @@
           </ion-col>
         </div>
         <div #comments>
-          <ion-item *ngFor="let comment of card.MyComments">
+          <ion-item class="noBottomLine" *ngFor="let comment of card.MyComments">
             <ion-avatar item-left>
               <img src="{{images.getImage((comment.Author ?comment.Author.EMail : 'e@e'),'_layouts/15/userphoto.aspx?size=L&accountname='+(comment.Author ?comment.Author.EMail : 'e@e')+'&mobile=0')}}">
             </ion-avatar>
@@ -55,12 +55,15 @@
           <ion-row>
             <ion-col class="leftcol">
               <ion-item item-left>
-                <ion-label floating>{{loc.dic.Alert14}}</ion-label>
-                <ion-input #textcomment (focus)="focuse('textcomment2')" rows="4"></ion-input>
+                <ion-label floating>{{loc.dic.Alert37}}</ion-label>
+                <ion-input #textcomment (focus)="focuse('textcomment2')" rows="3"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col class="rightcol">
-              <button ion-button full icon-only (tap)="sendComment($event)" >
+              <button class="sendText" *ngIf="loc.localization == 'en-gb'" (tap)="sendComment($event)" >
+                  {{loc.dic.Send}}
+              </button>
+              <button class="sendIcon" *ngIf="loc.localization != 'en-gb'" ion-button full icon-only (tap)="sendComment($event)" >
                   <ion-icon name="send"></ion-icon>
               </button>
             </ion-col>

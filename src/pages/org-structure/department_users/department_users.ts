@@ -23,7 +23,7 @@ export class DepartmentUsers {
     this.guid = navParams.data.dept.Id;
     this.dept  = navParams.data.dept;
     this.Depts = navParams.data.depts;
-    
+  
     this.getUsers(navParams.data.users);
   }
 

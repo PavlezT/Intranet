@@ -6,12 +6,20 @@ page-news {
 
 	.card{
 		margin-bottom: 20px;
+		.card-content {
+			padding-bottom: 1px;
+		}
+	}
+
+	.notesRow{
+		padding-left: 16px;
+		padding-right: 16px;
 	}
 
 	.row{
 		.col{
 			button{
-				font-size:2rem;
+				font-size:1.5rem;
 				.like_icon{
 					padding-bottom: 6px;
 				}

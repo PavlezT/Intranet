@@ -51,12 +51,15 @@
           <ion-row>
             <ion-col class="leftcol">
               <ion-item item-left>
-                <ion-label floating>{{loc.dic.Alert14}}</ion-label>
-                <ion-input #textcomment (focus)="focuse('textcomment2')" rows="4"></ion-input>
+                <ion-label floating>{{loc.dic.Alert37}}</ion-label>
+                <ion-input #textcomment (focus)="focuse('textcomment2')" rows="3"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col class="rightcol">
-              <button ion-button full icon-only (tap)="sendComment($event)" >
+              <button class="sendText" *ngIf="loc.localization == 'en-gb'" (tap)="sendComment($event)" >
+                  {{loc.dic.Send}}
+              </button>
+              <button class="sendIcon" *ngIf="loc.localization != 'en-gb'" ion-button full icon-only (tap)="sendComment($event)" >
                   <ion-icon name="send"></ion-icon>
               </button>
             </ion-col>

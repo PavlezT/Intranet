@@ -1,13 +1,7 @@
-
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons left>
-      <button ion-button icon-only (click)="dismiss()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-title>{{Title}}</ion-title>
-  </ion-toolbar>
+  <ion-navbar>
+      <ion-title>{{Title}}</ion-title>
+  </ion-navbar>
 </ion-header>
 
 <ion-content>
@@ -30,7 +24,7 @@
           </ion-row>
           <ion-row>
             <ion-col *ngIf="item.LSiWorkPhone" >
-              <div (click)="makeCall(item.LSiWorkPhone)" >
+              <div (tap)="makeCall(item.LSiWorkPhone)" >
                 <ion-icon name="ios-call-outline"></ion-icon>
                 {{item.LSiWorkPhone}}
               </div>
@@ -38,7 +32,7 @@
           </ion-row>
           <ion-row>
             <ion-col *ngIf="item.LSiHomePhone"> 
-              <div (click)="makeCall(item.LSiHomePhone)">
+              <div (tap)="makeCall(item.LSiHomePhone)">
                 <ion-icon name="ios-home-outline"></ion-icon>
                 {{item.LSiHomePhone}}
               </div>

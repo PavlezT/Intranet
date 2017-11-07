@@ -12,7 +12,7 @@
     <div *ngSwitchCase="'today'">
         <div class="birthmain" >
           <ion-item >
-            <ion-avatar  *ngIf="todayArr && todayArr.length != 0 && todayArr[0].UserEmail" (click)="openGreetingCard(todayArr[0])">
+            <ion-avatar  *ngIf="todayArr && todayArr.length != 0 && todayArr[0].UserEmail" (tap)="openGreetingCard(todayArr[0])">
                 <img src="{{images.getImage(todayArr[0].UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+todayArr[0].UserEmail+'&mobile=0')}}">
             </ion-avatar >
             <ion-item class="mainTextItem" >
@@ -33,7 +33,7 @@
     <div *ngSwitchCase="'tomorrow'">
         <div class="birthmain" >
           <ion-item>
-            <ion-avatar  *ngIf="tomorrowArr && tomorrowArr.length != 0 && tomorrowArr[0].UserEmail" (click)="openGreetingCard(tomorrowArr[0])"> 
+            <ion-avatar  *ngIf="tomorrowArr && tomorrowArr.length != 0 && tomorrowArr[0].UserEmail" (tap)="openGreetingCard(tomorrowArr[0])"> 
                 <img src="{{images.getImage(tomorrowArr[0].UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+tomorrowArr[0].UserEmail+'&mobile=0')}}">
             </ion-avatar >
             <ion-item class="mainTextItem" >
@@ -54,7 +54,7 @@
     <div *ngSwitchCase="'week'">
         <div class="birthmain" >
          <ion-item>
-          <ion-avatar *ngIf="weekArr && weekArr.length != 0 && weekArr[0].UserEmail" (click)="openGreetingCard(weekArr[0])">
+          <ion-avatar *ngIf="weekArr && weekArr.length != 0 && weekArr[0].UserEmail" (tap)="openGreetingCard(weekArr[0])">
               <img src="{{images.getImage(weekArr[0].UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+weekArr[0].UserEmail+'&mobile=0')}}">
           </ion-avatar >
           <ion-item class="mainTextItem" >
@@ -75,7 +75,7 @@
     <div *ngSwitchCase="'month'">
       <div class="birthmain" >
         <ion-item>
-          <ion-avatar  *ngIf="monthArr && monthArr.length != 0 && monthArr[0].UserEmail" (click)="openGreetingCard(monthArr[0])">
+          <ion-avatar  *ngIf="monthArr && monthArr.length != 0 && monthArr[0].UserEmail" (tap)="openGreetingCard(monthArr[0])">
               <img src="{{images.getImage(monthArr[0].UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+monthArr[0].UserEmail+'&mobile=0')}}">
           </ion-avatar >
           <ion-item class="mainTextItem" >
@@ -99,16 +99,16 @@
 <ion-footer>
   <ion-toolbar>
     <ion-segment [(ngModel)]="birth" color="new">
-      <ion-segment-button value="today"(click)="getToday()">
+      <ion-segment-button value="today"(tap)="getToday()">
         {{loc.dic.days.today}}
       </ion-segment-button>
-      <ion-segment-button value="tomorrow" (click)="getTomorrow()">
+      <ion-segment-button value="tomorrow" (tap)="getTomorrow()">
         {{loc.dic.days.tomorrow}}
       </ion-segment-button>
-      <ion-segment-button value="week" (click)="getWeek()">
+      <ion-segment-button value="week" (tap)="getWeek()">
         {{loc.dic.days.week}}
       </ion-segment-button>
-      <ion-segment-button value="month" (click)="getMonth()">
+      <ion-segment-button value="month" (tap)="getMonth()">
         {{loc.dic.days.month}}
       </ion-segment-button>
     </ion-segment>

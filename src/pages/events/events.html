@@ -11,7 +11,7 @@
   <div [ngSwitch]="calendar">
     <div *ngSwitchCase="'today'">
       <ion-item class="picker">
-        <button item-left ion-button icon-only large outline (click)="clickLeft()">
+        <button item-left ion-button icon-only large outline (tap)="clickLeft()">
           <ion-icon name="ios-arrow-back"></ion-icon>
         </button>
         <ion-label>
@@ -19,7 +19,7 @@
             {{dayDate.format('dddd, DD/MM/YYYY')}}
           </span>
         </ion-label>
-        <button item-right ion-button icon-only large outline (click)="clickRight()">
+        <button item-right ion-button icon-only large outline (tap)="clickRight()">
           <ion-icon name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-item>
@@ -41,7 +41,7 @@
     </div>
     <div *ngSwitchCase="'week'">
       <ion-item class="picker">
-        <button item-left ion-button icon-only large outline (click)="clickLeft()">
+        <button item-left ion-button icon-only large outline (tap)="clickLeft()">
           <ion-icon name="ios-arrow-back"></ion-icon>
         </button>
         <ion-label>
@@ -49,7 +49,7 @@
             {{weekDate.format('DD/MM/YYYY')}} - {{weekDate.clone().endOf('week').format('DD/MM/YYYY')}}
           </span>
         </ion-label>
-        <button item-right ion-button icon-only large outline (click)="clickRight()">
+        <button item-right ion-button icon-only large outline (tap)="clickRight()">
           <ion-icon name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-item>
@@ -71,7 +71,7 @@
     </div>
     <div *ngSwitchCase="'month'">
       <ion-item class="picker">
-        <button item-left ion-button icon-only large outline (click)="clickLeft()">
+        <button item-left ion-button icon-only large outline (tap)="clickLeft()">
           <ion-icon name="ios-arrow-back"></ion-icon>
         </button>
         <ion-label>
@@ -79,7 +79,7 @@
             {{monthDate.format('MMMM, YYYY')}}
           </span>
         </ion-label>
-        <button item-right ion-button icon-only large outline (click)="clickRight()">
+        <button item-right ion-button icon-only large outline (tap)="clickRight()">
           <ion-icon name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-item>
@@ -105,13 +105,13 @@
 <ion-footer>
   <ion-toolbar>
     <ion-segment [(ngModel)]="calendar" color="new">
-      <ion-segment-button value="today"(click)="getToday()">
+      <ion-segment-button value="today"(tap)="getToday()">
         {{loc.dic.days.day}}
       </ion-segment-button>
-      <ion-segment-button value="week" (click)="getWeek()">
+      <ion-segment-button value="week" (tap)="getWeek()">
         {{loc.dic.days.week}}
       </ion-segment-button>
-      <ion-segment-button value="month" (click)="getMonth()">
+      <ion-segment-button value="month" (tap)="getMonth()">
         {{loc.dic.days.month}}
       </ion-segment-button>
     </ion-segment>

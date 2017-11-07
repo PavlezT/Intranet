@@ -11,7 +11,7 @@
   <div [ngSwitch]="birth">
     <div *ngSwitchCase="'today'">
       <ion-list>
-        <ion-item *ngFor="let BirthUser of todayArr" (click)="openCard(BirthUser)" >
+        <ion-item *ngFor="let BirthUser of todayArr" (tap)="openCard(BirthUser)" >
           <ion-avatar item-left>
             <img src="{{images.getImage(BirthUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
@@ -30,7 +30,7 @@
     </div>
     <div *ngSwitchCase="'tomorrow'">
       <ion-list>
-        <ion-item *ngFor="let BirthUser of tomorrowArr" (click)="openCard(BirthUser)" >
+        <ion-item *ngFor="let BirthUser of tomorrowArr" (tap)="openCard(BirthUser)" >
           <ion-avatar item-left>
             <img src="{{images.getImage(BirthUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
@@ -49,7 +49,7 @@
     </div>
     <div *ngSwitchCase="'week'">
       <ion-list>
-        <ion-item *ngFor="let BirthUser of weekArr" (click)="openCard(BirthUser)" >
+        <ion-item *ngFor="let BirthUser of weekArr" (tap)="openCard(BirthUser)" >
           <ion-avatar item-left>
             <img src="{{images.getImage(BirthUser.UserEmail || 'e@e' ,'_layouts/15/userphoto.aspx?size=L&accountname='+ (BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
@@ -68,7 +68,7 @@
     </div>
     <div *ngSwitchCase="'month'">
       <ion-list>
-        <ion-item *ngFor="let BirthUser of monthArr" (click)="openCard(BirthUser)" >
+        <ion-item *ngFor="let BirthUser of monthArr" (tap)="openCard(BirthUser)" >
           <ion-avatar item-left>
             <img src="{{images.getImage(BirthUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
@@ -91,16 +91,16 @@
 <ion-footer>
   <ion-toolbar>
     <ion-segment [(ngModel)]="birth" color="new">
-      <ion-segment-button value="today"(click)="getToday()">
+      <ion-segment-button value="today"(tap)="getToday()">
         {{loc.dic.days.today}}
       </ion-segment-button>
-      <ion-segment-button value="tomorrow" (click)="getTomorrow()">
+      <ion-segment-button value="tomorrow" (tap)="getTomorrow()">
         {{loc.dic.days.tomorrow}}
       </ion-segment-button>
-      <ion-segment-button value="week" (click)="getWeek()">
+      <ion-segment-button value="week" (tap)="getWeek()">
         {{loc.dic.days.week}}
       </ion-segment-button>
-      <ion-segment-button value="month" (click)="getMonth()">
+      <ion-segment-button value="month" (tap)="getMonth()">
         {{loc.dic.days.month}}
       </ion-segment-button>
     </ion-segment>

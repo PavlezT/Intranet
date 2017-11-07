@@ -27,13 +27,13 @@
     </ion-item>
   </ion-list>
   <div class="buttons">
-    <button ion-button  *ngIf="question" (click)="acceptAnswer()">
+    <button ion-button  *ngIf="question" (tap)="acceptAnswer()">
       {{loc.dic.Send}}
     </button>
-    <button ion-button icon-only *ngIf="!question && Answers && Answers.length != 0 && Surveys && Surveys.length > 1 " (click)="previousAnswer()">
+    <button ion-button icon-only *ngIf="!question && Answers && Answers.length != 0 && Surveys && Surveys.length > 1 " (tap)="previousAnswer()">
       <ion-icon name="arrow-back"></ion-icon>
     </button>
-    <button ion-button icon-only *ngIf="!question && Answers && Answers.length !=0 && Surveys && Surveys.length > 1" (click)="nextAnswer()">
+    <button ion-button icon-only *ngIf="!question && Answers && Answers.length !=0 && Surveys && Surveys.length > 1" (tap)="nextAnswer()">
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
   </div>
