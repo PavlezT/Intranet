@@ -59,8 +59,9 @@ ion-icon{
 }
 
 .item ion-avatar img {
-  height: auto !important;
-  width: auto !important;
+  // height: auto !important;
+  // width: auto !important;
+  border: 1px solid grey;
   max-width: 40px;
 }
 

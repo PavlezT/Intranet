@@ -114,11 +114,11 @@ export class Access{
     }
 
     public getToken() : Promise<string> {
-        return (this.access_expiry && (new Date(this.access_expiry)) <= (new Date())) && !window.localStorage.getItem('OnPremise') ?  this.getAccessToken().then((access)=>{ return this.access_token }) : this.inited.then(()=>{ return Promise.resolve(window.localStorage.getItem('OnPremise')?consts.access_tokenOnPremise :this.access_token)});
+        return (this.access_expiry && (new Date(this.access_expiry)) <= (new Date(Date.now()))) && !window.localStorage.getItem('OnPremise') ?  this.getAccessToken().then((access)=>{ return this.access_token }) : this.inited.then(()=>{ return Promise.resolve(window.localStorage.getItem('OnPremise')?consts.access_tokenOnPremise :this.access_token)});
     }
 
     public getDigestValue() : Promise<string> {
-        return (this.digest_expiry && (new Date(this.digest_expiry)) <= (new Date())) ? this.getDigest().then(()=>{return this.digest}) :  this.inited.then(()=>{return (this.digest) });
+        return (this.digest_expiry && (new Date(this.digest_expiry)) <= (new Date(Date.now()))) ? this.getDigest().then(()=>{return this.digest}) :  this.inited.then(()=>{return (this.digest) });
     }
 
 }

@@ -23,7 +23,7 @@
        <div class="left">{{loc.dic.RouteStateEstim}}: </div>
        <div class="right">{{getDuration()}}</div>
     </div>
-    <div class="line">
+    <div class="line" *ngIf="event.Location">
        <!-- <ion-icon name="md-globe"></ion-icon>
        <ion-icon name="md-locate"></ion-icon> -->
        <ion-icon name="md-pin"></ion-icon>

@@ -2,19 +2,21 @@ page-blogs {
     
     .user{
         display: inline-block;
-        width:26%;
+        width:auto; //26%
+        margin-right: 7px;
         ion-avatar{
+            margin: 8px 0 0 0 !important;
             img{
-                // width:55px;
-                // height:55px;
-                max-width: 75px;
+                width:70px;
+                height:70px;
+                max-width: 70px;
             }
         }
     }
 
     .content_blog{
         display: inline-block;
-        width:72%;
+        width:78%;
         vertical-align: top;
     }
 

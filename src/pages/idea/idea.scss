@@ -1,16 +1,25 @@
 page-idea {
     .content{
 		background-color: #ddd;
-	}
+    }
+    
+    ion-avatar[item-start]{
+        margin-right: 7px !important;
+    }
 
 	.card{
-		margin-bottom: 20px;
+        margin-bottom: 20px;
+        .card-content{
+            padding-bottom: 1px !important;
+        }
 	}
 
 	.row{
 		.col{
+            padding: 0px !important;
 			button{
-                font-size:2rem;
+                // font-size:2rem;
+                font-size: 1.5rem;
                 .like_icon {
                     padding-bottom:5px;
                 }
@@ -37,9 +46,9 @@ page-idea {
             color:#a1238e !important;
         }
         span{
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             background-color: #a1238e;
-            padding: 5px;
+            padding: 3px;
         }
     }
 
@@ -52,11 +61,27 @@ page-idea {
         }
     }
 
+    .userDate{
+        font-size: 1.2rem;
+    }
+
     .comments{
         ion-item{
             background-color: #f1f1f1 !important;
+            button{
+                padding: 0px !important;
+            }
+            .label{
+                margin-top: 3px !important;
+                margin-bottom: 3px !important;
+            }
         }
         .showcomments{
+            min-height: 0px;
+            .label{
+                margin-top: 3px !important;
+                margin-bottom: 3px !important;
+            }
             p{
                 color: rgb(170,50,150);
             }

@@ -3,17 +3,51 @@ department_users {
 		background-color: #eee !important;
 		ion-card {
 			margin-top: 15px !important;
+			ion-item{
+				.item-inner{
+					overflow: visible;
+					.input-wrapper{
+						overflow: visible;
+						.label{
+							overflow: visible;
+							padding-left: 10px !important;
+						}
+					}
+				}
+				p{
+					font-size:1.3rem !important;
+				}
+				p.lastHeader{
+					margin-bottom: 15px;
+				}
+			}
+			.card-content{
+				padding: 3px 1px 3px 1px;
+			}
 		}
 	}
 
 	ion-row{
 		word-break: break-all;
+		margin-left: -21px;
+		ion-col {
+			font-size: 1.2rem;
+			padding : 0px 5px 3px 5px !important;
+			ion-icon{
+				margin-right: 4px;
+			}
+		}
 	}
 
 	ion-avatar{
+		position: absolute;
+		top: 8px;
+		right:10px;
+		margin:0px;
 		img{
 			max-width: 80px !important;
-			// height: 80px !important;
+			width: 50px !important;
+			height: 50px !important;
 		}
 	}
 }

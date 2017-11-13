@@ -10,12 +10,11 @@
       <ion-card-content>
         <ion-item>
           <h2>{{item.Title}}</h2>
-          <h3>{{item.ol_Department}}</h3>
-          <p>{{item.JobTitle}}</p>
+          <p>{{item.ol_Department}}</p>
+          <p class="lastHeader">{{item.JobTitle}}</p>
           <ion-avatar item-right>
             <img src="{{images.getImage(item.UserEmail,'_layouts/15/userphoto.aspx?size=L&accountname='+item.UserEmail+'&mobile=0')}}">
           </ion-avatar>
-          <br>
           <ion-row>
             <ion-col *ngIf="item.LSiWorkEmail">
               <ion-icon name="ios-mail-outline"></ion-icon>

@@ -12,6 +12,8 @@ page-post{
 	}
 	.row{
 		.col{
+			padding-top: 0px !important;
+			padding-bottom : 0 !important;
 			max-width: 50% !important;
 			button{
 				font-size: 1.5rem;
@@ -32,6 +34,10 @@ page-post{
 		.leftcol{
 			max-width: 80% !important;
 			width:100%;
+			padding-top: 0px !important;
+			.label{
+				margin: 0px !important;
+			}
 		}
 		.rightcol{
 			max-width: 20% !important;
@@ -42,6 +48,8 @@ page-post{
 				color: #387ef5;
 				padding-left: 0;
 				font-size: 2.8rem;
+				margin-top: 15%;
+				background-color: transparent;
 			}
 			button.sendIcon{
 				height:60px;
@@ -84,7 +92,18 @@ page-post{
             img {
 				border-radius: 50%;
 				width:100%;
+				border : 1px solid grey;
             }
         }
-    }
+	}
+	
+	.comment {
+		.item-inner{
+			border : 0px !important;
+			.label{
+				margin-top: 0px !important;
+				margin-bottom: 0px !important;
+			}
+		}
+	}
 }

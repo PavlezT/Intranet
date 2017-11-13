@@ -6,8 +6,12 @@ page-survey {
 	}
 
 	.answer{
-		padding: 20px;
+		padding: 10px;
 		font-size: 1.8rem;
+		.label{
+			margin-top:1px !important;
+			margin-bottom : 1px !important;
+		}
 	}
 
 	ion-item{

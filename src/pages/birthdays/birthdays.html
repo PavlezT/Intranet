@@ -91,16 +91,16 @@
 <ion-footer>
   <ion-toolbar>
     <ion-segment [(ngModel)]="birth" color="new">
-      <ion-segment-button value="today"(tap)="getToday()">
+      <ion-segment-button value="today"(tap)="!todayArr ? getToday() : true">
         {{loc.dic.days.today}}
       </ion-segment-button>
-      <ion-segment-button value="tomorrow" (tap)="getTomorrow()">
+      <ion-segment-button value="tomorrow" (tap)="!tomorrowArr ? getTomorrow() : true">
         {{loc.dic.days.tomorrow}}
       </ion-segment-button>
-      <ion-segment-button value="week" (tap)="getWeek()">
+      <ion-segment-button value="week" (tap)="!weekArr ? getWeek() : true">
         {{loc.dic.days.week}}
       </ion-segment-button>
-      <ion-segment-button value="month" (tap)="getMonth()">
+      <ion-segment-button value="month" (tap)="!monthArr ? getMonth() : true">
         {{loc.dic.days.month}}
       </ion-segment-button>
     </ion-segment>

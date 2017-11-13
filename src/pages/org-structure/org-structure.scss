@@ -2,17 +2,22 @@ page-org-structure {
 	ion-content {
 		background-color: #eee !important;
 		ion-card {
-			margin-top: 15px !important;
+			margin-top: 9px !important;
 			ion-icon {
 				margin-left: 10px !important;
 				margin-top: 28px !important;
 			}
 			.parent{
-				padding-top: 33px !important;
-				padding-bottom: 33px !important;
+				padding-top: 16px !important;
+				padding-bottom: 16px !important;
 			}
 			.item ion-avatar img{
 				max-width: 80px !important;
+				width: 80px;
+				height: 80px;
+			}
+			.card-content{
+				padding: 3px 1px 3px 1px;
 			}
 		}
 

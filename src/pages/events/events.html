@@ -11,7 +11,7 @@
   <div [ngSwitch]="calendar">
     <div *ngSwitchCase="'today'">
       <ion-item class="picker">
-        <button item-left ion-button icon-only large outline (tap)="clickLeft()">
+        <button item-left ion-button icon-only miggle outline (tap)="clickLeft()">
           <ion-icon name="ios-arrow-back"></ion-icon>
         </button>
         <ion-label>
@@ -19,15 +19,15 @@
             {{dayDate.format('dddd, DD/MM/YYYY')}}
           </span>
         </ion-label>
-        <button item-right ion-button icon-only large outline (tap)="clickRight()">
+        <button item-right ion-button icon-only miggle outline (tap)="clickRight()">
           <ion-icon name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-item>
-      <ion-list padding>
+      <ion-list>
         <ion-item class="eventitem" *ngFor="let event of DayEvents" (tap)="openEvent(event)">
           <div item-left class="itemdate" >
-              <h2>{{event.month}}</h2>
-              <h1>{{event.date}}</h1>
+              <h3>{{event.month}}</h3>
+              <h2>{{event.date}}</h2>
           </div>
           {{event.Title}}   
         </ion-item>
@@ -41,7 +41,7 @@
     </div>
     <div *ngSwitchCase="'week'">
       <ion-item class="picker">
-        <button item-left ion-button icon-only large outline (tap)="clickLeft()">
+        <button item-left ion-button icon-only miggle outline (tap)="clickLeft()">
           <ion-icon name="ios-arrow-back"></ion-icon>
         </button>
         <ion-label>
@@ -49,15 +49,15 @@
             {{weekDate.format('DD/MM/YYYY')}} - {{weekDate.clone().endOf('week').format('DD/MM/YYYY')}}
           </span>
         </ion-label>
-        <button item-right ion-button icon-only large outline (tap)="clickRight()">
+        <button item-right ion-button icon-only miggle outline (tap)="clickRight()">
           <ion-icon name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-item>
-      <ion-list padding>
+      <ion-list>
         <ion-item class="eventitem" *ngFor="let event of WeekEvents" (tap)="openEvent(event)">
           <div item-left class="itemdate" >
-              <h2>{{event.month}}</h2>
-              <h1>{{event.date}}</h1>
+              <h3>{{event.month}}</h3>
+              <h2>{{event.date}}</h2>
           </div>
           {{event.Title}}   
         </ion-item>
@@ -71,7 +71,7 @@
     </div>
     <div *ngSwitchCase="'month'">
       <ion-item class="picker">
-        <button item-left ion-button icon-only large outline (tap)="clickLeft()">
+        <button item-left ion-button icon-only miggle outline (tap)="clickLeft()">
           <ion-icon name="ios-arrow-back"></ion-icon>
         </button>
         <ion-label>
@@ -79,15 +79,15 @@
             {{monthDate.format('MMMM, YYYY')}}
           </span>
         </ion-label>
-        <button item-right ion-button icon-only large outline (tap)="clickRight()">
+        <button item-right ion-button icon-only miggle outline (tap)="clickRight()">
           <ion-icon name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-item>
-      <ion-list padding>
+      <ion-list>
         <ion-item class="eventitem" *ngFor="let event of MonthEvents" (tap)="openEvent(event)">
           <div item-left class="itemdate" >
-              <h2>{{event.month}}</h2>
-              <h1>{{event.date}}</h1>
+              <h3>{{event.month}}</h3>
+              <h2>{{event.date}}</h2>
           </div>
           {{event.Title}}   
         </ion-item>
@@ -105,13 +105,13 @@
 <ion-footer>
   <ion-toolbar>
     <ion-segment [(ngModel)]="calendar" color="new">
-      <ion-segment-button value="today"(tap)="getToday()">
+      <ion-segment-button value="today" (tap)="!TodayEvents ? getToday() : true">
         {{loc.dic.days.day}}
       </ion-segment-button>
-      <ion-segment-button value="week" (tap)="getWeek()">
+      <ion-segment-button value="week" (tap)="!WeekEvents ? getWeek() : true">
         {{loc.dic.days.week}}
       </ion-segment-button>
-      <ion-segment-button value="month" (tap)="getMonth()">
+      <ion-segment-button value="month" (tap)="!MonthEvents ? getMonth() : true">
         {{loc.dic.days.month}}
       </ion-segment-button>
     </ion-segment>

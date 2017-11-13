@@ -10,8 +10,8 @@ page-birthdays {
 	}
 
 	ion-item.item {
-		padding-top: 10px;
-		padding-bottom: 10px;
+		padding-top: 5px;
+		padding-bottom: 1px;
 		background-color: transparent !important;
 		.item-inner{
 			padding-right:0px !important;
@@ -32,8 +32,8 @@ page-birthdays {
 
 		ion-avatar {
 			img{
-				// width: 80px !important;
-				// height: 80px !important;
+				width: 60px;
+				height: 60px;
 				max-width: 80px;
 			}
 		}

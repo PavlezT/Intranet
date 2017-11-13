@@ -11,25 +11,26 @@ page-eventview{
 	ion-label{
 		padding-left:10px;
 		div.line{
-			font-size: 2rem;
+			font-size: 1.7rem;
 			margin-top: 10px;
-			margin-bottom: 20px;
+			margin-bottom: 10px;
 		}
 		ion-icon {
-			width:7%;
-			font-size: 1.5em;
+			width:3%;
+			font-size: 1.0em;
 		}
 	}
 
 	 .left{
         display: inline-block;
         vertical-align: text-bottom;
-        width:30%;
+        width:20%;
     }
     .right{
         display: inline-block;
         vertical-align: text-bottom;
-        width:50%;
+        width:70%;
+        color : grey;
     }
     .userTag{
        display: inline-block;

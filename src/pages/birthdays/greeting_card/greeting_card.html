@@ -45,7 +45,10 @@
         </ion-item>
       </ion-col>
       <ion-col class="rightcol">
-        <button ion-button full icon-only (tap)="sendComment($event)" >
+        <button class="sendText" *ngIf="loc.localization == 'en-gb'" (tap)="sendComment($event)" >
+            {{loc.dic.Send}}
+        </button>
+        <button class="sendIcon" *ngIf="loc.localization != 'en-gb'" ion-button full icon-only (tap)="sendComment($event)" >
             <ion-icon name="send"></ion-icon>
         </button>
       </ion-col>

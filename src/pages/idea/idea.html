@@ -17,9 +17,9 @@
               <img src="{{images.getImage(item.Author[0].email || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (item.Author[0].email || 'e@e')+'&mobile=0')}}">
             </ion-avatar>
             <h2 class="userTitle" >{{item.Author[0].title}}</h2>
-            <p>{{item.Created}}</p>
+            <p class="userDate">{{item.Created}}</p>
             <div class="score" item-right>
-              <h1>{{item.LikesCount || 0 }}</h1>
+              <h3>{{item.LikesCount || 0 }}</h3>
               <span>{{getPoints(item.LikesCount || 0)}}</span>
             </div>
           </ion-item>
@@ -75,9 +75,9 @@
               <img src="{{images.getImage(item.Author[0].email || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(item.Author[0].email || 'e@e')+'&mobile=0')}}">
             </ion-avatar>
             <h2 class="userTitle" >{{item.Author[0].title}}</h2>
-            <p>{{item.Created}}</p>
+            <p class="userDate">{{item.Created}}</p>
             <div class="score" item-right>
-              <h1>{{item.LikesCount || 0}}</h1>
+              <h3>{{item.LikesCount || 0}}</h3>
               <span>{{getPoints(item.LikesCount || 0)}}</span>
             </div>
           </ion-item>

@@ -178,9 +178,10 @@ export class Survey {
     this.loaderctrl.presentLoading();
     
     let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/Items`;
+    let temp = JSON.parse(this.config.PollListName);
     let body = {
         "__metadata": {
-          type : `SP.Data.${this.config.PollListName.substring(this.config.PollListName.indexOf('":"')+'":"'.length,this.config.PollListName.indexOf('"}'))}ListItem`
+          type : `SP.Data.${temp[Object.keys(temp)[0]]}ListItem`
         }
     }
     this.survey_answers.map(item=>{
@@ -202,7 +203,7 @@ export class Survey {
             .catch(error=>{
               console.log('<Survay> sendResults error:',error);
               this.loaderctrl.stopLoading();
-              error.message && this.showToast(error.message);
+              this.showToast("Error while saving results!");
             })
   }
 

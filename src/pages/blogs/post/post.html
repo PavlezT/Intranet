@@ -34,7 +34,7 @@
           </ion-col>
         </ion-row>
         <div #comments>
-          <ion-item *ngFor="let comment of post.MyComments">
+          <ion-item class="comment" *ngFor="let comment of post.MyComments">
             <ion-avatar item-left>
               <img src="{{images.getImage((comment.Author ?comment.Author.EMail : 'e@e'),'_layouts/15/userphoto.aspx?size=L&accountname='+(comment.Author ?comment.Author.EMail : 'e@e')+'&mobile=0')}}">
             </ion-avatar>
