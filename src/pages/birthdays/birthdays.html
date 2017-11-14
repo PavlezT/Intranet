@@ -20,13 +20,13 @@
             <h2>{{BirthUser.BDate}}</h2>
           </div>
         </ion-item>
+        <ion-item class="empty" *ngIf="todayArr && todayArr.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item class="empty" *ngIf="!todayArr">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
       </ion-list>
-      <ion-item class="empty" *ngIf="todayArr && todayArr.length == 0">
-        <h2>{{loc.dic.mobile.Empty}}</h2>
-      </ion-item>
-      <ion-item *ngIf="!todayArr">
-        <h2>{{loc.dic.mobile.Downloading}}</h2>
-      </ion-item>
     </div>
     <div *ngSwitchCase="'tomorrow'">
       <ion-list>
@@ -39,13 +39,13 @@
             <h2>{{BirthUser.BDate}}</h2>
           </div>
         </ion-item>
+        <ion-item class="empty"  *ngIf="tomorrowArr && tomorrowArr.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item class="empty" *ngIf="!tomorrowArr">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
       </ion-list>
-      <ion-item class="empty"  *ngIf="tomorrowArr && tomorrowArr.length == 0">
-        <h2>{{loc.dic.mobile.Empty}}</h2>
-      </ion-item>
-      <ion-item *ngIf="!tomorrowArr">
-        <h2>{{loc.dic.mobile.Downloading}}</h2>
-      </ion-item>
     </div>
     <div *ngSwitchCase="'week'">
       <ion-list>
@@ -58,13 +58,13 @@
             <h2>{{BirthUser.BDate}}</h2>
           </div>
         </ion-item>
+        <ion-item class="empty" *ngIf="weekArr && weekArr.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item class="empty" *ngIf="!weekArr">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
       </ion-list>
-      <ion-item class="empty" *ngIf="weekArr && weekArr.length == 0">
-        <h2>{{loc.dic.mobile.Empty}}</h2>
-      </ion-item>
-      <ion-item *ngIf="!weekArr">
-        <h2>{{loc.dic.mobile.Downloading}}</h2>
-      </ion-item>
     </div>
     <div *ngSwitchCase="'month'">
       <ion-list>
@@ -77,13 +77,13 @@
             <h2>{{BirthUser.BDate}}</h2>
           </div>
         </ion-item>
+        <ion-item class="empty" *ngIf="monthArr && monthArr.length == 0">
+          <h2>{{loc.dic.mobile.Empty}}</h2>
+        </ion-item>
+        <ion-item class="empty" *ngIf="!monthArr">
+          <h2>{{loc.dic.mobile.Downloading}}</h2>
+        </ion-item>
       </ion-list>
-      <ion-item class="empty" *ngIf="monthArr && monthArr.length == 0">
-        <h2>{{loc.dic.mobile.Empty}}</h2>
-      </ion-item>
-      <ion-item *ngIf="!monthArr">
-        <h2>{{loc.dic.mobile.Downloading}}</h2>
-      </ion-item>
     </div>
   </div>
 </ion-content>

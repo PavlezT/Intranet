@@ -34,13 +34,15 @@
       <ion-col>
         <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="newsLiked($event,item)">
           <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
-          <div>{{item.LikesCount || 0}}</div>
+          <div class="countNumber">{{item.LikesCount || 0}}</div>
+          {{item.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
         </button>
       </ion-col>
       <ion-col>
         <button class="comment_button" ion-button icon-left clear small (tap)="newsComment(item)">
           <ion-icon name="ios-text"></ion-icon>
-          <div>{{item.MyComments.length}}</div>
+          <div class="countNumber">{{item.MyComments.length}}</div>
+          {{loc.dic.mobile.Comment}}
         </button>
       </ion-col>
     </ion-row>

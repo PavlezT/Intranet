@@ -8,6 +8,12 @@
 </ion-header>
 
 <ion-content>
+  <ion-item class="empty" *ngIf="Answers &&  Answers.length == 0" >
+    <h2>{{loc.dic.mobile.Empty}}</h2>
+  </ion-item>
+  <ion-item class="question" *ngIf="!Answers" >
+    <h2>{{loc.dic.mobile.Downloading}}</h2>
+  </ion-item>
   <ion-item *ngIf="question" class="question">
     <h2>{{question}}</h2>
   </ion-item>
@@ -18,7 +24,7 @@
     </ion-item>
   </ion-list>
   <ion-list no-lines *ngIf="!question && Answers && Surveys && Surveys.length !=0" >
-    <ion-item  class="question">
+    <ion-item *ngIf="Surveys[current_question].Title" class="question">
       <h2>{{Surveys[current_question].Title}}</h2>
     </ion-item>
     <ion-item *ngFor="let survey of Surveys[current_question].Choices.results; let i = index;" class="answer">
@@ -37,10 +43,4 @@
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
   </div>
-  <ion-item class="empty" *ngIf="Answers &&  Answers.length == 0" class="question">
-    <h2>{{loc.dic.mobile.Empty}}</h2>
-  </ion-item>
-  <ion-item *ngIf="!Answers" class="question">
-    <h2>{{loc.dic.mobile.Downloading}}</h2>
-  </ion-item>
 </ion-content>

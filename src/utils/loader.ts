@@ -24,18 +24,18 @@ export class Loader {
    }
 
    stopLoading() : Promise<any> {
+    setTimeout(()=>{      
       this.calls.pop();
-
       if(this.calls.length==0){
         try{
-          return this.loader.dismiss();//.then(()=>{this.loader=null})
+          this.loader.dismiss();
         }catch(e){
-          console.log('<Loader> error in loader',e);
-          console.log('<Loader> this. loader',this.loader);
-
+          console.log('<Loader> error in loader:',e);
+          console.log('<Loader> this.loader:',this.loader);
         }
       }
-      return Promise.resolve();
+    },300);
+    return Promise.resolve();
   }
 
 }

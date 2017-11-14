@@ -108,12 +108,20 @@ export class MyApp {
               this.errorCounter++;
               this.loaderctrl.stopLoading();
               this.reLogin();
-          } else if((this.errorCounter <= 1 && error.status == '401') || (this.errorCounter > 1 && error.status == '403') || (error.status == '404')){
+          } else if(
+            (this.errorCounter <= 1 && error.status == '401') 
+            || (this.errorCounter > 1 && error.status == '403')
+            || (error.status == '404')
+            || (error.status == '406')
+          ){
               this.errorCounter++;
               this.showPrompt();
               this.loaderctrl.stopLoading();
               this.showToast('Check your credentials');
           } else {
+              this.errorCounter = 0;
+              this.loaderctrl.stopLoading();
+              this.showPrompt();
               this.showToast('Can`t load entrance data');
           }
       })

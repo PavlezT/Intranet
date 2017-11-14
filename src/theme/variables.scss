@@ -75,6 +75,14 @@ ion-icon{
 
 .empty{
   text-align: center !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  border: none !important;
+  .item-inner{
+    background-color: transparent !important;
+    border: none !important;
+    padding-left : 0px !important;
+  }
 }
 
 // App iOS Variables

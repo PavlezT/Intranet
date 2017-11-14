@@ -158,7 +158,7 @@ export class Auth {
                   return response.text()
                })
                .catch( error => {
-                  throw new Error(`Error in posting XML to loginmicrosoft:\n${JSON.stringify(error)}`);
+                  throw new Error(`Error while connecting "loginmicrosoft"`);//`Error in posting XML to loginmicrosoft:\n${JSON.stringify(error)}`);
                })
     }
 

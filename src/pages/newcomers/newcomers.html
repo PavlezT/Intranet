@@ -12,7 +12,7 @@
     <div *ngSwitchCase="'today'">
         <ion-list>
           <ion-item *ngFor="let newUser of todayArr">
-            <ion-avatar item-left *ngIf="newUser.UserEmail">
+            <ion-avatar item-left>
                 <img src="{{images.getImage(newUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (newUser.UserEmail || 'e@e')+'&mobile=0')}}">
             </ion-avatar >
             <h2>{{newUser.Title}}</h2> 
@@ -22,18 +22,18 @@
               <h2>{{newUser.MyHireDay || ' '}}</h2>
             </div>         
           </ion-item>
+          <ion-item class="empty" *ngIf="todayArr && todayArr.length == 0">
+            <h2>{{loc.dic.mobile.Empty}}</h2>
+          </ion-item>
+          <ion-item *ngIf="!todayArr">
+            <h2>{{loc.dic.mobile.Downloading}}</h2>
+          </ion-item>
         </ion-list>
-        <ion-item class="empty" *ngIf="todayArr && todayArr.length == 0">
-          <h2>{{loc.dic.mobile.Empty}}</h2>
-        </ion-item>
-        <ion-item *ngIf="!todayArr">
-          <h2>{{loc.dic.mobile.Downloading}}</h2>
-        </ion-item>
     </div>
     <div *ngSwitchCase="'yesterday'">
         <ion-list>
           <ion-item *ngFor="let newUser of yesterdayArr">
-            <ion-avatar item-left *ngIf="newUser.UserEmail">
+            <ion-avatar item-left >
                 <img src="{{images.getImage(newUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (newUser.UserEmail || 'e@e')+'&mobile=0')}}">
             </ion-avatar >
             <h2>{{newUser.Title}}</h2> 
@@ -43,18 +43,18 @@
               <h2>{{newUser.MyHireDay || ' '}}</h2>
             </div>         
           </ion-item>
+          <ion-item class="empty" *ngIf="yesterdayArr && yesterdayArr.length == 0">
+            <h2>{{loc.dic.mobile.Empty}}</h2>
+          </ion-item>
+          <ion-item *ngIf="!yesterdayArr">
+            <h2>{{loc.dic.mobile.Downloading}}</h2>
+          </ion-item>
         </ion-list>
-        <ion-item class="empty" *ngIf="yesterdayArr && yesterdayArr.length == 0">
-          <h2>{{loc.dic.mobile.Empty}}</h2>
-        </ion-item>
-        <ion-item *ngIf="!yesterdayArr">
-          <h2>{{loc.dic.mobile.Downloading}}</h2>
-        </ion-item>
     </div>
     <div *ngSwitchCase="'week'">
         <ion-list>
           <ion-item *ngFor="let newUser of weekArr">
-            <ion-avatar item-left *ngIf="newUser.UserEmail">
+            <ion-avatar item-left>
                 <img src="{{images.getImage(newUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(newUser.UserEmail || 'e@e')+'&mobile=0')}}">
             </ion-avatar >
             <h2>{{newUser.Title}}</h2> 
@@ -64,18 +64,18 @@
               <h2>{{newUser.MyHireDay || ' '}}</h2>
             </div>         
           </ion-item>
+          <ion-item class="empty" *ngIf="weekArr && weekArr.length == 0">
+            <h2>{{loc.dic.mobile.Empty}}</h2>
+          </ion-item>
+          <ion-item *ngIf="!weekArr">
+            <h2>{{loc.dic.mobile.Downloading}}</h2>
+          </ion-item>
         </ion-list>
-        <ion-item class="empty" *ngIf="weekArr && weekArr.length == 0">
-          <h2>{{loc.dic.mobile.Empty}}</h2>
-        </ion-item>
-        <ion-item *ngIf="!weekArr">
-          <h2>{{loc.dic.mobile.Downloading}}</h2>
-        </ion-item>
     </div>
     <div *ngSwitchCase="'month'">
        <ion-list>
           <ion-item *ngFor="let newUser of monthArr">
-            <ion-avatar item-left *ngIf="newUser.UserEmail">
+            <ion-avatar item-left >
                 <img src="{{images.getImage(newUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (newUser.UserEmail || 'e@e')+'&mobile=0')}}">
             </ion-avatar >
             <h2>{{newUser.Title}}</h2> 
@@ -85,13 +85,13 @@
               <h2>{{newUser.MyHireDay || ' '}}</h2>
             </div>         
           </ion-item>
+          <ion-item class="empty" *ngIf="monthArr && monthArr.length == 0">
+            <h2>{{loc.dic.mobile.Empty}}</h2>
+          </ion-item>
+          <ion-item *ngIf="!monthArr">
+            <h2>{{loc.dic.mobile.Downloading}}</h2>
+          </ion-item>
         </ion-list>
-        <ion-item class="empty" *ngIf="monthArr && monthArr.length == 0">
-          <h2>{{loc.dic.mobile.Empty}}</h2>
-        </ion-item>
-        <ion-item *ngIf="!monthArr">
-          <h2>{{loc.dic.mobile.Downloading}}</h2>
-        </ion-item>
     </div>
   </div>
 </ion-content>

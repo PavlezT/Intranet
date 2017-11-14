@@ -31,13 +31,15 @@
           <ion-col>
             <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,item)">
               <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
-              <div>{{item.LikesCount || 0}}</div>
+              <div class="countNumber">{{item.LikesCount || 0}}</div>
+              {{item.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
             </button>
           </ion-col>
           <ion-col>
             <button ion-button icon-left clear small (tap)="showPrompt(item)">
               <ion-icon name="ios-text"></ion-icon>
-              <div>{{item.MyComments.length}}</div>
+              <div class="countNumber">{{item.MyComments.length}}</div>
+              {{loc.dic.mobile.Comment}}
             </button>
           </ion-col>
         </ion-row>
@@ -54,7 +56,8 @@
                 <p>{{comment.FieldValuesAsText.Body}}</p>
                 <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
                   <ion-icon class="like_icon_comment"  name="thumbs-up"></ion-icon>
-                  <div>{{comment.LikesCount || 0}}</div>
+                  <div class="countNumber">{{comment.LikesCount || 0}}</div>
+                  {{comment.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
                 </button>
               </ion-item>
             </ng-container>
@@ -89,13 +92,15 @@
           <ion-col>
             <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,item)">
               <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
-              <div>{{item.LikesCount || 0}}</div>
+              <div class="countNumber">{{item.LikesCount || 0}}</div>
+              {{item.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
             </button>
           </ion-col>
           <ion-col>
             <button ion-button icon-left clear small (tap)="showPrompt(item)">
               <ion-icon name="ios-text"></ion-icon>
-              <div>{{item.MyComments.length}}</div>
+              <div class="countNumber">{{item.MyComments.length}}</div>
+              {{loc.dic.mobile.Comment}}
             </button>
           </ion-col>
         </ion-row>
@@ -112,7 +117,8 @@
               <p>{{comment.FieldValuesAsText.Body}}</p>
               <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
                 <ion-icon class="like_icon_comment" name="thumbs-up"></ion-icon>
-                <div>{{comment.LikesCount || 0}}</div>
+                <div class="countNumber">{{comment.LikesCount || 0}}</div>
+                {{comment.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
               </button>
             </ion-item>
           </ng-container>
@@ -131,10 +137,10 @@
 <ion-footer>
   <ion-toolbar>
     <ion-segment [(ngModel)]="ideas" color="new">
-      <ion-segment-button value="best"(tap)="getBest()">
+      <ion-segment-button value="best"(tap)="!Best ? getBest() : true">
         {{loc.dic.mobile.Best}}
       </ion-segment-button>
-      <ion-segment-button value="new" (tap)="getNew()">
+      <ion-segment-button value="new" (tap)="!New ? getNew() : true">
         {{loc.dic.mobile.Newest}}
       </ion-segment-button>
     </ion-segment>

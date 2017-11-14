@@ -24,6 +24,11 @@ page-events {
 		text-align: center;
 		margin: 0px 15px 0px 0px !important;
 		width: 55px;
+		position: absolute;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 
 	.eventitem{
@@ -31,6 +36,7 @@ page-events {
 		margin-bottom: 4px;
 		.item-inner{
 			border-bottom : none !important;
+			padding-left:65px;
 		}
 	}
 

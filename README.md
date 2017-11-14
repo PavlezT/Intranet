@@ -6,8 +6,8 @@ Mobile app for LSIntanet
  ./zipalign 4 ~/Projects/Intranet/platforms/android/build/outputs/apk/android-release-unaligned.apk ~/Projects/Intranet/platforms/android/build/outputs/apk/output.apk`
 
  ## TO DO 
- 1. Content Types of *News* and *Blogs*  are not the same
- 2. Image Src in *News* and *Blogs* are **hardcoded** (find dynamic method of identifining src od publishing image)
+ 1. Content Types of *News* and *Blogs*  are not the same //DONE
+ 2. Image Src in *News* and *Blogs* are **hardcoded** (find dynamic method of identifining src od publishing image) //DONE
 
  ### add animation on SplashScreen
  * Android : 
@@ -30,3 +30,6 @@ Mobile app for LSIntanet
                 [weakSelf hideViews];
             }];
 ```
+
+### enabling **'Toggle software keyboard'** in Xcode (write in Terminal)
+`defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool YES`
