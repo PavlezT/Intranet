@@ -18,10 +18,10 @@ page-idea {
 		.col{
             padding: 0px !important;
 			button{
-                // font-size:2rem;
+                text-transform: inherit;
                 font-size: 1.5rem;
                 .like_icon {
-                    padding-bottom:5px;
+                    padding-bottom:2px;
                 }
 			}
 		}
@@ -70,6 +70,7 @@ page-idea {
         ion-item{
             background-color: #f1f1f1 !important;
             button{
+                text-transform: inherit;
                 padding: 0px !important;
             }
             .label{

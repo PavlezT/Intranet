@@ -23,3 +23,30 @@
        padding-top: 0px !important;
    }
 }
+
+.alert-md{
+    // padding-top: 10px !important;
+    .alert-wrapper{
+        max-width: 90%;
+        overflow-y: auto;
+        .alert-head{
+            padding: 20px 24px 10px 24px;
+        }
+        .alert-message{
+            font-size: 1.5rem;
+            padding-bottom: 10px;
+            overflow-y: visible;
+        }
+        .alert-input-group{
+            font-size: 1.2rem;
+            padding-bottom : 4px;
+        }
+        .alert-button-group{
+            padding-top: 1px;
+            .alert-button{
+                padding: 5px;
+                overflow: visible;
+            }
+        }
+    }
+}
