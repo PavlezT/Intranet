@@ -26,7 +26,6 @@ page-card {
 	}
 	.row{
 		.col{
-			max-width: 50% !important;
 			button{
 				font-size: 1.5rem;
 				text-transform: none;
@@ -51,6 +50,16 @@ page-card {
 		.leftcol{
 			max-width: 80% !important;
 			width:100%;
+			.item{
+				padding-left:1px !important;
+				.label{
+					font-size: 1.4rem !important;
+					color:grey;
+				}
+				ion-input{
+					font-size: 1.4rem;
+				}
+			}
 		}
 		.rightcol{
 			max-width: 20% !important;
@@ -61,8 +70,9 @@ page-card {
 				color: #387ef5;
 				background-color: transparent;
 				padding-left: 0;
-				font-size: 2.8rem;
-				margin-top: 17%;
+				font-size: 2.1rem;
+				font-weight: bold;
+				margin-top: 12%;
 			}
 			button.sendIcon{
 				height:60px;
@@ -81,10 +91,10 @@ page-card {
 	div{
 		.note{
 			color: #666;
-			font-size: 1.5rem;
+			font-size: 1.2rem;
 			background-color: #eee;
-			padding: 6px;
-			margin: 3px;
+			padding: 5px;
+			margin: 1px;
 			border-radius: 9px;
 			display: inline-block;
 		}
@@ -93,10 +103,12 @@ page-card {
 	.commentTitle{
 		h2{
 			display: inline;
+			font-size : 1.4rem;
+			font-weight: 500;
 		}
 		span {
 			display: inline;
-			font-size: 1.2rem;
+			font-size: 1.4rem;
 		}
 	}
 
@@ -105,8 +117,12 @@ page-card {
 	}
 
 	.noBottomLine {
+		padding-left:0px !important;
 		div.item-inner{
 			border-bottom : 0px !important;
+			ion-label{
+				margin-top: 1px !important;
+			}
 		}
 	}
 
@@ -117,5 +133,21 @@ page-card {
 				margin-top:0px;
 			}
 		}
+	}
+
+	.likesRow {
+		max-width: 100% !important;
+		ion-col{
+			margin-left: 5%;
+			margin-right: 8%;
+			button{
+				color: grey;
+			}
+		}
+		
+	}
+
+	.notes{
+		padding : 0px !important;
 	}
 }

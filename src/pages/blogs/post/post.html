@@ -16,7 +16,7 @@
       <div padding>
         <h4 [innerHTML]="post.LSiNewsShortDescription"></h4>
         <p [innerHTML]="post.LSiNewsBody" class="bodytext"></p>
-        <ion-row>
+        <ion-row class="likesRow">
           <ion-col>
             <button [ngClass]="post.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="postLiked($event,post)">
               <ion-icon class="like_icon" name="thumbs-up"></ion-icon>

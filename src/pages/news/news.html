@@ -30,7 +30,7 @@
         </ion-note>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row class="likesRow">
       <ion-col>
         <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="newsLiked($event,item)">
           <ion-icon class="like_icon" name="thumbs-up"></ion-icon>

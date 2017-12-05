@@ -14,7 +14,7 @@
       <div padding>
         <h4 *ngIf="card.FieldValuesAsText.LSiNewsShortDescription" >{{card.FieldValuesAsText.LSiNewsShortDescription}}</h4>
         <p *ngIf="card.FieldValuesAsText.LSiNewsBody && card.FieldValuesAsText.LSiNewsBody.length > 0" class="bodytext" [innerHTML]="card.LSiNewsBody"></p>
-        <ion-row>
+        <ion-row class="likesRow">
           <ion-col>
             <button [ngClass]="card.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="newsLiked($event,card)">
               <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
@@ -31,7 +31,7 @@
           </ion-col>
         </ion-row>
         <div>
-          <ion-col *ngFor="let tag of card.LSiNewsTags.results">
+          <ion-col class="notes" *ngFor="let tag of card.LSiNewsTags.results">
             <ion-note >
               #{{tag.Label}}
             </ion-note>

@@ -78,6 +78,7 @@ greeting_card {
 		.item-inner{
 			border-bottom: 0px !important;
 			.label{
+				margin:0px !important;
 				p{
 					font-size: 1.2rem;
 				}
@@ -105,6 +106,7 @@ greeting_card {
 				background-color: transparent;
 				.label{
 					margin-top: 0px !important;
+					color:grey;
 				}
 			}
 		}
@@ -117,7 +119,8 @@ greeting_card {
 				color: #387ef5;
 				background-color: transparent;
 				padding-left: 0;
-				font-size: 2.8rem;
+				font-size: 2.1rem;
+				font-weight: bold;
 				margin-top: 20%;
 			}
 			button.sendIcon{
@@ -137,6 +140,8 @@ greeting_card {
 	.commentTitle{
 		h2{
 			display: inline;
+			font-size: 1.3rem;
+			font-weight: 500;
 		}
 		span {
 			display: inline;

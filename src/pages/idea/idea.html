@@ -27,7 +27,7 @@
             <p>{{item.textBody}}</p>
           </ion-card-content>
         </div>
-        <ion-row>
+        <ion-row class="likesRow">
           <ion-col>
             <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,item)">
               <ion-icon class="like_icon" name="thumbs-up"></ion-icon>
@@ -88,7 +88,7 @@
             <p>{{item.textBody}}</p>
           </ion-card-content>
         </div>
-        <ion-row>
+        <ion-row class="likesRow">
           <ion-col>
             <button [ngClass]="item.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,item)">
               <ion-icon class="like_icon" name="thumbs-up"></ion-icon>

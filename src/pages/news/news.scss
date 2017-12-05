@@ -40,4 +40,15 @@ page-news {
 	.liked{
 		color:red;
 	}
+
+	.likesRow{
+		ion-col{
+			padding : 0 5px 0 5px !important;
+			margin-left: 5%;
+			margin-right: 8%;
+			button{
+				color: grey;
+			}
+		}
+	}
 }

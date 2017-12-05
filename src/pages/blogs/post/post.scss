@@ -14,7 +14,7 @@ page-post{
 		.col{
 			padding-top: 0px !important;
 			padding-bottom : 0 !important;
-			max-width: 50% !important;
+			max-width: 35% !important;
 			button{
 				font-size: 1.5rem;
 				text-transform: none;
@@ -38,8 +38,13 @@ page-post{
 			max-width: 80% !important;
 			width:100%;
 			padding-top: 0px !important;
-			.label{
-				margin: 0px !important;
+			.item{
+				padding-left: 0px !important;
+				.label{
+					margin: 0px !important;
+					color:grey;
+					font-size: 1.4rem;
+				}
 			}
 		}
 		.rightcol{
@@ -50,7 +55,8 @@ page-post{
 				vertical-align: bottom;
 				color: #387ef5;
 				padding-left: 0;
-				font-size: 2.8rem;
+				font-size: 2.1rem;
+				font-weight: bold;
 				margin-top: 15%;
 				background-color: transparent;
 			}
@@ -71,6 +77,8 @@ page-post{
     .commentTitle{
 		h2{
 			display: inline;
+			font-size: 1.3rem;
+			font-weight: 500;
 		}
 		span {
 			display: inline;
@@ -101,6 +109,7 @@ page-post{
 	}
 	
 	.comment {
+		padding-left: 0px !important;
 		.item-inner{
 			border : 0px !important;
 			.label{
@@ -108,5 +117,17 @@ page-post{
 				margin-bottom: 0px !important;
 			}
 		}
+	}
+
+	.likesRow {
+		max-width: 100% !important;
+		ion-col{
+			margin-left: 5%;
+			margin-right: 8%;
+			padding : 0 5px 0 5px !important;
+			button{
+				color: grey;
+			}
+		}	
 	}
 }

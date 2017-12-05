@@ -54,6 +54,7 @@ page-idea {
 
     .userTitle{
         font-weight: 500 !important;
+        font-size: 1.3rem;
         span {
             margin-left: 5px;
             font-weight: normal;
@@ -75,6 +76,9 @@ page-idea {
                 margin-top: 3px !important;
                 margin-bottom: 3px !important;
             }
+            button{
+                color : grey;
+            }
         }
         .showcomments{
             min-height: 0px;
@@ -90,4 +94,16 @@ page-idea {
     div.countNumber{
         margin-right:3px;
     }
+
+    .likesRow {
+		max-width: 100% !important;
+		ion-col{
+			margin-left: 5%;
+			margin-right: 8%;
+			padding : 0 5px 0 5px !important;
+			button{
+				color: grey;
+			}
+		}	
+	}
 }
