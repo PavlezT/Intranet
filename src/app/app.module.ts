@@ -35,6 +35,7 @@ import { Device } from '@ionic-native/device';
 import { Transfer } from '@ionic-native/transfer';
 import { FileOpener } from '@ionic-native/file-opener';
 import { CallNumber } from '@ionic-native/call-number';
+import { FilePath } from '@ionic-native/file-path';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import { CallNumber } from '@ionic-native/call-number';
     Card,GreetingCard,DepartmentUsers,Post,EventView
   ],
   providers: [
-    StatusBar,FileOpener,CallNumber,
+    StatusBar,FileOpener,CallNumber,FilePath,
     SplashScreen,Network,NativeStorage,File,Device,Transfer,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: Localization, useClass: Localization},

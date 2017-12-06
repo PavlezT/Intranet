@@ -3,7 +3,9 @@ import { NavController, NavParams, Platform, ToastController } from 'ionic-angul
 import { Http, Headers, RequestOptions  } from '@angular/http';
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
+import { FilePath } from '@ionic-native/file-path';
 import { Transfer, TransferObject } from '@ionic-native/transfer';
+import { Device } from '@ionic-native/device';
 
 import * as mimes from 'mime-types';
 import * as trans from 'transliteration.crh';
@@ -26,7 +28,7 @@ export class Policies {
   guid:string;
   backbuttonPressed : number;
 
-  constructor(public platform : Platform, public navCtrl: NavController, public navParams: NavParams,private transfer: Transfer,private fileOpener: FileOpener, public file : File,public http : Http, @Inject(Loader) public loaderctrl: Loader, @Inject(Localization) public loc : Localization,public toastCtrl: ToastController) {
+  constructor(public platform : Platform, public navCtrl: NavController, public device: Device, public navParams: NavParams,private transfer: Transfer,private filePath: FilePath,private fileOpener: FileOpener, public file : File,public http : Http, @Inject(Loader) public loaderctrl: Loader, @Inject(Localization) public loc : Localization,public toastCtrl: ToastController) {
     this.title = navParams.data.title || loc.dic.modules.News;
     this.guid = navParams.data.guid;
     this.backbuttonPressed = 0;
@@ -49,7 +51,7 @@ export class Policies {
 
   private getDocuments(loadNew?:boolean) : Promise<any> {
     let lastName = this.Docs && loadNew ? encodeURI(encodeURIComponent(this.Docs[this.Docs.length-1].FileLeafRef)) : false;
-    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/Items?${ lastName ? '$skiptoken=Paged=TRUE=p_FileLeafRef='+lastName+'&' : ''}$orderby=FileLeafRef+asc&$select=FileLeafRef,Title,Id,Created,UniqueId,FileRef&$top=10`;//Author,File_x005f_x0020_x005f_Type //$expand=FieldValuesAsText&
+    let url = `${consts.siteUrl}/_api/web/lists('${this.guid}')/Items?${ lastName ? '$skiptoken=Paged=TRUE=p_FileLeafRef='+lastName+'&' : ''}$orderby=FileLeafRef+asc&$select=FileLeafRef,Title,Id,Created,UniqueId,FileRef,File_x0020_Type&$top=10&$filter=File_x0020_Type ne null`;//Author,File_x005f_x0020_x005f_Type //$expand=FieldValuesAsText&
     
     let headers = new Headers({'Accept': 'application/json;odata=verbose','Authorization':`Basic ${btoa(window.localStorage.getItem('username')+':'+window.localStorage.getItem('password'))}`});
     let options = new RequestOptions({ headers: headers ,withCredentials: true});
@@ -59,7 +61,7 @@ export class Policies {
           !loadNew && (this.Docs=[]);
           response.json().d.results.map( (item, i , arr) => {
             item.Created = (new Date(item.Created)).toLocaleString();
-            item.icon = item.FileLeafRef.substring(item.FileLeafRef.lastIndexOf('.')+1,item.FileLeafRef.length);
+            item.icon = item.File_x0020_Type;//item.FileLeafRef.substring(item.FileLeafRef.lastIndexOf('.')+1,item.FileLeafRef.length);
             this.Docs.push(item);
         });
       })
@@ -97,13 +99,17 @@ export class Policies {
   }
 
   public opendDocs(nativeURL,docName) : void {
-    this.fileOpener.open(decodeURIComponent(nativeURL), (mimes.lookup(decodeURIComponent(docName)) || 'application/msword'))
-      .then((data)=>{this.loaderctrl.stopLoading();})
-      .catch(err=>{
-        this.loaderctrl.stopLoading();
-        console.log('<Policies> cant open file:',nativeURL)
-        this.showToast('Can`t open this file');
-      })
+    (this.device.platform == "Android" ?  this.filePath.resolveNativePath(nativeURL) : Promise.resolve(''))
+    .then((filePath)=>{
+      return this.fileOpener.open(decodeURIComponent(nativeURL), (mimes.lookup(decodeURIComponent(docName)) || 'application/msword'))
+    })
+    .then((data)=>{this.loaderctrl.stopLoading();})
+    .catch(err=>{
+      this.loaderctrl.stopLoading();
+      console.log('<Policies> cant open file:',nativeURL)
+      this.showToast('Can`t open this file');
+    })
+    
   }
 
   private getLocalName(name) : String {
