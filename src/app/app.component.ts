@@ -35,7 +35,12 @@ export class MyApp {
   pages: Array<{lsiName:string,title: string, component: any, guid: string}>;
   errorCounter: number;
 
-  constructor(public platform: Platform, public statusBar: StatusBar,public auth : Auth,public http : Http, @Inject(Localization) public loc : Localization, public events: Events, @Inject(User) public user : User, @Inject(Access) public access : Access, @Inject(Images) public images: Images, public nativeStorage: NativeStorage, @Inject(Loader) public loaderctrl: Loader, public splashScreen: SplashScreen,private network: Network,private alertCtrl: AlertController,private toastCtrl: ToastController) {
+  constructor(public platform: Platform, public statusBar: StatusBar,public auth : Auth,public http : Http,
+     @Inject(Localization) public loc : Localization, public events: Events, @Inject(User) public user : User,
+      @Inject(Access) public access : Access, @Inject(Images) public images: Images, public nativeStorage: NativeStorage, 
+      @Inject(Loader) public loaderctrl: Loader, public splashScreen: SplashScreen,private network: Network,
+      private alertCtrl: AlertController,private toastCtrl: ToastController
+    ) {
     this.initializeApp();
 
     this.errorCounter = 0;

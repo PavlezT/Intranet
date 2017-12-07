@@ -19,7 +19,6 @@ export class Images {
 
    public _init() : void {
      try{
-      // this.fileTransfer = new Transfer();
       this.fileTransfer = this.transfer.create();
      }catch(e){console.log('<Iamges> FileTransfer _initing error',e)};
 

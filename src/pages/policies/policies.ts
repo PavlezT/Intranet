@@ -28,7 +28,11 @@ export class Policies {
   guid:string;
   backbuttonPressed : number;
 
-  constructor(public platform : Platform, public navCtrl: NavController, public device: Device, public navParams: NavParams,private transfer: Transfer,private filePath: FilePath,private fileOpener: FileOpener, public file : File,public http : Http, @Inject(Loader) public loaderctrl: Loader, @Inject(Localization) public loc : Localization,public toastCtrl: ToastController) {
+  constructor(public platform : Platform, public navCtrl: NavController, public device: Device, 
+    public navParams: NavParams,private transfer: Transfer,private filePath: FilePath,
+    private fileOpener: FileOpener, public file : File,public http : Http,
+     @Inject(Loader) public loaderctrl: Loader, @Inject(Localization) public loc : Localization,public toastCtrl: ToastController
+    ) {
     this.title = navParams.data.title || loc.dic.modules.News;
     this.guid = navParams.data.guid;
     this.backbuttonPressed = 0;
