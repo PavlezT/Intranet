@@ -254,7 +254,7 @@ export class MyApp {
                 page.component == this.nav.getActive().component && this.openPage(page);
               }) && window.localStorage.removeItem('tempuserEmail');
             });
-            !data.URL && this.showToast("Fields should not be empty.") && this.showPrompt();
+            !data.URL && !this.showPrompt() && this.showToast("Fields should not be empty."); 
           }
         }
       ]
