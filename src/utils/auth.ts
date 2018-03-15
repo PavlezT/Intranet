@@ -110,11 +110,15 @@ export class Auth {
      }
 
   private checkOnPremise() : Promise<any> {
-    return this.http.get(consts.siteUrl).toPromise()
+    return this.http.get(consts.siteUrl).timeout(consts.timeoutDelay*3).toPromise()
       .then(()=>{return [60*60*24*365,{}]})
       .catch(err=>{
-        console.log('<Auth> error checking onPremise:',err);
-        throw new Error('Url is invalid or site is unreachable.')
+        if(err.status == 404 || err.status == 0){
+          console.log('<Auth> error checking onPremise:',err);
+          throw new Error('Url is invalid or site is unreachable.')
+        } else {
+          return [60*60*24*365,{}];
+        }
       });
   }
 
