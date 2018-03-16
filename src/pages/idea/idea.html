@@ -52,12 +52,13 @@
                 <ion-avatar item-left>
                   <img src="{{images.getImage(comment.Author.EMail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (comment.Author.EMail || 'e@e')+'&mobile=0')}}">
                 </ion-avatar>
-                <h2 class="userTitle" >{{comment.Author.Title}}<span>{{comment.MyCreated}}</span></h2>
-                <p>{{comment.FieldValuesAsText.Body}}</p>
+                <!-- <h2 class="userTitle" >{{comment.Author.Title}}</h2> -->
+                <p><span class="userTitle" >{{comment.Author.Title}}</span>{{comment.FieldValuesAsText.Body}}</p>
                 <button [ngClass]="comment.liked ? 'liked' : ''" ion-button icon-left clear small (tap)="ideaLiked($event,comment)">
                   <ion-icon class="like_icon_comment"  name="thumbs-up"></ion-icon>
                   <div class="countNumber">{{comment.LikesCount || 0}}</div>
                   {{comment.liked?loc.dic.mobile.NotLike : loc.dic.mobile.Like}}
+                  <span style="margin-left: 5px;"> {{comment.MyCreated}}</span>
                 </button>
               </ion-item>
             </ng-container>

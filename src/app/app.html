@@ -1,11 +1,15 @@
 <ion-menu type="reveal" [content]="content">
   <ion-header>
     <ion-toolbar>
-      <ion-item (tap)="userTapped()" class="userAvatart">
+      <ion-item class="userAvatart">
           <ion-avatar item-left>
             <img  #Myimg src="{{images.getImage(user.getEmail(),'_layouts/15/userphoto.aspx?size=L&accountname='+user.getEmail()+'&mobile=0')}}">
           </ion-avatar >
           <ion-title>{{user.getUserName()}}</ion-title>
+          <span>{{user.getEmail()}}</span>
+          <button ion-button icon-only (tap)="userTapped()" >
+              <ion-icon name="md-arrow-dropdown"></ion-icon>
+          </button>
       </ion-item>
     </ion-toolbar>
   </ion-header>

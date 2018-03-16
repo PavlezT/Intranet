@@ -29,6 +29,10 @@ page-events {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		p {
+			color: white;
+			border-bottom:2px #babcc0 solid;
+		}
 	}
 
 	.eventitem{

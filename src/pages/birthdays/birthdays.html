@@ -16,8 +16,8 @@
             <img src="{{images.getImage(BirthUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+ (BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
           <div class="container">
-            <h1>{{BirthUser.Title}}</h1>
-            <h2>{{BirthUser.BDate}}</h2>
+            <h2>{{BirthUser.Title}}</h2>
+            <p>{{BirthUser.BDate}}</p>
           </div>
         </ion-item>
         <ion-item class="empty" *ngIf="todayArr && todayArr.length == 0">
@@ -35,8 +35,8 @@
             <img src="{{images.getImage(BirthUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
           <div class="container">
-            <h1>{{BirthUser.Title}}</h1>
-            <h2>{{BirthUser.BDate}}</h2>
+            <h2>{{BirthUser.Title}}</h2>
+            <p>{{BirthUser.BDate}}</p>
           </div>
         </ion-item>
         <ion-item class="empty"  *ngIf="tomorrowArr && tomorrowArr.length == 0">
@@ -54,8 +54,8 @@
             <img src="{{images.getImage(BirthUser.UserEmail || 'e@e' ,'_layouts/15/userphoto.aspx?size=L&accountname='+ (BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
           <div class="container">
-            <h1>{{BirthUser.Title}}</h1>
-            <h2>{{BirthUser.BDate}}</h2>
+            <h2>{{BirthUser.Title}}</h2>
+            <p>{{BirthUser.BDate}}</p>
           </div>
         </ion-item>
         <ion-item class="empty" *ngIf="weekArr && weekArr.length == 0">
@@ -73,8 +73,8 @@
             <img src="{{images.getImage(BirthUser.UserEmail || 'e@e','_layouts/15/userphoto.aspx?size=L&accountname='+(BirthUser.UserEmail || 'e@e')+'&mobile=0')}}">
           </ion-avatar>
           <div class="container">
-            <h1>{{BirthUser.Title}}</h1>
-            <h2>{{BirthUser.BDate}}</h2>
+            <h2>{{BirthUser.Title}}</h2>
+            <p>{{BirthUser.BDate}}</p>
           </div>
         </ion-item>
         <ion-item class="empty" *ngIf="monthArr && monthArr.length == 0">

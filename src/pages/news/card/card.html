@@ -2,7 +2,6 @@
   <ion-navbar>
     <ion-title>
       {{card.FieldValuesAsText.Title}}
-      <span class="date">{{card.MyDate}}</span>
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -12,6 +11,7 @@
       <!--{{images.getImage(item.Image)}}-->
 
       <div padding>
+        <span class="datespan">{{card.MyDate}}</span>
         <h4 *ngIf="card.FieldValuesAsText.LSiNewsShortDescription" >{{card.FieldValuesAsText.LSiNewsShortDescription}}</h4>
         <p *ngIf="card.FieldValuesAsText.LSiNewsBody && card.FieldValuesAsText.LSiNewsBody.length > 0" class="bodytext" [innerHTML]="card.LSiNewsBody"></p>
         <ion-row class="likesRow">

@@ -1,7 +1,12 @@
 page-birthdays {
 	.container{
-		h1{
+		h2{
 			background-color: #c0d3f8;
+			font-size: 1.6rem;
+		}
+		p{
+			font-size: 1.4rem;
+			padding-left: 10px;
 		}
 		// display: inline-block;
 	}
@@ -32,8 +37,8 @@ page-birthdays {
 
 		ion-avatar {
 			img{
-				width: 60px;
-				height: 60px;
+				// width: 60px;
+				// height: 60px;
 				max-width: 80px;
 			}
 		}

@@ -17,10 +17,27 @@
 .userAvatart{
    .item-inner{ 
       border-bottom: 0px !important;
+      ion-label{
+          margin-top:3px !important;
+          margin-bottom: 3px !important;
+      }
    }
+
+   button[ion-button]{
+        background-color: transparent;
+        box-shadow: none;
+        color: grey;
+        height: 11px;
+        margin:0px;
+        float: right;
+   }
+
    ion-title{
        vertical-align: middle;
        padding-top: 0px !important;
+       div{
+            padding-left: 0px !important;   
+       }
    }
 }
 

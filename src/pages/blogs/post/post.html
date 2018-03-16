@@ -12,6 +12,7 @@
           <div>        
             <img src="{{images.getImage((post.Author ?post.Author.EMail : 'e@e'),'_layouts/15/userphoto.aspx?size=L&accountname='+(post.Author ?post.Author.EMail : 'e@e')+'&mobile=0')}}">
           </div>
+          <span class="datespan" >{{post.MyCreated}}</span>
       </div>
       <div padding>
         <h4 [innerHTML]="post.LSiNewsShortDescription"></h4>

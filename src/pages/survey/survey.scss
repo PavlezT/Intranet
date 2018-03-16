@@ -46,8 +46,12 @@ page-survey {
 		width: 90%;
 		text-align: center;
 		button {
+			// text-transform: initial;
 			background-color:#4672aa;
 			width:45%;
+			ion-icon{
+				padding: 5px;
+			}
 		}
 	}
 }
