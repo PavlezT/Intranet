@@ -1,8 +1,8 @@
 import { Http, Headers, RequestOptions  } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Injectable, Inject } from '@angular/core';
-import { Device } from '@ionic-native/device';
 import { NativeStorage } from '@ionic-native/native-storage';
+import { Device } from '@ionic-native/device';
 import { File } from '@ionic-native/file';
 import * as consts from './consts';
 
@@ -14,7 +14,7 @@ export class Auth {
    options: { username : string, password : string};
    http: Http;
 
-   constructor(@Inject(Http) http: Http,public device: Device,public nativeStorage: NativeStorage,private file: File){
+   constructor(@Inject(Http) http: Http, public file : File, public device: Device, public nativeStorage: NativeStorage){
       this.http = http;
    }
 
@@ -96,7 +96,7 @@ export class Auth {
                                                       let diffSeconds = response[0];
                                                       let now = new Date();
                                                       now.setSeconds(now.getSeconds() + diffSeconds);
-                                                      
+
                                                       let authPage : string = (response[1] && response[1].text) ? response[1].text() : " ";
                                                       if(authPage.includes('Correlation ID:') || authPage.includes('<div id="errordisplay-mainDiv">'))
                                                         throw new Error(`Error in login user in sharepoint:${authPage.slice( authPage.indexOf('id="errordisplay-IssueTypeValue">')+'id="errordisplay-IssueTypeValue">'.length,authPage.lastIndexOf('</span>') )}`)
@@ -110,15 +110,11 @@ export class Auth {
      }
 
   private checkOnPremise() : Promise<any> {
-    return this.http.get(consts.siteUrl).timeout(consts.timeoutDelay*3).toPromise()
+    return this.http.get(consts.siteUrl).toPromise()
       .then(()=>{return [60*60*24*365,{}]})
       .catch(err=>{
-        if(err.status == 404 || err.status == 0){
-          console.log('<Auth> error checking onPremise:',err);
-          throw new Error('Url is invalid or site is unreachable.')
-        } else {
-          return [60*60*24*365,{}];
-        }
+        console.log('<Auth> error checking onPremise:',err);
+        throw new Error('Url is invalid or site is unreachable.')
       });
   }
 
@@ -129,7 +125,8 @@ export class Auth {
          console.error(`<Auth> Fail in loggin: ${reason}`);
          throw new Error(`Fail in loggin!\n The email or password you entered is incorrect.`);//${reason}
       } else {
-         let token = res.substring(res.indexOf('<wsse:BinarySecurityToken Id="Compact0">') + '<wsse:BinarySecurityToken Id="Compact0">'.length,res.indexOf('</wsse:BinarySecurityToken>'));
+			let token = res.substring(res.indexOf('<wsse:BinarySecurityToken') + '<wsse:BinarySecurityToken'.length, res.indexOf('</wsse:BinarySecurityToken>'));
+			token = token.substring(token.indexOf('>t=') + '>'.length, token.length);
          let expires = res.substring(res.indexOf('<wst:Lifetime>'),res.indexOf('</wst:Lifetime>'));
          expires = expires.substring(expires.indexOf('<wsu:Expires>') + '<wsu:Expires>'.length,expires.indexOf('</wsu:Expires>'));
          return {
@@ -154,7 +151,7 @@ export class Auth {
 
                   let headers = new Headers({'Content-Type': 'application/soap+xml; charset=utf-8'});
                   let options = new RequestOptions({ headers: headers });
-                  
+
                   return self.http.post(url,samlBody,options).timeout(consts.timeoutDelay).retry(consts.retryCount)
                      .toPromise()
                })
@@ -162,7 +159,7 @@ export class Auth {
                   return response.text()
                })
                .catch( error => {
-                  throw new Error(`Error while connecting "loginmicrosoft"`);//`Error in posting XML to loginmicrosoft:\n${JSON.stringify(error)}`);
+                  throw new Error(`Error in posting XML to loginmicrosoft:\n${JSON.stringify(error)}`);
                })
     }
 
@@ -210,7 +207,7 @@ export class Auth {
        let expires = new Date(tokenResponse.expires).getTime();
        let diff = (expires - now) / 1000;
        let diffSeconds = parseInt(diff.toString(), 10);
-       
+
        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
        let options = new RequestOptions({ headers: headers });
 
