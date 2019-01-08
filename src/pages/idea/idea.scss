@@ -41,13 +41,16 @@ page-idea {
     .score{
         color:white;
         text-align: right;
+        background-color: #a1238e;
 
         h3{
-            color:#a1238e !important;
+            padding-right: 4px;
+            color: inherit;
+            // #a1238e !important;
         }
         span{
             font-size: 1.1rem;
-            background-color: #a1238e;
+            // background-color: #a1238e;
             padding: 3px;
         }
     }
@@ -55,6 +58,8 @@ page-idea {
     .userTitle{
         font-weight: 500 !important;
         font-size: 1.3rem;
+        color: black;
+        margin-right: 5px;
         span {
             margin-left: 5px;
             font-weight: normal;

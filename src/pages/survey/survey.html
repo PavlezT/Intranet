@@ -32,15 +32,20 @@
       <span class="procents" ><div [style.width]="getProcents(i)+'%'"></div></span>
     </ion-item>
   </ion-list>
+</ion-content>
+
+<ion-footer>
   <div class="buttons">
     <button ion-button  *ngIf="question" (tap)="acceptAnswer()">
       {{loc.dic.Send}}
     </button>
-    <button ion-button icon-only *ngIf="!question && Answers && Answers.length != 0 && Surveys && Surveys.length > 1 " (tap)="previousAnswer()">
+    <button ion-button icon-start *ngIf="!question && Answers && Answers.length != 0 && Surveys && Surveys.length > 1 " (tap)="previousAnswer()">
       <ion-icon name="arrow-back"></ion-icon>
+      {{loc.dic.mobile.Previous}}
     </button>
-    <button ion-button icon-only *ngIf="!question && Answers && Answers.length !=0 && Surveys && Surveys.length > 1" (tap)="nextAnswer()">
+    <button ion-button icon-start *ngIf="!question && Answers && Answers.length !=0 && Surveys && Surveys.length > 1" (tap)="nextAnswer()">
+      {{loc.dic.mobile.Next}}
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
   </div>
-</ion-content>
+</ion-footer>

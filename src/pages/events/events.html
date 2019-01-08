@@ -86,7 +86,8 @@
       <ion-list>
         <ion-item class="eventitem" *ngFor="let event of MonthEvents" (tap)="openEvent(event)">
           <div item-left class="itemdate" >
-              <h3>{{event.month}}</h3>
+              <!-- <h3>{{event.month}}</h3> -->
+              <p>{{event.month}}</p>
               <h2>{{event.date}}</h2>
           </div>
           {{event.Title}}   

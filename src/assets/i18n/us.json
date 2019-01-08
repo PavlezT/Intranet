@@ -23,7 +23,9 @@
         "Best":"Best",
         "Newest":"New",
         "Exit":"Click again to close",
-        "ShowMoreComments":"Show more comments"
+        "ShowMoreComments":"Show more comments",
+        "Previous" : "Previous",
+        "Next" : "Next"
     },
     "modules":{
         "News":"News",

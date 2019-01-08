@@ -2,11 +2,6 @@ page-card {
 	ion-title{
 		padding: 0px;
 		height: 100%;
-		.date{
-			font-size:1.4rem;
-			display:block;
-			color:grey;
-		}
 	}
 
 	ion-navbar{
@@ -89,6 +84,15 @@ page-card {
 	}
 
 	div{
+		.datespan{
+			font-size:1.4rem;
+			display:block;
+			color:white;
+			position: absolute;
+			margin-top: -50px;
+			text-shadow: 0px 0px 6px black;
+			background-color: transparent;
+		}
 		.note{
 			color: #666;
 			font-size: 1.2rem;
